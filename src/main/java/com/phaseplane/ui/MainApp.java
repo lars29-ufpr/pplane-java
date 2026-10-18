@@ -63,7 +63,7 @@ private List<EquilibriumPoint> lastEquilibria = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) {
 timeSeriesViewer = new TimeSeriesViewer();
-        primaryStage.setTitle("Phase Plane Analyzer - Java 21 / JavaFX");
+        primaryStage.setTitle("pplaneX - Análise de Planos de Fase");
 
         BoundingBox initialBounds = new BoundingBox(-3.0, 3.0, -3.0, 3.0);
         canvas = new PhasePlaneCanvas(initialBounds);
