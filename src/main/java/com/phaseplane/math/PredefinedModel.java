@@ -250,11 +250,20 @@ list.add(new PredefinedModel("Biomatemática & Ecologia", "Competição de Duas 
         p11.put("b", 1.0);
         p11.put("c", -1.0);
         p11.put("d", -0.1);
-        list.add(new PredefinedModel("Finanças & Dinâmica Não Linear", "11. Dinâmica do Amor (Romeu & Julieta)", "R", "J",
+list.add(new PredefinedModel("Sistemas Lineares & Teoria Qualitativa", "Sistemas Lineares 2D (Classificação & O Amor de Strogatz)", "R", "J",
                 "a * R + b * J", "c * R + d * J",
                 -3.0, 3.0, -3.0, 3.0, 40.0,
                 p11,
                 "Modelo linear de Steven Strogatz para o afeto recíproco. Mostra órbitas em espiral rumo à apatia emocional ou ciclos de desencontros amorosos matematicamente inevitáveis."));
-        return list;
+// 12. Oscilador Químico Brusselator (Prigogine & Lefever)
+        Map<String, Double> p12 = new LinkedHashMap<>();
+        p12.put("a", 1.0);
+        p12.put("b", 3.0);
+        list.add(new PredefinedModel("Química & Dinâmica Não Linear", "Oscilador Químico Brusselator", "x", "y",
+                "a - (b + 1) * x + x^2 * y", "b * x - x^2 * y",
+                0.0, 5.0, 0.0, 5.0, 40.0,
+                p12,
+                "Reação autocatalítica de Prigogine e Lefever. Exibe bifurcação de Hopf supercrítica em b = 1 + a^2 com surgimento de ciclo-limite."));       
+ return list;
     }
 }
