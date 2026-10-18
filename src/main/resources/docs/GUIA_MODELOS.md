@@ -226,7 +226,7 @@ $$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
 O modelo emblemático que acompanhou historicamente o utilitário MATLAB `pplane` de John Polking, projetado intencionalmente para ilustrar múltiplos tipos de equilíbrios e separatrizes concorrentes em uma única tela:
 
 $$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
+$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + 3xy$$
 
 * **Variáveis de Estado:**
   * $x, y \in \mathbb{R}$: Coordenadas cartesianas no plano de fase.

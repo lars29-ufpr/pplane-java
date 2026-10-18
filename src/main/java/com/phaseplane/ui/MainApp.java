@@ -156,18 +156,17 @@ varYField.setPrefWidth(60);
 HBox varBox = new HBox(8, lblVar, varXField, varYField);
         varBox.setAlignment(Pos.CENTER_LEFT);
 
-        fxField = new TextField("y");
-        fyField = new TextField("mu * (1 - x^2) * y - x");
+fxField = new TextField("2 * x - y + 3 * (x^2 - y^2) + 2 * x * y");
+        fyField = new TextField("x - 3 * y - 3 * (x^2 - y^2) + 3 * x * y");
 
-        paramsField = new TextField("mu=1.0");
+        paramsField = new TextField("");
         paramsField.setPromptText("ex: a=1.5, b=0.5, mu=1.0");
 
         // Limites dos Eixos
-        xMinField = new TextField("-3.0");
-        xMaxField = new TextField("3.0");
-        yMinField = new TextField("-3.0");
-        yMaxField = new TextField("3.0");
-
+        xMinField = new TextField("-2.0");
+        xMaxField = new TextField("2.0");
+        yMinField = new TextField("-2.0");
+        yMaxField = new TextField("2.0");
 xMinField.setPrefWidth(70);
 xMaxField.setPrefWidth(70);
 yMinField.setPrefWidth(70);

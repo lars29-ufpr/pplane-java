@@ -236,6 +236,14 @@ list.add(new PredefinedModel("Biomatemática & Ecologia", "Competição de Duas 
                 pSIR,
                 "Modelo epidemiológico clássico de Kermack-McKendrick (1927). Descreve o espalhamento de patógeno com imunidade permanente em frações populacionais adimensionais (S + I + R = 1). O limiar epidêmico básico é R0 = beta/gamma = 2.5, com a nulclina crítica vertical em S = gamma/beta = 0.4 definindo o pico infeccioso."
         ));
+// Pplane Clássico de Abertura (Polking)
+        Map<String, Double> pPolkingClassic = new LinkedHashMap<>();
+        list.add(new PredefinedModel("Sistemas Não Lineares & Separatrizes", "Pplane Clássico (Polking)", "x", "y",
+                "2 * x - y + 3 * (x^2 - y^2) + 2 * x * y",
+                "x - 3 * y - 3 * (x^2 - y^2) + 3 * x * y",
+                -2.0, 2.0, -2.0, 2.0, 20.0,
+                pPolkingClassic,
+                "Sistema polinomial de abertura do pplane original (MATLAB) de John Polking."));
 // 10. Polking: Múltiplos Equilíbrios
         Map<String, Double> p10 = new LinkedHashMap<>();
         list.add(new PredefinedModel("Finanças & Dinâmica Não Linear", "10. Polking: Múltiplos Equilíbrios", "x", "y",
@@ -243,7 +251,6 @@ list.add(new PredefinedModel("Biomatemática & Ecologia", "Competição de Duas 
                 -4.0, 4.0, -2.0, 5.0, 30.0,
                 p10,
                 "Exemplo clássico de John Polking (PPLANE/Rice). Apresenta 4 pontos de equilíbrio simultâneos, ilustrando separatrizes e fronteiras de bacias de atração."));
-
         // 11. Dinâmica do Amor (Romeu & Julieta)
         Map<String, Double> p11 = new LinkedHashMap<>();
         p11.put("a", -0.1);
