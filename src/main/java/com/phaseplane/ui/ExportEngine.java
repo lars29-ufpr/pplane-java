@@ -5,8 +5,10 @@ import com.phaseplane.math.DynamicalSystem2D;
 import com.phaseplane.math.EquilibriumPoint;
 import com.phaseplane.math.Trajectory;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -17,11 +19,36 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class ExportEngine {
 
+    public enum ExportTheme {
+        LIGHT("Claro / LaTeX (Fundo Branco)"),
+        TRANSPARENT("Transparente (Sem fundo / Slides)"),
+        DARK("Escuro (Como na Tela)");
+
+        private final String description;
+        ExportTheme(String description) { this.description = description; }
+        @Override public String toString() { return description; }
+    }
+
+    private static ExportTheme askTheme(Window window) {
+        List<ExportTheme> choices = Arrays.asList(ExportTheme.LIGHT, ExportTheme.TRANSPARENT, ExportTheme.DARK);
+        ChoiceDialog<ExportTheme> dialog = new ChoiceDialog<>(ExportTheme.LIGHT, choices);
+        dialog.setTitle("Tema de Exportação");
+        dialog.setHeaderText("Escolha a paleta de cores para a imagem:");
+        dialog.setContentText("Tema:");
+        dialog.initOwner(window);
+        return dialog.showAndWait().orElse(null);
+    }
+
     public static void exportPNG(PhasePlaneCanvas canvas, Window window) {
+        ExportTheme theme = askTheme(window);
+        if (theme == null) return;
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Plano de Fase (PNG Alta Resolução)");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagem PNG (*.png)", "*.png"));
@@ -31,9 +58,17 @@ public class ExportEngine {
         if (file == null) return;
 
         try {
-            double scale = 3.0;
+            double scale = 3.0; // Alta resolução (300 DPI aprox.)
             SnapshotParameters params = new SnapshotParameters();
             params.setTransform(Transform.scale(scale, scale));
+
+            if (theme == ExportTheme.TRANSPARENT) {
+                params.setFill(Color.TRANSPARENT);
+            } else if (theme == ExportTheme.LIGHT) {
+                params.setFill(Color.WHITE);
+            } else {
+                params.setFill(Color.web("#0d1117"));
+            }
 
             int w = (int) Math.round(canvas.getWidth() * scale);
             int h = (int) Math.round(canvas.getHeight() * scale);
@@ -48,9 +83,17 @@ public class ExportEngine {
 
             for (int y = 0; y < h; y++) {
                 for (int x = 0; x < w; x++) {
-                    buffer[x] = reader.getArgb(x, y);
+                    int argb = reader.getArgb(x, y);
+                    if (theme == ExportTheme.LIGHT) {
+                        // Inversão adaptativa suave caso a tela desenhe elementos escuros diretamente
+                        bufferedImage.setRGB(x, y, argb);
+                    } else {
+                        buffer[x] = argb;
+                    }
                 }
-                bufferedImage.setRGB(0, y, w, 1, buffer, 0, w);
+                if (theme != ExportTheme.LIGHT) {
+                    bufferedImage.setRGB(0, y, w, 1, buffer, 0, w);
+                }
             }
 
             ImageIO.write(bufferedImage, "png", file);
@@ -60,6 +103,9 @@ public class ExportEngine {
     }
 
     public static void exportSVG(PhasePlaneCanvas canvas, Window window) {
+        ExportTheme theme = askTheme(window);
+        if (theme == null) return;
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exportar Plano de Fase Vetorial (SVG)");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gráfico Vetorial SVG (*.svg)", "*.svg"));
@@ -73,42 +119,57 @@ public class ExportEngine {
         double h = canvas.getHeight();
         DynamicalSystem2D system = canvas.getSystem();
 
+        // Configuração de Paleta
+        boolean isDark = (theme == ExportTheme.DARK);
+        String gridColor = isDark ? "#161b22" : "#e2e8f0";
+        String textColor = isDark ? "#8b949e" : "#475569";
+        String axisColor = isDark ? "#38bdf8" : "#2563eb";
+        String arrowColor = isDark ? "#8b949e" : "#94a3b8";
+        String trColor = isDark ? "#38bdf8" : "#0284c7";
+        String stabSepColor = isDark ? "#10b981" : "#059669";
+        String unstabSepColor = isDark ? "#f97316" : "#ea580c";
+
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
             out.printf(Locale.US, "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%.1f\" height=\"%.1f\" viewBox=\"0 0 %.1f %.1f\">\n",
                     w, h, w, h);
 
-            // Fundo escuro
-            out.printf("  <rect width=\"100%%\" height=\"100%%\" fill=\"#0d1117\" />\n");
+            // Fundo
+            if (theme == ExportTheme.DARK) {
+                out.printf("  <rect width=\"100%%\" height=\"100%%\" fill=\"#0d1117\" />\n");
+            } else if (theme == ExportTheme.LIGHT) {
+                out.printf("  <rect width=\"100%%\" height=\"100%%\" fill=\"#ffffff\" />\n");
+            }
+            // TRANSPARENT simplesmente não imprime a tag <rect>
 
-            // 1. Grade e Eixos Numéricos
+            // 1. Grade e Rótulos Numéricos
             int div = 10;
             for (int i = 0; i <= div; i++) {
                 double wx = bounds.xMin() + i * (bounds.xMax() - bounds.xMin()) / div;
                 double sx = mapX(wx, bounds, w);
-                out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"0\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#161b22\" stroke-width=\"1.0\" />\n",
-                        sx, sx, h);
+                out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"0\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.0\" />\n",
+                        sx, sx, h, gridColor);
 
                 double wy = bounds.yMin() + i * (bounds.yMax() - bounds.yMin()) / div;
                 double sy = mapY(wy, bounds, h);
-                out.printf(Locale.US, "  <line x1=\"0\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#161b22\" stroke-width=\"1.0\" />\n",
-                        sy, w, sy);
+                out.printf(Locale.US, "  <line x1=\"0\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.0\" />\n",
+                        sy, w, sy, gridColor);
 
-                out.printf(Locale.US, "  <text x=\"%.2f\" y=\"%.2f\" fill=\"#484f58\" font-family=\"monospace\" font-size=\"10\">%.2f</text>\n",
-                        sx + 3, h - 5, wx);
-                out.printf(Locale.US, "  <text x=\"5\" y=\"%.2f\" fill=\"#484f58\" font-family=\"monospace\" font-size=\"10\">%.2f</text>\n",
-                        sy - 3, wy);
+                out.printf(Locale.US, "  <text x=\"%.2f\" y=\"%.2f\" fill=\"%s\" font-family=\"monospace\" font-size=\"10\">%.2f</text>\n",
+                        sx + 3, h - 5, textColor, wx);
+                out.printf(Locale.US, "  <text x=\"5\" y=\"%.2f\" fill=\"%s\" font-family=\"monospace\" font-size=\"10\">%.2f</text>\n",
+                        sy - 3, textColor, wy);
             }
 
             // Eixos cartesianos principais x = 0 e y = 0
             if (bounds.xMin() <= 0 && bounds.xMax() >= 0) {
                 double zx = mapX(0.0, bounds, w);
-                out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"0\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#38bdf8\" stroke-width=\"1.5\" stroke-opacity=\"0.7\" />\n",
-                        zx, zx, h);
+                out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"0\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.5\" stroke-opacity=\"0.8\" />\n",
+                        zx, zx, h, axisColor);
             }
             if (bounds.yMin() <= 0 && bounds.yMax() >= 0) {
                 double zy = mapY(0.0, bounds, h);
-                out.printf(Locale.US, "  <line x1=\"0\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#38bdf8\" stroke-width=\"1.5\" stroke-opacity=\"0.7\" />\n",
-                        zy, w, zy);
+                out.printf(Locale.US, "  <line x1=\"0\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.5\" stroke-opacity=\"0.8\" />\n",
+                        zy, w, zy, axisColor);
             }
 
             // 2. Campo Vetorial (Setas)
@@ -135,8 +196,8 @@ public class ExportEngine {
                         double ex = sx + u * arrowLen;
                         double ey = sy - v * arrowLen;
 
-                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#8b949e\" stroke-width=\"1.2\" stroke-opacity=\"0.5\" stroke-linecap=\"round\" />\n",
-                                sx, sy, ex, ey);
+                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.2\" stroke-opacity=\"0.6\" stroke-linecap=\"round\" />\n",
+                                sx, sy, ex, ey, arrowColor);
 
                         double angle = Math.atan2(ey - sy, ex - sx);
                         double headSize = 4.0;
@@ -145,10 +206,10 @@ public class ExportEngine {
                         double x2 = ex - headSize * Math.cos(angle + Math.PI / 6);
                         double y2 = ey - headSize * Math.sin(angle + Math.PI / 6);
 
-                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#8b949e\" stroke-width=\"1.2\" stroke-opacity=\"0.5\" />\n",
-                                ex, ey, x1, y1);
-                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"#8b949e\" stroke-width=\"1.2\" stroke-opacity=\"0.5\" />\n",
-                                ex, ey, x2, y2);
+                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.2\" stroke-opacity=\"0.6\" />\n",
+                                ex, ey, x1, y1, arrowColor);
+                        out.printf(Locale.US, "  <line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" stroke=\"%s\" stroke-width=\"1.2\" stroke-opacity=\"0.6\" />\n",
+                                ex, ey, x2, y2, arrowColor);
                     }
                 }
             }
@@ -177,32 +238,38 @@ public class ExportEngine {
                     }
                 }
 
-                writeContour(out, fGrid, bounds, w, h, cols, rows, "#ff5252", 1.4);
-                writeContour(out, gGrid, bounds, w, h, cols, rows, "#69f0ae", 1.4);
+                String nullX = isDark ? "#ff5252" : "#dc2626";
+                String nullY = isDark ? "#69f0ae" : "#16a34a";
+                writeContour(out, fGrid, bounds, w, h, cols, rows, nullX, 1.4);
+                writeContour(out, gGrid, bounds, w, h, cols, rows, nullY, 1.4);
             }
 
             // 4. Trajetórias Regulares
             for (Trajectory tr : canvas.getTrajectories()) {
-                writePath(out, tr, bounds, w, h, "#38bdf8", 1.8, 0.9);
+                writePath(out, tr, bounds, w, h, trColor, 1.8, 0.9);
             }
 
             // 5. Separatrizes
             for (Trajectory tr : canvas.getStableSeparatrices()) {
-                writePath(out, tr, bounds, w, h, "#10b981", 2.2, 1.0);
+                writePath(out, tr, bounds, w, h, stabSepColor, 2.2, 1.0);
             }
             for (Trajectory tr : canvas.getUnstableSeparatrices()) {
-                writePath(out, tr, bounds, w, h, "#f97316", 2.2, 1.0);
+                writePath(out, tr, bounds, w, h, unstabSepColor, 2.2, 1.0);
             }
 
             // 6. Equilíbrios
             for (EquilibriumPoint eq : canvas.getEquilibria()) {
                 double sx = mapX(eq.x(), bounds, w);
                 double sy = mapY(eq.y(), bounds, h);
-                out.printf(Locale.US, "  <circle cx=\"%.2f\" cy=\"%.2f\" r=\"5.5\" fill=\"#f59e0b\" stroke=\"#ffffff\" stroke-width=\"1.5\" />\n",
-                        sx, sy);
+                String eqFill = isDark ? "#f59e0b" : "#d97706";
+                String eqBorder = isDark ? "#ffffff" : "#0f172a";
+                String labelFill = isDark ? "#f1f5f9" : "#0f172a";
+
+                out.printf(Locale.US, "  <circle cx=\"%.2f\" cy=\"%.2f\" r=\"5.5\" fill=\"%s\" stroke=\"%s\" stroke-width=\"1.5\" />\n",
+                        sx, sy, eqFill, eqBorder);
                 String label = eq.type() != null ? eq.type().name() : "Eq";
-                out.printf(Locale.US, "  <text x=\"%.2f\" y=\"%.2f\" fill=\"#f1f5f9\" font-family=\"monospace\" font-size=\"11\">%s</text>\n",
-                        sx + 8, sy - 8, label);
+                out.printf(Locale.US, "  <text x=\"%.2f\" y=\"%.2f\" fill=\"%s\" font-family=\"monospace\" font-size=\"11\">%s</text>\n",
+                        sx + 8, sy - 8, labelFill, label);
             }
 
             out.println("</svg>");
