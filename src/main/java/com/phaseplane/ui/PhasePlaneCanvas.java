@@ -5,6 +5,7 @@ import com.phaseplane.math.DynamicalSystem2D;
 import com.phaseplane.math.EquilibriumPoint;
 import com.phaseplane.math.Trajectory;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseButton;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,6 +19,7 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class PhasePlaneCanvas extends Pane {
 
@@ -50,6 +52,11 @@ private final List<Trajectory> stableSeparatrices = new ArrayList<>();
     // Callback disparado ao clicar no plano (passa x0, y0)
     private BiConsumer<Double, Double> onPointClicked;
     private BiConsumer<Double, Double> onPointerMoved;
+    private Consumer<BoundingBox> onBoundsChanged;
+
+    // Coordenadas auxiliares para Pan
+    private double lastDragScreenX;
+    private double lastDragScreenY;
 
     private int fieldGridDensity = 26;
 private boolean showNullclines = true;
@@ -66,12 +73,80 @@ private boolean showNullclines = true;
         widthProperty().addListener((obs, oldVal, newVal) -> redraw());
         heightProperty().addListener((obs, oldVal, newVal) -> redraw());
 
+        // Clique com botão esquerdo puro: calcula e traça órbita
         canvas.setOnMouseClicked(event -> {
-            if (onPointClicked != null) {
+            if (event.getButton() == MouseButton.PRIMARY && onPointClicked != null) {
                 double worldX = screenToWorldX(event.getX());
                 double worldY = screenToWorldY(event.getY());
                 onPointClicked.accept(worldX, worldY);
             }
+        });
+
+        // Pressionar botão para iniciar Pan (botão direito ou botão do meio)
+        canvas.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                lastDragScreenX = event.getX();
+                lastDragScreenY = event.getY();
+            }
+        });
+
+        // Arrastar para navegar (Pan)
+        canvas.setOnMouseDragged(event -> {
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
+
+                double dxPixels = event.getX() - lastDragScreenX;
+                double dyPixels = event.getY() - lastDragScreenY;
+
+                lastDragScreenX = event.getX();
+                lastDragScreenY = event.getY();
+
+                double worldSpanX = bounds.xMax() - bounds.xMin();
+                double worldSpanY = bounds.yMax() - bounds.yMin();
+
+                double dxWorld = (dxPixels / getWidth()) * worldSpanX;
+                double dyWorld = -(dyPixels / getHeight()) * worldSpanY;
+
+                BoundingBox newBounds = new BoundingBox(
+                    bounds.xMin() - dxWorld,
+                    bounds.xMax() - dxWorld,
+                    bounds.yMin() - dyWorld,
+                    bounds.yMax() - dyWorld
+                );
+
+                setBounds(newBounds);
+                if (onBoundsChanged != null) {
+                    onBoundsChanged.accept(newBounds);
+                }
+            }
+        });
+
+        // Zoom focal com a rodinha do mouse (Scroll Wheel) centrado no cursor
+        canvas.setOnScroll(event -> {
+            if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
+
+            double mouseScreenX = event.getX();
+            double mouseScreenY = event.getY();
+
+            double focusX = screenToWorldX(mouseScreenX);
+            double focusY = screenToWorldY(mouseScreenY);
+
+            // deltaY > 0: aproximar (0.85); deltaY < 0: afastar (1 / 0.85)
+            double zoomFactor = (event.getDeltaY() > 0) ? 0.85 : 1.0 / 0.85;
+
+            double newXMin = focusX - (focusX - bounds.xMin()) * zoomFactor;
+            double newXMax = focusX + (bounds.xMax() - focusX) * zoomFactor;
+            double newYMin = focusY - (focusY - bounds.yMin()) * zoomFactor;
+            double newYMax = focusY + (bounds.yMax() - focusY) * zoomFactor;
+
+            if (newXMin < newXMax && newYMin < newYMax) {
+                BoundingBox newBounds = new BoundingBox(newXMin, newXMax, newYMin, newYMax);
+                setBounds(newBounds);
+                if (onBoundsChanged != null) {
+                    onBoundsChanged.accept(newBounds);
+                }
+            }
+            event.consume();
         });
 
         canvas.setOnMouseMoved(event -> {
@@ -103,6 +178,10 @@ public void setShowNullclines(boolean show) {
     public void setFieldGridDensity(int density) {
         this.fieldGridDensity = density;
         redraw();
+    }
+
+    public void setOnBoundsChanged(Consumer<BoundingBox> callback) {
+        this.onBoundsChanged = callback;
     }
 
     public void setOnPointClicked(BiConsumer<Double, Double> callback) {

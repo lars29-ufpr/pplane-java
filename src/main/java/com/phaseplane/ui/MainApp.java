@@ -390,6 +390,9 @@ manualBox,
             );
 
 canvas.setBounds(bounds);
+        canvas.setOnBoundsChanged(newBounds -> {
+            setBoundsFields(newBounds.xMin(), newBounds.xMax(), newBounds.yMin(), newBounds.yMax());
+        });
             canvas.clearTrajectories();
             canvas.clearSeparatrices();
             canvas.clearEquilibria();
