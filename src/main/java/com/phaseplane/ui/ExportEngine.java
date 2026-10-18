@@ -50,7 +50,7 @@ public class ExportEngine {
         if (theme == null) return;
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Exportar Plano de Fase (PNG Alta Resolução)");
+        fileChooser.setTitle("Exportar Plano de Fase (PNG)");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagem PNG (*.png)", "*.png"));
         fileChooser.setInitialFileName("plano_de_fase.png");
 
@@ -58,42 +58,41 @@ public class ExportEngine {
         if (file == null) return;
 
         try {
-            double scale = 3.0; // Alta resolução (300 DPI aprox.)
+            // 1. Configura o canvas para o tema escolhido e redesenha
+            if (theme == ExportTheme.TRANSPARENT) {
+                canvas.setExportBackground(null, true);
+            } else if (theme == ExportTheme.LIGHT) {
+                canvas.setExportBackground(Color.WHITE, false);
+            } else {
+                canvas.setExportBackground(null, false);
+            }
+            canvas.redraw();
+
+            // 2. Captura a imagem em alta definição com suporte nativo a canal alfa
+            double scale = 2.5;
             SnapshotParameters params = new SnapshotParameters();
             params.setTransform(Transform.scale(scale, scale));
+            params.setFill(theme == ExportTheme.TRANSPARENT ? Color.TRANSPARENT : (theme == ExportTheme.LIGHT ? Color.WHITE : Color.web("#0d1117")));
 
-            if (theme == ExportTheme.TRANSPARENT) {
-                params.setFill(Color.TRANSPARENT);
-            } else if (theme == ExportTheme.LIGHT) {
-                params.setFill(Color.WHITE);
-            } else {
-                params.setFill(Color.web("#0d1117"));
-            }
+            WritableImage fxImage = canvas.snapshot(params, null);
 
-            int w = (int) Math.round(canvas.getWidth() * scale);
-            int h = (int) Math.round(canvas.getHeight() * scale);
-            if (w <= 0 || h <= 0) return;
+            // 3. Restaura o Canvas para a interface de trabalho escura
+            canvas.setExportBackground(null, false);
+            canvas.redraw();
 
-            WritableImage fxImage = new WritableImage(w, h);
-            canvas.snapshot(params, fxImage);
+            // 4. Grava diretamente via AWT BufferedImage sem manipulação destrutiva de pixels
+            int imgW = (int) fxImage.getWidth();
+            int imgH = (int) fxImage.getHeight();
+            BufferedImage bufferedImage = new BufferedImage(
+                    imgW, imgH,
+                    theme == ExportTheme.TRANSPARENT ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB
+            );
 
-            BufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             PixelReader reader = fxImage.getPixelReader();
-            int[] buffer = new int[w];
-
-            for (int y = 0; y < h; y++) {
-                for (int x = 0; x < w; x++) {
-                    int argb = reader.getArgb(x, y);
-                    if (theme == ExportTheme.LIGHT) {
-                        // Inversão adaptativa suave caso a tela desenhe elementos escuros diretamente
-                        bufferedImage.setRGB(x, y, argb);
-                    } else {
-                        buffer[x] = argb;
-                    }
-                }
-                if (theme != ExportTheme.LIGHT) {
-                    bufferedImage.setRGB(0, y, w, 1, buffer, 0, w);
-                }
+            int[] buffer = new int[imgW];
+            for (int y = 0; y < imgH; y++) {
+                reader.getPixels(0, y, imgW, 1, javafx.scene.image.PixelFormat.getIntArgbInstance(), buffer, 0, imgW);
+                bufferedImage.setRGB(0, y, imgW, 1, buffer, 0, imgW);
             }
 
             ImageIO.write(bufferedImage, "png", file);
@@ -101,7 +100,6 @@ public class ExportEngine {
             e.printStackTrace();
         }
     }
-
     public static void exportSVG(PhasePlaneCanvas canvas, Window window) {
         ExportTheme theme = askTheme(window);
         if (theme == null) return;

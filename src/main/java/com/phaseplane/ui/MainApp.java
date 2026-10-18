@@ -1,7 +1,12 @@
 package com.phaseplane;
+import com.phaseplane.ui.AboutDialog;
+
 import javafx.scene.control.ScrollPane;
+import com.phaseplane.ui.AboutDialog;
 import com.phaseplane.ui.EquilibriumDetailDialog;
 import com.phaseplane.ui.ExportEngine;
+import com.phaseplane.ui.GuideViewerDialog;
+import com.phaseplane.ui.ModelGalleryDialog;
 import com.phaseplane.ui.TimeSeriesViewer;
 import com.phaseplane.ui.ParameterStudioStage;
 import com.phaseplane.math.BoundingBox;
@@ -9,6 +14,7 @@ import com.phaseplane.math.DormandPrinceIntegrator;
 import com.phaseplane.math.DynamicalSystem2D;
 import com.phaseplane.math.EquilibriumAnalyzer;
 import com.phaseplane.math.EquilibriumPoint;
+import com.phaseplane.math.PredefinedModel;
 import com.phaseplane.math.Trajectory;
 import com.phaseplane.ui.PhasePlaneCanvas;
 import javafx.application.Application;
@@ -67,11 +73,16 @@ timeSeriesViewer = new TimeSeriesViewer();
 
         // Barra inferior de status
         HBox statusBar = createStatusBar();
+BorderPane mainLayout = new BorderPane();
 
-        BorderPane mainLayout = new BorderPane();
-       mainLayout.setLeft(sideBar);
-       mainLayout.setCenter(canvas);
-       mainLayout.setBottom(statusBar);
+        ScrollPane scrollSidebar = new ScrollPane(sideBar);
+        scrollSidebar.setFitToWidth(true);
+        scrollSidebar.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollSidebar.setStyle("-fx-background: #161b22; -fx-background-color: #161b22; -fx-border-color: transparent;");
+
+        mainLayout.setLeft(scrollSidebar);
+        mainLayout.setCenter(canvas);
+        mainLayout.setBottom(statusBar);
         // Dispara o cálculo de trajetória ao clicar no Canvas
         canvas.setOnPointClicked((x0, y0) -> {
             if (system == null) return;
@@ -114,7 +125,7 @@ timeSeriesViewer = new TimeSeriesViewer();
       // Carrega o sistema inicial padrão (Oscilador de Van der Pol)
        applySystem();
 
-       Scene scene = new Scene(mainLayout, 1200, 800);
+       Scene scene = new Scene(mainLayout, 1200, 850);
        scene.getStylesheets().add(createDarkThemeStyle());
         
        primaryStage.setScene(scene);
@@ -133,25 +144,16 @@ timeSeriesViewer = new TimeSeriesViewer();
         title.setStyle("-fx-font-weight: bold; -fx-text-fill: #58a6ff; -fx-font-size: 14px;");
 
         // Presets rápidos
-        ComboBox<String> presetCombo = new ComboBox<>();
-        presetCombo.getItems().addAll(
-                "Pplane Clássico (Polking)",
-                "Van der Pol",
-                "Predador-Presa (Lotka-Volterra)",
-                "FitzHugh-Nagumo (Neuronal)",
-                "Epidemiológico SIR",
-                "Pêndulo Não-Linear",
-                "Oscilador de Duffing",
-                "Sistema Linear (Sela/Foco)"
-        );
-        presetCombo.setPromptText("Carregar Modelo Clássico...");
-        presetCombo.setMaxWidth(Double.MAX_VALUE);
-        presetCombo.setOnAction(e -> applyPreset(presetCombo.getValue()));
+       
 
         // Campos do Sistema
         varXField = new TextField("x");
         varYField = new TextField("y");
-        HBox varBox = new HBox(8, new Label("Variáveis:"), varXField, varYField);
+Label lblVar = new Label("Var:");
+lblVar.setMinWidth(Region.USE_PREF_SIZE);
+varXField.setPrefWidth(60);
+varYField.setPrefWidth(60);
+HBox varBox = new HBox(8, lblVar, varXField, varYField);
         varBox.setAlignment(Pos.CENTER_LEFT);
 
         fxField = new TextField("y");
@@ -188,6 +190,38 @@ tMinField.setPrefWidth(70);
         timeGrid.addRow(0, new Label("t min:"), tMinField, new Label("t max:"), tMaxField);
 
         // Botões de Ação
+Button btnGallery = new Button("📚 Galeria");
+        btnGallery.setMaxWidth(Double.MAX_VALUE);
+        btnGallery.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+        btnGallery.setOnAction(e -> {
+            PredefinedModel snapshot = captureCurrentModelSnapshot();
+            ModelGalleryDialog dialog = new ModelGalleryDialog(btnGallery.getScene() != null ? btnGallery.getScene().getWindow() : null, snapshot, this::loadPredefinedModel);
+            dialog.show();
+        });
+
+Button btnGuide = new Button("📖 Guia Didático");
+        btnGuide.setMaxWidth(Double.MAX_VALUE);
+        btnGuide.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #30363d; -fx-font-weight: bold;");
+        btnGuide.setOnAction(e -> GuideViewerDialog.show((Stage) btnGuide.getScene().getWindow()));
+Button btnAbout = new Button("Sobre o PPLANEX");
+        btnAbout.setMaxWidth(Double.MAX_VALUE);
+        btnAbout.setStyle("-fx-background-color: #21262d; -fx-text-fill: #8b949e; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-cursor: hand;");
+        btnAbout.setOnAction(e -> AboutDialog.show((Stage) btnAbout.getScene().getWindow()));
+
+        HBox rowSupport = new HBox(8);
+        if (btnGallery != null) {
+            btnGallery.setMaxWidth(Double.MAX_VALUE);
+            rowSupport.getChildren().add(btnGallery);
+            HBox.setHgrow(btnGallery, Priority.ALWAYS);
+        }
+        if (btnGuide != null) {
+            btnGuide.setMaxWidth(Double.MAX_VALUE);
+            rowSupport.getChildren().add(btnGuide);
+            HBox.setHgrow(btnGuide, Priority.ALWAYS);
+        }
+
+        VBox boxTopModels = new VBox(6, rowSupport, btnAbout);
+
         Button btnUpdate = new Button("Atualizar Campo");
         btnUpdate.setMaxWidth(Double.MAX_VALUE);
         btnUpdate.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -197,18 +231,6 @@ tMinField.setPrefWidth(70);
         btnEquilibria.setMaxWidth(Double.MAX_VALUE);
         btnEquilibria.setStyle("-fx-background-color: #1f6feb; -fx-text-fill: white;");
         btnEquilibria.setOnAction(e -> scanEquilibria());
-btnInspectMode = new ToggleButton("⌕ Inspecionar Equilíbrio (Clique)");
-        btnInspectMode.setMaxWidth(Double.MAX_VALUE);
-        btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd; -fx-border-radius: 4; -fx-cursor: hand;");
-        btnInspectMode.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-            if (isSelected) {
-                btnInspectMode.setStyle("-fx-background-color: #1f6feb; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #388bfd; -fx-border-radius: 4; -fx-cursor: hand;");
-                statusLabel.setText("Modo Inspeção ativo: clique próximo a um ponto crítico no plano.");
-            } else {
-                btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd; -fx-border-radius: 4; -fx-cursor: hand;");
-                statusLabel.setText("Modo Trajetória ativo: clique no plano para traçar órbitas.");
-            }
-        });
 Button btnSeparatrices = new Button("Traçar Separatrizes");
         btnSeparatrices.setMaxWidth(Double.MAX_VALUE);
         btnSeparatrices.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -258,6 +280,23 @@ autoScanEquilibria = false;
 canvas.clearEquilibria();
             canvas.clearSeparatrices();
         });
+// Junta Inspecionar e Limpar lado a lado
+btnInspectMode = new ToggleButton("⌕ Inspecionar Equilíbrio (Clique)");
+        btnInspectMode.setMaxWidth(Double.MAX_VALUE);
+        btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd; -fx-border-radius: 6;");
+        btnInspectMode.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+            if (isSelected) {
+                btnInspectMode.setStyle("-fx-background-color: #1f6feb; -fx-text-fill: white; -fx-font-weight: bold;");
+                statusLabel.setText("Modo Inspeção ativo: clique próximo a um ponto crítico no plano.");
+            } else {
+                btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd;");
+                statusLabel.setText("Modo Trajetória ativo: clique no plano para traçar órbitas.");
+            }
+        });
+        HBox boxInspectClear = new HBox(8, btnInspectMode, btnClear);
+        HBox.setHgrow(btnInspectMode, Priority.ALWAYS);
+        HBox.setHgrow(btnClear, Priority.ALWAYS);
+        btnInspectMode.setMaxWidth(Double.MAX_VALUE);
 Button btnTimeSeries = new Button("Soluções vs Tempo: x(t), y(t)");
         btnTimeSeries.setMaxWidth(Double.MAX_VALUE);
         btnTimeSeries.setStyle("-fx-background-color: #6e40c9; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -266,14 +305,14 @@ Button btnTimeSeries = new Button("Soluções vs Tempo: x(t), y(t)");
                 timeSeriesViewer.updateTrajectory(lastTrajectory);
             }
         });
-Button btnExportPNG = new Button("Exportar Imagem (PNG 300 DPI)");
+Button btnExportPNG = new Button("Exportar PNG");
         btnExportPNG.setMaxWidth(Double.MAX_VALUE);
         btnExportPNG.setStyle("-fx-background-color: #0f766e; -fx-text-fill: white; -fx-font-weight: bold;");
         btnExportPNG.setOnAction(e -> {
             ExportEngine.exportPNG(canvas, canvas.getScene().getWindow());
         });
 
-        Button btnExportSVG = new Button("Exportar Vetorial (SVG p/ LaTeX)");
+        Button btnExportSVG = new Button("Exportar SVG");
         btnExportSVG.setMaxWidth(Double.MAX_VALUE);
         btnExportSVG.setStyle("-fx-background-color: #0369a1; -fx-text-fill: white; -fx-font-weight: bold;");
 btnExportSVG.setOnAction(e -> {
@@ -288,29 +327,32 @@ btnExportSVG.setOnAction(e -> {
         HBox.setHgrow(btnSeparatrices, Priority.ALWAYS);
         HBox.setHgrow(btnStudio, Priority.ALWAYS);
 
-        HBox boxExport = new HBox(6, btnExportPNG, btnExportSVG);
+       HBox boxExport = new HBox(6, btnExportPNG, btnExportSVG);
         HBox.setHgrow(btnExportPNG, Priority.ALWAYS);
         HBox.setHgrow(btnExportSVG, Priority.ALWAYS);
+
         sidebar.getChildren().addAll(
                 title,
-                new Label("Modelos pré-definidos:"), presetCombo,
-                new Separator(),
+                boxTopModels,
                 varBox,
-                new Label("dx/dt ="), fxField,
-                new Label("dy/dt ="), fyField,
-                new Label("Parâmetros (chave=valor):"), paramsField,
-                new Separator(),
-                new Label("Limites do Plano de Fase:"), boundsGrid,
-                new Label("Janela de Integração:"), timeGrid,
-new Label("Ponto Inicial (x₀, y₀):"), manualBox,
-new Separator(),
+                new Label("dx/dt ="),
+                fxField,
+                new Label("dy/dt ="),
+                fyField,
+                new Label("Parâmetros (chave=valor):"),
+                paramsField,
+                new Label("Limites do Plano de Fase:"),
+                boundsGrid,
+                new Label("Janela de Integração:"),
+                timeGrid,
+                new Label("Ponto Inicial (x₀, y₀):"),
+manualBox,
                 chkNullclines,
                 boxUpdateEquilibria,
-                btnInspectMode,
+                boxInspectClear,
                 boxAnalysis,
                 btnTimeSeries,
-                boxExport,
-                btnClear
+                boxExport
         );
         return sidebar;
     }
@@ -621,5 +663,70 @@ private void openParameterStudio() {
         }
         parameterStudioStage.show();
         parameterStudioStage.toFront();
+    }
+private void loadPredefinedModel(PredefinedModel model) {
+        if (model == null) return;
+
+        varXField.setText(model.getVarX());
+        varYField.setText(model.getVarY());
+        fxField.setText(model.getExprDx());
+        fyField.setText(model.getExprDy());
+
+        xMinField.setText(String.valueOf(model.getXMin()));
+        xMaxField.setText(String.valueOf(model.getXMax()));
+        yMinField.setText(String.valueOf(model.getYMin()));
+        yMaxField.setText(String.valueOf(model.getYMax()));
+        tMaxField.setText(String.valueOf(model.getTMax()));
+
+        if (model.getParameters().isEmpty()) {
+            paramsField.setText("");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            model.getParameters().forEach((k, v) -> {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(k).append("=").append(v);
+            });
+            paramsField.setText(sb.toString());
+        }
+
+        applySystem();
+    }
+
+    private PredefinedModel captureCurrentModelSnapshot() {
+        Map<String, Double> currentParams = new LinkedHashMap<>();
+        String raw = paramsField.getText();
+        if (raw != null && !raw.isBlank()) {
+            for (String pair : raw.split("[,;]")) {
+                String[] kv = pair.split("=");
+                if (kv.length == 2) {
+                    try {
+                        currentParams.put(kv[0].trim(), Double.parseDouble(kv[1].trim()));
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+
+        double xmin = parseDoubleSafe(xMinField.getText(), -3.0);
+        double xmax = parseDoubleSafe(xMaxField.getText(), 3.0);
+        double ymin = parseDoubleSafe(yMinField.getText(), -3.0);
+        double ymax = parseDoubleSafe(yMaxField.getText(), 3.0);
+        double tmax = parseDoubleSafe(tMaxField.getText(), 25.0);
+
+        return new PredefinedModel(
+                "Modelos do Usuário", "Modelo Atual",
+                varXField.getText().trim(), varYField.getText().trim(),
+                fxField.getText().trim(), fyField.getText().trim(),
+                xmin, xmax, ymin, ymax, tmax,
+                currentParams,
+                "Capturado do plano de fase ativo."
+        );
+    }
+
+    private double parseDoubleSafe(String txt, double fallback) {
+        try {
+            return Double.parseDouble(txt.trim());
+        } catch (Exception e) {
+            return fallback;
+        }
     }
 }

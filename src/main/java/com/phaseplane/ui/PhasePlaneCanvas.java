@@ -22,7 +22,14 @@ import java.util.function.BiConsumer;
 public class PhasePlaneCanvas extends Pane {
 
     // Paleta de cores escura (Dark Theme)
-    private static final Color BG_COLOR = Color.web("#0d1117");
+private Color exportBgColor = null;
+    private boolean transparentExport = false;
+
+    public void setExportBackground(Color color, boolean transparent) {
+        this.exportBgColor = color;
+        this.transparentExport = transparent;
+    }    
+private static final Color BG_COLOR = Color.web("#0d1117");
     private static final Color GRID_COLOR = Color.web("#1e293b");
     private static final Color AXIS_COLOR = Color.web("#38bdf8", 0.65);
     private static final Color TEXT_COLOR = Color.web("#94a3b8");
@@ -159,9 +166,13 @@ public void addStableSeparatrix(Trajectory traj) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Fundo
-        gc.setFill(BG_COLOR);
-        gc.fillRect(0, 0, w, h);
-
+     // Fundo
+        if (transparentExport) {
+            gc.clearRect(0, 0, w, h);
+        } else {
+            gc.setFill(exportBgColor != null ? exportBgColor : BG_COLOR);
+            gc.fillRect(0, 0, w, h);
+        }
         drawGridAndAxes(gc, w, h);
 
         if (system != null) {
