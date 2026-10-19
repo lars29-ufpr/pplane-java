@@ -45,7 +45,7 @@ public class ModelGalleryDialog {
         stage = new Stage();
         stage.initOwner(owner);
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.setTitle("Galeria de Sistemas Dinâmicos & Modelos");
+        stage.setTitle(I18n.get("gallery.window_title"));
         stage.setResizable(true);
 
         loadUserModelsFromDisk();
@@ -84,7 +84,7 @@ public class ModelGalleryDialog {
         }
 
         for (Map.Entry<String, List<PredefinedModel>> entry : byCategory.entrySet()) {
-            Tab tab = new Tab(entry.getKey());
+            Tab tab = new Tab(getCategoryDisplayName(entry.getKey()));
             ListView<PredefinedModel> lv = new ListView<>();
             lv.getItems().addAll(entry.getValue());
             configureListView(lv);
@@ -93,7 +93,7 @@ public class ModelGalleryDialog {
         }
 
         // Aba: Meus Modelos
-        Tab userTab = new Tab("Meus Modelos");
+        Tab userTab = new Tab(I18n.get("gallery.tab_user_models"));
         userListView = new ListView<>();
         userListView.getItems().addAll(userModels);
         configureListView(userListView);
@@ -111,7 +111,7 @@ public class ModelGalleryDialog {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item.getName());
+                    setText(getModelDisplayName(item.getName()));
                 }
             }
         });
@@ -127,7 +127,7 @@ public class ModelGalleryDialog {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(12));
 
-        lblTitle = new Label("Selecione um modelo à esquerda");
+        lblTitle = new Label(I18n.get("gallery.lbl_select_model"));
         lblTitle.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
 
         lblEquations = new Label();
@@ -149,23 +149,23 @@ public class ModelGalleryDialog {
 
     private void updateDetailPanel(PredefinedModel m) {
         this.selectedModel = m;
-        lblTitle.setText(m.getName());
+        lblTitle.setText(getModelDisplayName(m.getName()));
 
         lblEquations.setText(String.format("d%s/dt = %s\nd%s/dt = %s",
                 m.getVarX(), m.getExprDx(), m.getVarY(), m.getExprDy()));
 
-        lblBounds.setText(String.format(Locale.US, "Janela de Fase: [%.2f, %.2f] × [%.2f, %.2f] | tMax: %.1f",
+        lblBounds.setText(String.format(Locale.US, I18n.get("gallery.lbl_bounds_format"),
                 m.getXMin(), m.getXMax(), m.getYMin(), m.getYMax(), m.getTMax()));
 
-        StringBuilder sb = new StringBuilder("Parâmetros: ");
+        StringBuilder sb = new StringBuilder(I18n.get("gallery.lbl_params"));
         if (m.getParameters().isEmpty()) {
-            sb.append("(nenhum)");
+            sb.append(I18n.get("gallery.lbl_none"));
         } else {
             m.getParameters().forEach((k, v) -> sb.append(k).append(" = ").append(v).append(";  "));
         }
         lblParams.setText(sb.toString());
 
-        lblDescription.setText(m.getDescription());
+        lblDescription.setText(getModelDisplayDescription(m.getName(), m.getDescription()));
         btnLoad.setDisable(false);
         btnExport.setDisable(false);
     }
@@ -175,20 +175,20 @@ public class ModelGalleryDialog {
         hbox.setPadding(new Insets(12, 0, 0, 0));
         hbox.setAlignment(Pos.CENTER_RIGHT);
 
-        Button btnSaveCurrent = new Button("Salvar Configuração Atual...");
+        Button btnSaveCurrent = new Button(I18n.get("gallery.btn_save_current"));
         btnSaveCurrent.setOnAction(e -> handleSaveCurrent());
 
-        Button btnImport = new Button("Importar .pplane...");
+        Button btnImport = new Button(I18n.get("gallery.btn_import"));
         btnImport.setOnAction(e -> handleImport());
 
-        btnExport = new Button("Exportar .pplane...");
+        btnExport = new Button(I18n.get("gallery.btn_export"));
         btnExport.setDisable(true);
         btnExport.setOnAction(e -> handleExport());
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        btnLoad = new Button("Carregar no Plano");
+        btnLoad = new Button(I18n.get("gallery.btn_load"));
         btnLoad.setStyle("-fx-font-weight: bold;");
         btnLoad.setDisable(true);
         btnLoad.setOnAction(e -> {
@@ -198,7 +198,7 @@ public class ModelGalleryDialog {
             }
         });
 
-        Button btnClose = new Button("Fechar");
+        Button btnClose = new Button(I18n.get("btn.close"));
         btnClose.setOnAction(e -> stage.close());
 
         hbox.getChildren().addAll(btnSaveCurrent, btnImport, btnExport, spacer, btnLoad, btnClose);
@@ -208,22 +208,22 @@ public class ModelGalleryDialog {
     private void handleSaveCurrent() {
         if (currentSystemSnapshot == null) return;
         TextInputDialog dialog = new TextInputDialog(currentSystemSnapshot.getName());
-        dialog.setTitle("Salvar Modelo");
-        dialog.setHeaderText("Salvar parâmetros e equações atuais em 'Meus Modelos':");
-        dialog.setContentText("Nome do Modelo:");
+        dialog.setTitle(I18n.get("gallery.save_dialog_title"));
+        dialog.setHeaderText(I18n.get("gallery.save_dialog_header"));
+        dialog.setContentText(I18n.get("gallery.save_dialog_content"));
         dialog.initOwner(stage);
 
         dialog.showAndWait().ifPresent(name -> {
             if (!name.trim().isEmpty()) {
                 PredefinedModel userM = new PredefinedModel(
-                        "Modelos do Usuário", name.trim(),
+                        I18n.get("gallery.user_models_category"), name.trim(),
                         currentSystemSnapshot.getVarX(), currentSystemSnapshot.getVarY(),
                         currentSystemSnapshot.getExprDx(), currentSystemSnapshot.getExprDy(),
                         currentSystemSnapshot.getXMin(), currentSystemSnapshot.getXMax(),
                         currentSystemSnapshot.getYMin(), currentSystemSnapshot.getYMax(),
                         currentSystemSnapshot.getTMax(),
                         currentSystemSnapshot.getParameters(),
-                        "Criado pelo usuário."
+                        I18n.get("gallery.user_model_desc")
                 );
 
                 saveModelToDisk(userM);
@@ -237,8 +237,8 @@ public class ModelGalleryDialog {
 
     private void handleImport() {
         FileChooser fc = new FileChooser();
-        fc.setTitle("Importar Modelo (.pplane)");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Modelo Phase Plane (*.pplane)", "*.pplane"));
+        fc.setTitle(I18n.get("gallery.import_title"));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("gallery.file_filter"), "*.pplane"));
         File file = fc.showOpenDialog(stage);
         if (file != null) {
             try {
@@ -257,8 +257,8 @@ public class ModelGalleryDialog {
     private void handleExport() {
         if (selectedModel == null) return;
         FileChooser fc = new FileChooser();
-        fc.setTitle("Exportar Modelo (.pplane)");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Modelo Phase Plane (*.pplane)", "*.pplane"));
+        fc.setTitle(I18n.get("gallery.export_title"));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("gallery.file_filter"), "*.pplane"));
         fc.setInitialFileName(selectedModel.getName().toLowerCase().replace(" ", "_") + ".pplane");
 
         File file = fc.showSaveDialog(stage);
@@ -297,5 +297,59 @@ public class ModelGalleryDialog {
 
     public void show() {
         stage.show();
+    }
+
+    private String getCategoryDisplayName(String rawCategory) {
+        if (rawCategory == null) return "";
+        return switch (rawCategory) {
+            case "Física & Mecânica" -> I18n.get("gallery.cat_physics");
+            case "Biomatemática & Ecologia" -> I18n.get("gallery.cat_biomath");
+            case "Clima & Oceanografia" -> I18n.get("gallery.cat_climate");
+            case "Finanças & Dinâmica Não Linear" -> I18n.get("gallery.cat_finance");
+            case "Sistemas Não Lineares & Separatrizes" -> I18n.get("gallery.cat_nonlinear");
+            case "Sistemas Lineares & Teoria Qualitativa" -> I18n.get("gallery.cat_linear");
+            case "Química & Dinâmica Não Linear" -> I18n.get("gallery.cat_chemistry");
+            default -> rawCategory;
+        };
+    }
+
+    private String getModelDisplayName(String rawName) {
+        if (rawName == null) return "";
+        return switch (rawName) {
+            case "Oscilador de Van der Pol" -> I18n.get("model.vanderpol.name");
+            case "Pêndulo Não Linear com Atrito" -> I18n.get("model.pendulum.name");
+            case "Oscilador de Duffing (Autônomo)" -> I18n.get("model.duffing.name");
+            case "Predador-Presa (Lotka-Volterra)" -> I18n.get("model.lotka.name");
+            case "Competição de Duas Espécies (Murray)" -> I18n.get("model.murray.name");
+            case "Neurônio de FitzHugh-Nagumo" -> I18n.get("model.fitzhugh.name");
+            case "Circulação Termoalina de Stommel" -> I18n.get("model.stommel.name");
+            case "Ciclo Econômico Não Linear de Kaldor" -> I18n.get("model.kaldor.name");
+            case "Epidemia SIR (Kermack-McKendrick)" -> I18n.get("model.sir.name");
+            case "Pplane Clássico (Polking)" -> I18n.get("model.polking_classic.name");
+            case "10. Polking: Múltiplos Equilíbrios" -> I18n.get("model.polking_multiple.name");
+            case "Sistemas Lineares 2D (Classificação & O Amor de Strogatz)" -> I18n.get("model.strogatz_love.name");
+            case "Oscilador Químico Brusselator" -> I18n.get("model.brusselator.name");
+            default -> rawName;
+        };
+    }
+
+    private String getModelDisplayDescription(String rawName, String rawDesc) {
+        if (rawName == null) return rawDesc != null ? rawDesc : "";
+        return switch (rawName) {
+            case "Oscilador de Van der Pol" -> I18n.get("model.vanderpol.desc");
+            case "Pêndulo Não Linear com Atrito" -> I18n.get("model.pendulum.desc");
+            case "Oscilador de Duffing (Autônomo)" -> I18n.get("model.duffing.desc");
+            case "Predador-Presa (Lotka-Volterra)" -> I18n.get("model.lotka.desc");
+            case "Competição de Duas Espécies (Murray)" -> I18n.get("model.murray.desc");
+            case "Neurônio de FitzHugh-Nagumo" -> I18n.get("model.fitzhugh.desc");
+            case "Circulação Termoalina de Stommel" -> I18n.get("model.stommel.desc");
+            case "Ciclo Econômico Não Linear de Kaldor" -> I18n.get("model.kaldor.desc");
+            case "Epidemia SIR (Kermack-McKendrick)" -> I18n.get("model.sir.desc");
+            case "Pplane Clássico (Polking)" -> I18n.get("model.polking_classic.desc");
+            case "10. Polking: Múltiplos Equilíbrios" -> I18n.get("model.polking_multiple.desc");
+            case "Sistemas Lineares 2D (Classificação & O Amor de Strogatz)" -> I18n.get("model.strogatz_love.desc");
+            case "Oscilador Químico Brusselator" -> I18n.get("model.brusselator.desc");
+            default -> rawDesc;
+        };
     }
 }

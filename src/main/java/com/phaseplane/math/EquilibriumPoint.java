@@ -1,5 +1,8 @@
 package com.phaseplane.math;
 
+import com.phaseplane.ui.I18n;
+import java.util.Locale;
+
 public record EquilibriumPoint(
         double x,
         double y,
@@ -11,65 +14,64 @@ public record EquilibriumPoint(
         Stability stability
 ) {
     public enum Type {
-        SADDLE("Ponto de Sela"),
-        NODE("Nó"),
-        SPIRAL("Foco (Espiral)"),
-        CENTER("Centro Linear"),
-        DEGENERATE("Equilíbrio Degenerado");
+        SADDLE("eq.type.saddle"),
+        NODE("eq.type.node"),
+        SPIRAL("eq.type.spiral"),
+        CENTER("eq.type.center"),
+        DEGENERATE("eq.type.degenerate");
 
-        private final String descricao;
+        private final String i18nKey;
 
-        Type(String descricao) {
-            this.descricao = descricao;
+        Type(String i18nKey) {
+            this.i18nKey = i18nKey;
         }
 
         public String getDescricao() {
-            return descricao;
+            return I18n.get(i18nKey);
         }
     }
 
     public enum Stability {
-        STABLE("Estável (Atrator)"),
-        UNSTABLE("Instável (Repulsor)"),
-        NEUTRALLY_STABLE("Neutramente Estável"),
-        UNKNOWN("Indeterminada");
+        STABLE("eq.stability.stable"),
+        UNSTABLE("eq.stability.unstable"),
+        NEUTRALLY_STABLE("eq.stability.neutrally_stable"),
+        UNKNOWN("eq.stability.unknown");
 
-        private final String descricao;
+        private final String i18nKey;
 
-        Stability(String descricao) {
-            this.descricao = descricao;
+        Stability(String i18nKey) {
+            this.i18nKey = i18nKey;
         }
 
         public String getDescricao() {
-            return descricao;
+            return I18n.get(i18nKey);
         }
     }
 
     /**
-     * Retorna a classificação qualitativa combinada em português.
-     * Exemplo: "Ponto de Sela", "Nó Estável (Atrator)", "Foco Instável (Espiral Repulsiva)".
+     * Retorna a classificacao qualitativa combinada no idioma ativo.
      */
     public String classificacaoFormatada() {
         if (type == Type.SADDLE) {
-            return "Ponto de Sela";
+            return Type.SADDLE.getDescricao();
         }
         if (type == Type.CENTER) {
-            return "Centro Linear";
+            return Type.CENTER.getDescricao();
         }
         if (type == Type.DEGENERATE) {
-            return "Equilíbrio Degenerado";
+            return Type.DEGENERATE.getDescricao();
         }
         return type.getDescricao() + " " + stability.getDescricao();
     }
 
     /**
-     * Retorna a representação formatada dos autovalores em texto.
+     * Formata os autovalores de forma legivel para exibicao.
      */
     public String autovaloresFormatados() {
-        if (imagEigenvalues == null || (imagEigenvalues[0] == 0.0 && imagEigenvalues[1] == 0.0)) {
-            return String.format("λ₁ = %.4f, λ₂ = %.4f", realEigenvalues[0], realEigenvalues[1]);
+        if (imagEigenvalues[0] == 0.0 && imagEigenvalues[1] == 0.0) {
+            return String.format(Locale.US, "λ₁ = %.4f,  λ₂ = %.4f", realEigenvalues[0], realEigenvalues[1]);
         } else {
-            return String.format("λ₁,₂ = %.4f ± %.4fi", realEigenvalues[0], Math.abs(imagEigenvalues[0]));
+            return String.format(Locale.US, "λ = %.4f ± %.4fi", realEigenvalues[0], Math.abs(imagEigenvalues[0]));
         }
     }
 }

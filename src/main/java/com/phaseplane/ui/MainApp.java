@@ -6,6 +6,7 @@ import com.phaseplane.ui.AboutDialog;
 import com.phaseplane.ui.EquilibriumDetailDialog;
 import com.phaseplane.ui.ExportEngine;
 import com.phaseplane.ui.GuideViewerDialog;
+import com.phaseplane.ui.I18n;
 import com.phaseplane.ui.ModelGalleryDialog;
 import com.phaseplane.ui.TimeSeriesViewer;
 import com.phaseplane.ui.ParameterStudioStage;
@@ -63,8 +64,7 @@ private List<EquilibriumPoint> lastEquilibria = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) {
 timeSeriesViewer = new TimeSeriesViewer();
-        primaryStage.setTitle("pplaneX - Análise de Planos de Fase");
-
+primaryStage.setTitle(I18n.get("app.title"));
         BoundingBox initialBounds = new BoundingBox(-3.0, 3.0, -3.0, 3.0);
         canvas = new PhasePlaneCanvas(initialBounds);
 
@@ -140,7 +140,7 @@ BorderPane mainLayout = new BorderPane();
         sidebar.setPrefWidth(380);
         sidebar.setStyle("-fx-background-color: #161b22; -fx-border-color: #30363d; -fx-border-width: 0 1 0 0;");
 
-        Label title = new Label("SISTEMA DE EDOs 2D");
+        Label title = new Label(I18n.get("label.system_title"));
         title.setStyle("-fx-font-weight: bold; -fx-text-fill: #58a6ff; -fx-font-size: 14px;");
 
         // Presets rápidos
@@ -189,7 +189,7 @@ tMinField.setPrefWidth(70);
         timeGrid.addRow(0, new Label("t min:"), tMinField, new Label("t max:"), tMaxField);
 
         // Botões de Ação
-Button btnGallery = new Button("📚 Galeria");
+Button btnGallery = new Button(I18n.get("btn.gallery"));
         btnGallery.setMaxWidth(Double.MAX_VALUE);
         btnGallery.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
         btnGallery.setOnAction(e -> {
@@ -198,11 +198,11 @@ Button btnGallery = new Button("📚 Galeria");
             dialog.show();
         });
 
-Button btnGuide = new Button("📖 Guia Didático");
+Button btnGuide = new Button(I18n.get("btn.tutorial"));
         btnGuide.setMaxWidth(Double.MAX_VALUE);
         btnGuide.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #30363d; -fx-font-weight: bold;");
         btnGuide.setOnAction(e -> GuideViewerDialog.show((Stage) btnGuide.getScene().getWindow()));
-Button btnAbout = new Button("Sobre o PPLANEX");
+Button btnAbout = new Button(I18n.get("btn.about"));
         btnAbout.setMaxWidth(Double.MAX_VALUE);
         btnAbout.setStyle("-fx-background-color: #21262d; -fx-text-fill: #8b949e; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-cursor: hand;");
         btnAbout.setOnAction(e -> AboutDialog.show((Stage) btnAbout.getScene().getWindow()));
@@ -221,21 +221,21 @@ Button btnAbout = new Button("Sobre o PPLANEX");
 
         VBox boxTopModels = new VBox(6, rowSupport, btnAbout);
 
-        Button btnUpdate = new Button("Atualizar Campo");
+        Button btnUpdate = new Button(I18n.get("btn.update_field"));
         btnUpdate.setMaxWidth(Double.MAX_VALUE);
         btnUpdate.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold;");
         btnUpdate.setOnAction(e -> applySystem());
-
-        Button btnEquilibria = new Button("Localizar Equilíbrios");
+Button btnEquilibria = new Button(I18n.get("btn.equilibria"));
         btnEquilibria.setMaxWidth(Double.MAX_VALUE);
         btnEquilibria.setStyle("-fx-background-color: #1f6feb; -fx-text-fill: white;");
         btnEquilibria.setOnAction(e -> scanEquilibria());
-Button btnSeparatrices = new Button("Traçar Separatrizes");
+
+Button btnSeparatrices = new Button(I18n.get("btn.separatrices"));
         btnSeparatrices.setMaxWidth(Double.MAX_VALUE);
         btnSeparatrices.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold;");
         btnSeparatrices.setOnAction(e -> computeSeparatrices());
 
-Button btnStudio = new Button("Parameter Studio (Sliders)");
+Button btnStudio = new Button(I18n.get("btn.parameter_studio"));
         btnStudio.setMaxWidth(Double.MAX_VALUE);
         btnStudio.setStyle("-fx-background-color: #d29922; -fx-text-fill: #0d1117; -fx-font-weight: bold;");
         btnStudio.setOnAction(e -> openParameterStudio());
@@ -249,7 +249,7 @@ Button btnStudio = new Button("Parameter Studio (Sliders)");
         y0Field.setPrefWidth(55);
         y0Field.setStyle("-fx-background-color: #0d1117; -fx-text-fill: #e6edf3; -fx-border-color: #30363d; -fx-border-radius: 4;");
 
-        Button btnPlotManual = new Button("Traçar");
+        Button btnPlotManual = new Button(I18n.get("btn.plot_orbit"));
         btnPlotManual.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;");
         btnPlotManual.setOnAction(e -> {
             try {
@@ -264,12 +264,12 @@ Button btnStudio = new Button("Parameter Studio (Sliders)");
         HBox manualBox = new HBox(6, new Label("x₀:"), x0Field, new Label("y₀:"), y0Field, btnPlotManual);
         manualBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
-CheckBox chkNullclines = new CheckBox("Exibir Isóclinas Nulas (Nullclines)");
+CheckBox chkNullclines = new CheckBox(I18n.get("chk.nullclines"));
         chkNullclines.setSelected(true);
         chkNullclines.setStyle("-fx-text-fill: #c9d1d9; -fx-font-size: 11px;");
         chkNullclines.setOnAction(e -> canvas.setShowNullclines(chkNullclines.isSelected()));
 
-        Button btnClear = new Button("Limpar Trajetórias");
+Button btnClear = new Button(I18n.get("btn.clear"));
         btnClear.setMaxWidth(Double.MAX_VALUE);
         btnClear.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d;");
 btnClear.setOnAction(e -> {
@@ -280,7 +280,7 @@ canvas.clearEquilibria();
             canvas.clearSeparatrices();
         });
 // Junta Inspecionar e Limpar lado a lado
-btnInspectMode = new ToggleButton("⌕ Inspecionar Equilíbrio (Clique)");
+btnInspectMode = new ToggleButton(I18n.get("btn.inspect"));
         btnInspectMode.setMaxWidth(Double.MAX_VALUE);
         btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd; -fx-border-radius: 6;");
         btnInspectMode.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
@@ -296,7 +296,7 @@ btnInspectMode = new ToggleButton("⌕ Inspecionar Equilíbrio (Clique)");
         HBox.setHgrow(btnInspectMode, Priority.ALWAYS);
         HBox.setHgrow(btnClear, Priority.ALWAYS);
         btnInspectMode.setMaxWidth(Double.MAX_VALUE);
-Button btnTimeSeries = new Button("Soluções vs Tempo: x(t), y(t)");
+Button btnTimeSeries = new Button(I18n.get("btn.time_series"));
         btnTimeSeries.setMaxWidth(Double.MAX_VALUE);
         btnTimeSeries.setStyle("-fx-background-color: #6e40c9; -fx-text-fill: white; -fx-font-weight: bold;");
         btnTimeSeries.setOnAction(e -> {
@@ -304,14 +304,13 @@ Button btnTimeSeries = new Button("Soluções vs Tempo: x(t), y(t)");
                 timeSeriesViewer.updateTrajectory(lastTrajectory);
             }
         });
-Button btnExportPNG = new Button("Exportar PNG");
+Button btnExportPNG = new Button(I18n.get("btn.export_png"));
         btnExportPNG.setMaxWidth(Double.MAX_VALUE);
         btnExportPNG.setStyle("-fx-background-color: #0f766e; -fx-text-fill: white; -fx-font-weight: bold;");
         btnExportPNG.setOnAction(e -> {
             ExportEngine.exportPNG(canvas, canvas.getScene().getWindow());
         });
-
-        Button btnExportSVG = new Button("Exportar SVG");
+Button btnExportSVG = new Button(I18n.get("btn.export_svg"));
         btnExportSVG.setMaxWidth(Double.MAX_VALUE);
         btnExportSVG.setStyle("-fx-background-color: #0369a1; -fx-text-fill: white; -fx-font-weight: bold;");
 btnExportSVG.setOnAction(e -> {
@@ -338,13 +337,13 @@ btnExportSVG.setOnAction(e -> {
                 fxField,
                 new Label("dy/dt ="),
                 fyField,
-                new Label("Parâmetros (chave=valor):"),
+                new Label(I18n.get("label.parameters")),
                 paramsField,
-                new Label("Limites do Plano de Fase:"),
+                new Label(I18n.get("label.phase_limits")),
                 boundsGrid,
-                new Label("Janela de Integração:"),
+                new Label(I18n.get("label.integration_window")),
                 timeGrid,
-                new Label("Ponto Inicial (x₀, y₀):"),
+                new Label(I18n.get("label.initial_point")),
 manualBox,
                 chkNullclines,
                 boxUpdateEquilibria,
@@ -415,8 +414,8 @@ canvas.setBounds(bounds);
             if (autoScanEquilibria) {
                 scanEquilibria();
             }
-            statusLabel.setText("Campo de vetores compilado e atualizado.");
-            statusLabel.setText("Campo de vetores compilado e atualizado.");
+            statusLabel.setText(I18n.get("msg.field_updated"));
+            statusLabel.setText(I18n.get("msg.field_updated"));
         } catch (Exception ex) {
             showError("Erro na expressão matemática", ex.getMessage());
         }
@@ -549,7 +548,7 @@ case "Pplane Clássico (Polking)" -> {
     private void showError(String header, String content) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
+alert.setTitle(I18n.get("alert.error.title"));
             alert.setHeaderText(header);
             alert.setContentText(content);
             alert.showAndWait();
