@@ -18,27 +18,27 @@ public class TimeSeriesViewer {
     private final LineChart<Number, Number> chartY;
 
     public TimeSeriesViewer() {
-        stage.setTitle("pplane - Soluções vs Tempo: x(t) e y(t)");
+        stage.setTitle(I18n.get("timeseries.window_title"));
 
         // Configuração dos eixos de x(t)
         NumberAxis tAxisX = new NumberAxis();
-        tAxisX.setLabel("Tempo (t)");
+        tAxisX.setLabel(I18n.get("timeseries.axis_time"));
         NumberAxis valAxisX = new NumberAxis();
         valAxisX.setLabel("x(t)");
 
         chartX = new LineChart<>(tAxisX, valAxisX);
-        chartX.setTitle("Evolução Temporal de x(t)");
+        chartX.setTitle(I18n.get("timeseries.chart_x_title"));
         chartX.setCreateSymbols(false);
         chartX.setAnimated(false);
 
         // Configuração dos eixos de y(t)
         NumberAxis tAxisY = new NumberAxis();
-        tAxisY.setLabel("Tempo (t)");
+        tAxisY.setLabel(I18n.get("timeseries.axis_time"));
         NumberAxis valAxisY = new NumberAxis();
         valAxisY.setLabel("y(t)");
 
         chartY = new LineChart<>(tAxisY, valAxisY);
-        chartY.setTitle("Evolução Temporal de y(t)");
+        chartY.setTitle(I18n.get("timeseries.chart_y_title"));
         chartY.setCreateSymbols(false);
         chartY.setAnimated(false);
 

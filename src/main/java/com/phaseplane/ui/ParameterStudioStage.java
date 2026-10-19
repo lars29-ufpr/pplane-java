@@ -27,19 +27,19 @@ public class ParameterStudioStage extends Stage {
             this.currentParams.putAll(initialParams);
         }
 
-        setTitle("Parameter Studio - Ajuste Interativo de Constantes");
+        setTitle(I18n.get("studio.window_title"));
 
         VBox root = new VBox(14);
         root.setPadding(new Insets(16));
         root.setStyle("-fx-background-color: #0d1117;");
 
-        Label headerTitle = new Label("Bancada de Parâmetros e Bifurcações");
+        Label headerTitle = new Label(I18n.get("studio.header_title"));
         headerTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #58a6ff; -fx-font-size: 14px;");
 
-        Label desc = new Label("Ajuste os valores e limites de cada constante em tempo real.");
+        Label desc = new Label(I18n.get("studio.header_desc"));
         desc.setStyle("-fx-text-fill: #8b949e; -fx-font-size: 11px;");
 
-        liveUpdateCheck = new CheckBox("Atualizar plano de fase continuamente ao arrastar");
+        liveUpdateCheck = new CheckBox(I18n.get("studio.live_update"));
         liveUpdateCheck.setSelected(true);
         liveUpdateCheck.setStyle("-fx-text-fill: #c9d1d9;");
 
@@ -49,7 +49,7 @@ public class ParameterStudioStage extends Stage {
         scrollPane.setStyle("-fx-background: #0d1117; -fx-background-color: transparent; -fx-border-color: #30363d; -fx-border-radius: 4;");
         scrollPane.setPrefHeight(300);
 
-        Button btnApplyManual = new Button("Aplicar Todos os Parâmetros");
+        Button btnApplyManual = new Button(I18n.get("studio.btn_apply"));
         btnApplyManual.setMaxWidth(Double.MAX_VALUE);
         btnApplyManual.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold;");
         btnApplyManual.setOnAction(e -> notifyChange());
@@ -74,7 +74,7 @@ public class ParameterStudioStage extends Stage {
         slidersContainer.getChildren().clear();
 
         if (currentParams.isEmpty()) {
-            Label emptyLbl = new Label("Nenhum parâmetro declarado no sistema atual.");
+            Label emptyLbl = new Label(I18n.get("studio.empty_params"));
             emptyLbl.setStyle("-fx-text-fill: #8b949e; -fx-padding: 16;");
             slidersContainer.getChildren().add(emptyLbl);
             return;

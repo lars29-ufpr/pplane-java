@@ -28,7 +28,7 @@ public class EquilibriumDetailDialog extends Stage {
     public EquilibriumDetailDialog(Window owner, EquilibriumPoint eq, Consumer<EquilibriumPoint> onTraceSeparatrices) {
         initOwner(owner);
         initModality(Modality.APPLICATION_MODAL);
-        setTitle("Análise de Ponto Crítico");
+        setTitle(I18n.get("eq_detail.window_title"));
         setResizable(false);
 
         VBox root = new VBox(14);
@@ -52,7 +52,7 @@ public class EquilibriumDetailDialog extends Stage {
         header.getChildren().addAll(titleCoord, spacer, badge);
 
         // ================= 2. CARTÃO: JACOBIANA =================
-        VBox jacobianCard = createCard("MATRIZ JACOBIANA  J(P*)");
+        VBox jacobianCard = createCard(I18n.get("eq_detail.card_jacobian"));
         double[][] J = eq.jacobian();
 
         HBox matrixBox = new HBox(8);
@@ -80,7 +80,7 @@ public class EquilibriumDetailDialog extends Stage {
         jacobianCard.getChildren().add(matrixBox);
 
         // ================= 3. CARTÃO: INVARIANTES =================
-        VBox invariantsCard = createCard("INVARIANTES DA MATRIZ");
+        VBox invariantsCard = createCard(I18n.get("eq_detail.card_invariants"));
         double trace = J[0][0] + J[1][1];
         double det = J[0][0] * J[1][1] - J[0][1] * J[1][0];
         double delta = trace * trace - 4.0 * det;
@@ -90,18 +90,18 @@ public class EquilibriumDetailDialog extends Stage {
         gridInv.setVgap(6);
         gridInv.setAlignment(Pos.CENTER);
 
-        addGridRow(gridInv, 0, "Traço (τ):", String.format(Locale.US, "%.5f", trace));
-        addGridRow(gridInv, 1, "Determinante (Δ):", String.format(Locale.US, "%.5f", det));
-        addGridRow(gridInv, 2, "Discriminante (δ):", String.format(Locale.US, "%.5f (%s)", delta, delta >= 0 ? "δ ≥ 0" : "δ < 0"));
+        addGridRow(gridInv, 0, I18n.get("eq_detail.trace"), String.format(Locale.US, "%.5f", trace));
+        addGridRow(gridInv, 1, I18n.get("eq_detail.det"), String.format(Locale.US, "%.5f", det));
+        addGridRow(gridInv, 2, I18n.get("eq_detail.delta"), String.format(Locale.US, "%.5f (%s)", delta, delta >= 0 ? "δ ≥ 0" : "δ < 0"));
 
         invariantsCard.getChildren().add(gridInv);
 
         // ================= 4. CARTÃO: ESPECTRO =================
-        VBox spectralCard = createCard("ESPECTRO E AUTOVETORES");
+        VBox spectralCard = createCard(I18n.get("eq_detail.card_spectrum"));
         VBox spectralContent = new VBox(6);
         spectralContent.setAlignment(Pos.CENTER_LEFT);
 
-        Label eigValLabel = new Label("Autovalores:  " + eq.autovaloresFormatados());
+        Label eigValLabel = new Label(I18n.get("eq_detail.eigenvalues") + eq.autovaloresFormatados());
         eigValLabel.setFont(Font.font("Monospaced", FontWeight.BOLD, 12));
         eigValLabel.setTextFill(Color.web("#7ee787"));
         spectralContent.getChildren().add(eigValLabel);
@@ -116,7 +116,7 @@ public class EquilibriumDetailDialog extends Stage {
             v2Label.setTextFill(Color.web("#c9d1d9"));
             spectralContent.getChildren().addAll(v1Label, v2Label);
         } else {
-            Label complexNote = new Label("Autovetores complexos conjugados (órbita em rotação).");
+            Label complexNote = new Label(I18n.get("eq_detail.complex_note"));
             complexNote.setFont(Font.font(11));
             complexNote.setTextFill(Color.web("#8b949e"));
             spectralContent.getChildren().add(complexNote);
@@ -129,7 +129,7 @@ public class EquilibriumDetailDialog extends Stage {
         actions.setAlignment(Pos.CENTER_RIGHT);
 
         if (eq.type() == EquilibriumPoint.Type.SADDLE && onTraceSeparatrices != null) {
-            Button btnSep = new Button("⤹ Traçar Separatrizes");
+            Button btnSep = new Button(I18n.get("btn.plot_separatrices_arrow"));
             btnSep.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 6 12;");
             btnSep.setOnAction(e -> {
                 close();
@@ -138,7 +138,7 @@ public class EquilibriumDetailDialog extends Stage {
             actions.getChildren().add(btnSep);
         }
 
-        Button btnClose = new Button("Fechar");
+        Button btnClose = new Button(I18n.get("btn.close"));
         btnClose.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 6 14;");
         btnClose.setOnAction(e -> close());
         actions.getChildren().add(btnClose);
