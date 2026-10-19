@@ -1,5 +1,5 @@
 # Guia Didático de Modelos Dinâmicos Bidimensionais
-## Phase Plane Analyzer — Versão 1.0
+Phase Plane Analyzer — Versão 1.0
 
 Este guia reúne o catálogo canônico de sistemas de equações diferenciais ordinárias bidimensionais ($2 \times 2$) implementados no **Phase Plane Analyzer**. Cada modelo conta com a respectiva formulação matemática, roteiro didático de experimentação no plano de fase e referências conceituais clássicas.
 

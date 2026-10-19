@@ -18,14 +18,43 @@
         <version>3.5.2</version>
         <executions>
           <execution>
+            <id>shade-pt</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
             <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>pt</shadedClassifierName>
               <transformers>
                 <transformer>
-                  <mainClass>com.phaseplane.Launcher</mainClass>
+                  <mainClass>com.phaseplane.MainPT</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+          <execution>
+            <id>shade-en</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>en</shadedClassifierName>
+              <transformers>
+                <transformer>
+                  <mainClass>com.phaseplane.MainEN</mainClass>
                 </transformer>
               </transformers>
               <filters>

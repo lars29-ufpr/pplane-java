@@ -26,9 +26,9 @@ $$y' = -c y + d x y$$
 * Note the conservation of the first integral $V(x, y) = d x - c \ln(x) + b y - a \ln(y)$.
 
 #### Conceptual References
-* Lotka, A. J. (1925). *Elements of Physical Biology*.
-* Volterra, V. (1926). *Variazioni e fluttuazioni del numero d'individui in specie animali conviventi*.
-
+* Lotka, A. J. (1925). *Elements of Physical Biology*. Williams & Wilkins, Baltimore.
+* Volterra, V. (1926). *Variazioni e fluttuazioni del numero d'individui in specie animali conviventi*. Mem. Accad. Lincei, 2, 31-113.
+* Murray, J. D. (2002). *Mathematical Biology: I. An Introduction* (3rd ed.). Springer.
 ---
 
 ### 2. Two-Species Competition (Murray)
@@ -47,9 +47,9 @@ $$y' = y (a_2 - b_2 y - c_2 x)$$
 * Test coexistence conditions ($a_1/c_1 > a_2/b_2$ and $a_2/c_2 > a_1/b_1$).
 * Observe competitive exclusion and bistability when both species strongly compete.
 
-#### Conceptual Reference
-* Murray, J. D. (2002). *Mathematical Biology I: An Introduction*. Springer.
-
+#### Conceptual References
+* Murray, J. D. (2002). *Mathematical Biology: I. An Introduction*. Springer-Verlag.
+* Begon, M., Townsend, C. R., & Harper, J. L. (2006). *Ecology: From Individuals to Ecosystems*. Blackwell Publishing.
 ---
 
 ### 3. FitzHugh-Nagumo Neuron Model
@@ -68,9 +68,9 @@ $$w' = \frac{v + a - b w}{\tau}$$
 * Vary $I$ from $0.0$ to $0.5$ to observe the transition from a stable excitable rest state to limit-cycle spiking oscillations (Hopf bifurcation).
 
 #### Conceptual References
-* FitzHugh, R. (1961). *Impulses and physiological states in theoretical models of nerve membrane*.
-* Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). *An active pulse transmission line simulating nerve axon*.
-
+* FitzHugh, R. (1961). *Impulses and physiological states in theoretical models of nerve membrane*. Biophysical Journal, 1(6), 445-466.
+* Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). *An active pulse transmission line simulating nerve axon*. Proc. IRE, 50(10), 2061-2070.
+* Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience*. MIT Press.
 ---
 
 ### 4. SIR Epidemic (Kermack-McKendrick)
@@ -89,9 +89,9 @@ $$I' = \beta S I - \gamma I$$
 * Notice the basic reproduction number $R_0 = \beta / \gamma$.
 * Check that infections peak exactly along the critical vertical nullcline $S = \gamma / \beta$.
 
-#### Conceptual Reference
-* Kermack, W. O., & McKendrick, A. G. (1927). *A contribution to the mathematical theory of epidemics*.
-
+#### Conceptual References
+* Kermack, W. O., & McKendrick, A. G. (1927). *A contribution to the mathematical theory of epidemics*. Proc. R. Soc. Lond. A, 115(772), 700-721.
+* Brauer, F., & Castillo-Chavez, C. (2012). *Mathematical Models in Population Biology and Epidemiology*. Springer.
 ---
 
 # II. Nonlinear Mechanics & Physical Oscillations
@@ -111,9 +111,9 @@ $$y' = \mu (1 - x^2) y - x$$
 * Observe the convergence of all non-zero trajectories toward the unique stable limit cycle.
 * Compare quasi-harmonic behavior at low $\mu$ with relaxation oscillations at high $\mu$.
 
-#### Conceptual Reference
-* Van der Pol, B. (1926). *On relaxation-oscillations*. The London, Edinburgh, and Dublin Philosophical Magazine.
-
+#### Conceptual References
+* Van der Pol, B. (1926). *On relaxation-oscillations*. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11), 978-992.
+* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
 ---
 
 ### 6. Damped Nonlinear Simple Pendulum
@@ -132,9 +132,9 @@ $$\omega' = -w^2 \sin(\theta) - b \omega$$
 * Identify stable spirals (foci) at $(2k\pi, 0)$ and saddle points at $((2k+1)\pi, 0)$.
 * Follow the homoclinic and heteroclinic separatrices dividing librations from rotations.
 
-#### Conceptual Reference
-* Strogatz, S. H. (2015). *Nonlinear Dynamics and Chaos*. Westview Press.
-
+#### Conceptual References
+* Marion, J. B., & Thornton, S. T. (2004). *Classical Dynamics of Particles and Systems*. Brooks/Cole.
+* Hirsch, M. W., Smale, S., & Devaney, R. L. (2013). *Differential Equations, Dynamical Systems, and an Introduction to Chaos*. Academic Press.
 ---
 
 ### 7. Autonomous Duffing Oscillator
@@ -152,9 +152,9 @@ $$y' = -\delta y - \beta x - \alpha x^3$$
 #### Practical Exploration Script
 * Observe the coexistence of two attractor wells separated by the invariant manifolds of the saddle at the origin.
 
-#### Conceptual Reference
-* Guckenheimer, J., & Holmes, P. (1983). *Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields*.
-
+#### Conceptual References
+* Duffing, G. (1918). *Erzwungene Schwingungen bei veränderlicher Eigenfrequenz*. Vieweg, Braunschweig.
+* Guckenheimer, J., & Holmes, P. (1983). *Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields*. Springer-Verlag.
 ---
 
 # III. Mathematical Foundations and Qualitative Theory
@@ -169,9 +169,9 @@ $$y' = x - 3y - 3(x^2 - y^2) + 3xy$$
 #### Practical Exploration Script
 * Explore multiple fixed points and saddle connections in the $[-2, 2] \times [-2, 2]$ domain.
 
-#### Conceptual Reference
+#### Conceptual References
 * Polking, J. C. (1995). *Ordinary Differential Equations using MATLAB*. Prentice Hall.
-
+* Boyce, W. E., DiPrima, R. C., & Meade, D. B. (2021). *Elementary Differential Equations and Boundary Value Problems*. Wiley.
 ---
 
 ### 9. 2D Linear Systems (Classification & Strogatz's Love)
@@ -187,9 +187,9 @@ $$J' = c R + d J$$
 #### Practical Exploration Script
 * Classify the origin using the trace $\tau = a + d$ and determinant $\Delta = ad - bc$: nodes, saddles, centers, or spirals.
 
-#### Conceptual Reference
-* Strogatz, S. H. (1988). *Love affairs and differential equations*. Harvard Mathematics Magazine.
-
+#### Conceptual References
+* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering* (2nd ed.). CRC Press.
+* Hirsch, M. W., Smale, S., & Devaney, R. L. (2013). *Differential Equations, Dynamical Systems, and an Introduction to Chaos* (3rd ed.). Academic Press.
 ---
 
 ### 10. Polking Nonlinear Dynamics (Multiple Equilibria)
@@ -203,9 +203,9 @@ $$y' = x (2 - y)$$
 * Calculate and identify the 4 equilibria: $(0, 0)$, $(0, 2)$, $(2, 2)$, and $(-2, 2)$.
 * Inspect the intersection of nullclines and the local Hartman-Grobman linearization.
 
-#### Conceptual Reference
-* Polking, J. C. (2004). *PPLANE for MATLAB*. Rice University.
-
+#### Conceptual References
+* Polking, J. C. (1995). *Ordinary Differential Equations using MATLAB*. Prentice Hall.
+* Perko, L. (2001). *Differential Equations and Dynamical Systems* (3rd ed.). Springer-Verlag.
 ---
 
 ### 11. Brusselator Chemical Oscillator
@@ -222,5 +222,6 @@ $$y' = b x - x^2 y$$
 * Verify the fixed point at $(a, b/a)$.
 * Increase $b$ past the supercritical Hopf bifurcation threshold $b_c = 1 + a^2$ to trigger sustained chemical oscillations.
 
-#### Conceptual Reference
-* Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. J. Chem. Phys.
+#### Conceptual References
+* Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
+* Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. John Wiley & Sons.

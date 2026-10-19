@@ -113,21 +113,25 @@
             </plugin>
 
             <!-- Plugin para geração do Fat JAR Executável Standalone -->
+                        <!-- Plugin para geracao dos Fat JARs Executaveis Standalone -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.2</version>
                 <executions>
+                    <!-- Build em Portugues -->
                     <execution>
+                        <id>shade-pt</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>pt</shadedClassifierName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <!-- Aponta para a classe launcher sem herança direta de Application -->
-                                    <mainClass>com.phaseplane.Launcher</mainClass>
+                                    <mainClass>com.phaseplane.MainPT</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
@@ -137,8 +141,35 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
-          	
-                          </excludes>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+
+                    <!-- Build em Ingles -->
+                    <execution>
+                        <id>shade-en</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>en</shadedClassifierName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.phaseplane.MainEN</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
                         </configuration>
