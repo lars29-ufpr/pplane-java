@@ -21,7 +21,7 @@ public class GuideViewerDialog {
         Stage stage = new Stage();
         stage.initOwner(owner);
         stage.initModality(Modality.NONE);
-        stage.setTitle("Guia Didático de Modelos Dinâmicos — PPLANEX");
+        stage.setTitle(I18n.get("guide.window_title"));
 
         WebView webView = new WebView();
         VBox.setVgrow(webView, Priority.ALWAYS);
@@ -30,7 +30,7 @@ public class GuideViewerDialog {
         String htmlContent = buildHtmlWithMathJax(rawMarkdown);
         webView.getEngine().loadContent(htmlContent);
 
-        Button btnClose = new Button("Fechar");
+        Button btnClose = new Button(I18n.get("btn.close"));
         btnClose.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-padding: 6 18; -fx-cursor: hand;");
         btnClose.setOnAction(e -> stage.close());
 
@@ -88,20 +88,36 @@ public class GuideViewerDialog {
     }
 
     private static String loadGuideContent() {
-        try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/GUIA_MODELOS.md")) {
+        boolean isEnglish = "en".equalsIgnoreCase(I18n.getLocale().getLanguage());
+        String primaryResource = isEnglish ? "/docs/GUIA_MODELOS_en.md" : "/docs/GUIA_MODELOS.md";
+        String fallbackResource = "/docs/GUIA_MODELOS.md";
+
+        try (var is = GuideViewerDialog.class.getResourceAsStream(primaryResource)) {
             if (is != null) {
                 return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
             }
         } catch (Exception ignored) {}
 
-        File file = new File("GUIA_MODELOS.md");
+        if (isEnglish) {
+            try (var is = GuideViewerDialog.class.getResourceAsStream(fallbackResource)) {
+                if (is != null) {
+                    return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+                }
+            } catch (Exception ignored) {}
+        }
+
+        File file = new File(isEnglish ? "GUIA_MODELOS_en.md" : "GUIA_MODELOS.md");
+        if (!file.exists() && isEnglish) {
+            file = new File("GUIA_MODELOS.md");
+        }
+
         if (file.exists()) {
             try {
                 return Files.readString(file.toPath());
             } catch (IOException e) {
-                return "Erro ao ler o arquivo GUIA_MODELOS.md: " + e.getMessage();
+                return I18n.get("guide.read_error") + e.getMessage();
             }
         }
-        return "Arquivo GUIA_MODELOS.md não encontrado.";
+        return I18n.get("guide.not_found");
     }
 }

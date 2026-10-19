@@ -38,9 +38,9 @@ public class ExportEngine {
     private static ExportTheme askTheme(Window window) {
         List<ExportTheme> choices = Arrays.asList(ExportTheme.LIGHT, ExportTheme.TRANSPARENT, ExportTheme.DARK);
         ChoiceDialog<ExportTheme> dialog = new ChoiceDialog<>(ExportTheme.LIGHT, choices);
-        dialog.setTitle("Tema de Exportação");
-        dialog.setHeaderText("Escolha a paleta de cores para a imagem:");
-        dialog.setContentText("Tema:");
+        dialog.setTitle(I18n.get("export.theme_dialog_title"));
+        dialog.setHeaderText(I18n.get("export.theme_dialog_header"));
+        dialog.setContentText(I18n.get("export.theme_dialog_content"));
         dialog.initOwner(window);
         return dialog.showAndWait().orElse(null);
     }
@@ -50,9 +50,9 @@ public class ExportEngine {
         if (theme == null) return;
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Exportar Plano de Fase (PNG)");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagem PNG (*.png)", "*.png"));
-        fileChooser.setInitialFileName("plano_de_fase.png");
+        fileChooser.setTitle(I18n.get("export.png_title"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("export.png_filter"), "*.png"));
+        fileChooser.setInitialFileName(I18n.get("export.png_filename"));
 
         File file = fileChooser.showSaveDialog(window);
         if (file == null) return;
@@ -105,9 +105,9 @@ public class ExportEngine {
         if (theme == null) return;
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Exportar Plano de Fase Vetorial (SVG)");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gráfico Vetorial SVG (*.svg)", "*.svg"));
-        fileChooser.setInitialFileName("plano_de_fase.svg");
+        fileChooser.setTitle(I18n.get("export.svg_title"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("export.svg_filter"), "*.svg"));
+        fileChooser.setInitialFileName(I18n.get("export.svg_filename"));
 
         File file = fileChooser.showSaveDialog(window);
         if (file == null) return;
