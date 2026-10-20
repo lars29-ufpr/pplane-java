@@ -4,6 +4,8 @@ import com.phaseplane.math.BoundingBox;
 import com.phaseplane.math.DynamicalSystem2D;
 import com.phaseplane.math.EquilibriumPoint;
 import com.phaseplane.math.Trajectory;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 import javafx.scene.canvas.GraphicsContext;
@@ -53,6 +55,8 @@ private final List<Trajectory> stableSeparatrices = new ArrayList<>();
     private BiConsumer<Double, Double> onPointClicked;
     private BiConsumer<Double, Double> onPointerMoved;
     private Consumer<BoundingBox> onBoundsChanged;
+    private Consumer<BoundingBox> onPanZoomFinished;
+    private final PauseTransition scrollDebounce = new PauseTransition(Duration.millis(250));
 
     // Coordenadas auxiliares para Pan
     private double lastDragScreenX;
@@ -62,6 +66,7 @@ private final List<Trajectory> stableSeparatrices = new ArrayList<>();
 private boolean showNullclines = true;
     public PhasePlaneCanvas(BoundingBox initialBounds) {
         this.bounds = initialBounds;
+        this.scrollDebounce.setOnFinished(e -> notifyPanZoomFinished());
         this.canvas = new Canvas();
 
         getChildren().add(canvas);
@@ -121,6 +126,13 @@ private boolean showNullclines = true;
             }
         });
 
+        // Término do arraste: recalcula órbitas e separatrizes
+        canvas.setOnMouseReleased(event -> {
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                notifyPanZoomFinished();
+            }
+        });
+
         // Zoom focal com a rodinha do mouse (Scroll Wheel) centrado no cursor
         canvas.setOnScroll(event -> {
             if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
@@ -146,6 +158,7 @@ private boolean showNullclines = true;
                     onBoundsChanged.accept(newBounds);
                 }
             }
+            scrollDebounce.playFromStart();
             event.consume();
         });
 
@@ -182,6 +195,16 @@ public void setShowNullclines(boolean show) {
 
     public void setOnBoundsChanged(Consumer<BoundingBox> callback) {
         this.onBoundsChanged = callback;
+    }
+
+    public void setOnPanZoomFinished(Consumer<BoundingBox> callback) {
+        this.onPanZoomFinished = callback;
+    }
+
+    private void notifyPanZoomFinished() {
+        if (onPanZoomFinished != null && bounds != null) {
+            onPanZoomFinished.accept(bounds);
+        }
     }
 
     public void setOnPointClicked(BiConsumer<Double, Double> callback) {

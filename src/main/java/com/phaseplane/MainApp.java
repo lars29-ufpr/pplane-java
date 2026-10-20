@@ -25,6 +25,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -57,6 +58,23 @@ private List<EquilibriumPoint> lastEquilibria = new ArrayList<>();
     private Label statusLabel;
     private Label coordLabel;
 
+    
+    private void loadAppIcons(Stage stage) {
+        int[] sizes = {16, 32, 48, 64, 128, 256, 512};
+        for (int size : sizes) {
+            var stream = getClass().getResourceAsStream("/icons/pplaneX_" + size + ".png");
+            if (stream != null) {
+                stage.getIcons().add(new Image(stream));
+            }
+        }
+        if (stage.getIcons().isEmpty()) {
+            var defaultStream = getClass().getResourceAsStream("/icons/pplaneX_icon.png");
+            if (defaultStream != null) {
+                stage.getIcons().add(new Image(defaultStream));
+            }
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -65,6 +83,7 @@ private List<EquilibriumPoint> lastEquilibria = new ArrayList<>();
     public void start(Stage primaryStage) {
 timeSeriesViewer = new TimeSeriesViewer();
 primaryStage.setTitle(I18n.get("app.title"));
+        loadAppIcons(primaryStage);
         BoundingBox initialBounds = new BoundingBox(-3.0, 3.0, -3.0, 3.0);
         canvas = new PhasePlaneCanvas(initialBounds);
 
@@ -121,6 +140,7 @@ BorderPane mainLayout = new BorderPane();
         });
         // Atualização contínua das coordenadas do cursor
         canvas.setOnPointerMoved((wx, wy) -> coordLabel.setText(String.format("x: %+.3f  |  y: %+.3f", wx, wy)));
+        canvas.setOnPanZoomFinished(b -> recalculateCurves());
 
       // Carrega o sistema inicial padrão (Oscilador de Van der Pol)
        applySystem();
@@ -577,6 +597,28 @@ initialPoints.add(new double[]{x0, y0});
         this.lastTrajectory = trajectory;
         canvas.addTrajectory(trajectory);
         statusLabel.setText(String.format("Órbita traçada a partir de (%.3f, %.3f) com %d passos.", x0, y0, trajectory.size()));
+    }
+
+    private void recalculateCurves() {
+        if (system == null) return;
+
+        var bounds = getCurrentBounds();
+        double tMin = parseDouble(tMinField.getText(), -10.0);
+        double tMax = parseDouble(tMaxField.getText(), 20.0);
+
+        if (!initialPoints.isEmpty()) {
+            canvas.clearTrajectories();
+            for (double[] pt : initialPoints) {
+                Trajectory tr = integrator.integrateBidirectional(system, pt[0], pt[1], tMin, tMax, bounds);
+                this.lastTrajectory = tr;
+                canvas.addTrajectory(tr);
+            }
+        }
+
+        if (lastEquilibria != null && !lastEquilibria.isEmpty()) {
+            canvas.clearSeparatrices();
+            computeSeparatrices();
+        }
     }
 
 private void computeSeparatrices() {
