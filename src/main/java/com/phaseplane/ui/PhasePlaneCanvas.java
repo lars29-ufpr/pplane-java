@@ -378,40 +378,63 @@ drawEquilibria(gc);
     private void drawTrajectories(GraphicsContext gc) {
         gc.setLineCap(StrokeLineCap.ROUND);
         gc.setLineJoin(StrokeLineJoin.ROUND);
+        gc.setStroke(Color.web("#00e5ff"));
+        gc.setLineWidth(2.0);
+
+        double w = getWidth();
+        double h = getHeight();
 
         for (Trajectory traj : trajectories) {
-            int n = traj.size();
-            if (n < 2) continue;
+            renderTrajectorySegments(gc, traj, w, h);
 
-            double sxStart = worldToScreenX(traj.x()[0]);
-            double syStart = worldToScreenY(traj.y()[0]);
-            double sxEnd = worldToScreenX(traj.x()[n - 1]);
-            double syEnd = worldToScreenY(traj.y()[n - 1]);
-
-            // Gradiente ciano/azul elétrico luminoso
-            LinearGradient gradient = new LinearGradient(
-                    sxStart, syStart, sxEnd, syEnd, false, CycleMethod.NO_CYCLE,
-                    new Stop(0.0, Color.web("#00e5ff")),
-                    new Stop(1.0, Color.web("#0077ff"))
-            );
-
-            // Efeito suave de rastro
-            gc.setStroke(gradient);
-            gc.setLineWidth(2.2);
-
-            gc.beginPath();
-            gc.moveTo(sxStart, syStart);
-            for (int i = 1; i < n; i++) {
-                gc.lineTo(worldToScreenX(traj.x()[i]), worldToScreenY(traj.y()[i]));
+            // Marcador da condição inicial apenas se estiver na área visível
+            if (traj.size() > 0) {
+                double sx0 = worldToScreenX(traj.x()[0]);
+                double sy0 = worldToScreenY(traj.y()[0]);
+                if (sx0 >= -10 && sx0 <= w + 10 && sy0 >= -10 && sy0 <= h + 10) {
+                    gc.setFill(Color.web("#ffffff"));
+                    gc.fillOval(sx0 - 3.5, sy0 - 3.5, 7.0, 7.0);
+                    gc.setStroke(Color.web("#00e5ff"));
+                    gc.setLineWidth(1.5);
+                    gc.strokeOval(sx0 - 5.5, sy0 - 5.5, 11.0, 11.0);
+                    // Restaura espessura para a próxima trajetória
+                    gc.setStroke(Color.web("#00e5ff"));
+                    gc.setLineWidth(2.0);
+                }
             }
-            gc.stroke();
+        }
+    }
 
-            // Ponto de partida (condição inicial)
-            gc.setFill(Color.web("#ffffff"));
-            gc.fillOval(sxStart - 3.5, syStart - 3.5, 7.0, 7.0);
-            gc.setStroke(Color.web("#00e5ff"));
-            gc.setLineWidth(1.5);
-            gc.strokeOval(sxStart - 5.5, syStart - 5.5, 11.0, 11.0);
+    private void renderTrajectorySegments(GraphicsContext gc, Trajectory traj, double w, double h) {
+        int n = traj.size();
+        if (n < 2) return;
+
+        double[] tx = traj.x();
+        double[] ty = traj.y();
+
+        double prevX = worldToScreenX(tx[0]);
+        double prevY = worldToScreenY(ty[0]);
+
+        double margin = 80.0;
+        double minX = -margin, maxX = w + margin;
+        double minY = -margin, maxY = h + margin;
+
+        for (int i = 1; i < n; i++) {
+            double curX = worldToScreenX(tx[i]);
+            double curY = worldToScreenY(ty[i]);
+
+            // Rejeição trivial: se ambos os pontos estão além de uma mesma borda, não envia para GPU
+            boolean trivialReject = (prevX < minX && curX < minX) ||
+                                   (prevX > maxX && curX > maxX) ||
+                                   (prevY < minY && curY < minY) ||
+                                   (prevY > maxY && curY > maxY);
+
+            if (!trivialReject) {
+                gc.strokeLine(prevX, prevY, curX, curY);
+            }
+
+            prevX = curX;
+            prevY = curY;
         }
     }
 
@@ -423,14 +446,14 @@ private void drawSeparatrices(GraphicsContext gc) {
         gc.setStroke(STABLE_COLOR);
         gc.setLineWidth(2.2);
         for (Trajectory traj : stableSeparatrices) {
-            renderTrajectoryPath(gc, traj);
+            renderTrajectorySegments(gc, traj, getWidth(), getHeight());
         }
 
         // 2. Variedades Instáveis (Wu)
         gc.setStroke(UNSTABLE_COLOR);
         gc.setLineWidth(2.2);
         for (Trajectory traj : unstableSeparatrices) {
-            renderTrajectoryPath(gc, traj);
+            renderTrajectorySegments(gc, traj, getWidth(), getHeight());
         }
         // Restaura espessura padrão para não afetar outros desenhos
         gc.setLineWidth(1.0);

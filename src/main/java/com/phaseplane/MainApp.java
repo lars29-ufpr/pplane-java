@@ -132,7 +132,7 @@ BorderPane mainLayout = new BorderPane();
 
             initialPoints.add(new double[]{x0, y0});
             Trajectory trajectory = integrator.integrateBidirectional(
-                    system, x0, y0, tMin, tMax, getCurrentBounds()
+                    system, x0, y0, tMin, tMax, null
             );
             this.lastTrajectory = trajectory;
             canvas.addTrajectory(trajectory);
@@ -140,7 +140,7 @@ BorderPane mainLayout = new BorderPane();
         });
         // Atualização contínua das coordenadas do cursor
         canvas.setOnPointerMoved((wx, wy) -> coordLabel.setText(String.format("x: %+.3f  |  y: %+.3f", wx, wy)));
-        canvas.setOnPanZoomFinished(b -> recalculateCurves());
+        canvas.setOnPanZoomFinished(b -> recalculateOnPanZoom());
 
       // Carrega o sistema inicial padrão (Oscilador de Van der Pol)
        applySystem();
@@ -592,7 +592,7 @@ initialPoints.add(new double[]{x0, y0});
         double tMax = parseDouble(tMaxField.getText(), 20.0);
 
         Trajectory trajectory = integrator.integrateBidirectional(
-                system, x0, y0, tMin, tMax, getCurrentBounds()
+                system, x0, y0, tMin, tMax, null
         );
         this.lastTrajectory = trajectory;
         canvas.addTrajectory(trajectory);
@@ -609,12 +609,24 @@ initialPoints.add(new double[]{x0, y0});
         if (!initialPoints.isEmpty()) {
             canvas.clearTrajectories();
             for (double[] pt : initialPoints) {
-                Trajectory tr = integrator.integrateBidirectional(system, pt[0], pt[1], tMin, tMax, bounds);
+                // Ao recalcular explicitamente, integra com margem ampla para permitir navegacao
+                Trajectory tr = integrator.integrateBidirectional(system, pt[0], pt[1], tMin, tMax, null);
                 this.lastTrajectory = tr;
                 canvas.addTrajectory(tr);
             }
         }
 
+        if (lastEquilibria != null && !lastEquilibria.isEmpty()) {
+            canvas.clearSeparatrices();
+            computeSeparatrices();
+        }
+    }
+
+    private void recalculateOnPanZoom() {
+        if (system == null) return;
+
+        // No Pan e Zoom, as trajetorias ja calculadas sao preservadas!
+        // Apenas as separatrizes sao atualizadas para cobrir a nova extensao da tela
         if (lastEquilibria != null && !lastEquilibria.isEmpty()) {
             canvas.clearSeparatrices();
             computeSeparatrices();
