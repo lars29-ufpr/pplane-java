@@ -31,7 +31,7 @@ public class AboutDialog {
             iconView.setPreserveRatio(true);
         } catch (Exception ignored) {}
 
-        Label lblTitle = new Label("PPLANEX");
+        Label lblTitle = new Label("pplaneX");
         lblTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #e6edf3;");
 
         Label lblVersion = new Label(I18n.get("about.version"));

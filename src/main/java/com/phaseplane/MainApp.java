@@ -370,7 +370,9 @@ manualBox,
                 boxInspectClear,
                 boxAnalysis,
                 btnTimeSeries,
-                boxExport
+                boxExport,
+                new Separator(),
+                btnAbout
         );
         return sidebar;
     }
