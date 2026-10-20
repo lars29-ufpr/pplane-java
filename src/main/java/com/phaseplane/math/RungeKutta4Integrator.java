@@ -16,7 +16,8 @@ public final class RungeKutta4Integrator {
                                 double x0, double y0,
                                 double tSpan,
                                 boolean backward,
-                                BoundingBox bounds) {
+                                BoundingBox rawBounds) {
+        BoundingBox bounds = (rawBounds != null) ? rawBounds.expanded(0.35) : null;
         List<Double> tList = new ArrayList<>();
         List<Double> xList = new ArrayList<>();
         List<Double> yList = new ArrayList<>();

@@ -100,8 +100,9 @@ public final class DormandPrinceIntegrator {
     public Trajectory integrateOneDirection(DynamicalSystem2D system,
                                             double x0, double y0,
                                             double tTarget,
-                                            BoundingBox bounds,
+                                            BoundingBox rawBounds,
                                             boolean backward) {
+        BoundingBox bounds = (rawBounds != null) ? rawBounds.expanded(0.35) : null;
         List<Double> tList = new ArrayList<>();
         List<Double> xList = new ArrayList<>();
         List<Double> yList = new ArrayList<>();
