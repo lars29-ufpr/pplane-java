@@ -1,30 +1,47 @@
-# pplaneX — Phase Plane Analyzer
+# pplaneX — Qualitative and Numerical Analysis of 2D Autonomous Systems
 
-[![Language: English](https://img.shields.io/badge/Language-English-blue.svg)](#english-overview)
-[![Idioma: Português](https://img.shields.io/badge/Idioma-Portugu%C3%AAs-green.svg)](#visão-geral-em-português)
-[![Java: 21 LTS](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://openjdk.org/)
-[![JavaFX: 21](https://img.shields.io/badge/JavaFX-21-blue.svg)](https://openjfx.io/)
-[![Release: v1.1.0](https://img.shields.io/badge/Release-v1.1.0-brightgreen.svg)](https://github.com/lars29-ufpr/pplane-java/releases/tag/v1.1.0)
-
-A modern, cross-platform standalone JavaFX application for qualitative and numerical analysis of planar autonomous systems of ordinary differential equations ($2 \times 2$ ODEs). Inspired by John Polking's classic MATLAB tool `pplane`.
+> **Language / Idioma:** **English** | [Português](README.pt-BR.md)
 
 ---
 
-## English Overview
+**pplaneX** is a modern, high-performance interactive desktop application built with Java 21 and JavaFX for the qualitative and numerical analysis of two-dimensional autonomous systems of Ordinary Differential Equations (ODEs) and planar phase portraits:
 
-### Key Features
-* **Direction & Vector Fields:** Configurable grid resolution, normalized vectors, arrows, and magnitude-based color gradients.
-* **Interactive Orbits:** Point-and-click trajectory computation forward and backward in time using fixed and adaptive integration schemes (RK4 / Dormand-Prince).
-* **Nullclines & Equilibria:** Numerical detection of equilibrium points, Jacobian linearization, eigenvalues, eigenvectors, and local stability classification (sinks, sources, saddles, spirals, centers).
-* **Integrated Educational Guide:** Built-in Markdown viewer with offline MathJax support for 11 canonical models (Lotka-Volterra, FitzHugh-Nagumo, SIR, Van der Pol, Duffing, Brusselator, etc.).
-* **Bilingual Support (PT/EN):** Fully internationalized UI and localized executable bundles.
-* **Vector & Data Export:** High-resolution PNG rendering and numerical trajectory export.
+$$x' = \frac{dx}{dt} = f(x, y)$$
+$$y' = \frac{dy}{dt} = g(x, y)$$
 
-### Quick Start (Pre-built Binaries)
-Download the latest standalone executable `.jar` from the [Releases](https://github.com/lars29-ufpr/pplane-java/releases) page:
-* **Portuguese:** `phase-plane-analyzer-1.0.0-pt.jar`
-* **English:** `phase-plane-analyzer-1.0.0-en.jar`
+Inspired by the classic educational tool `pplane` originally created by **John C. Polking** (Rice University) for MATLAB, **pplaneX** was re-engineered from the ground up to offer fluid user interaction, real-time responsive rendering, continuous pan/zoom exploration, and universal cross-platform support (Linux, Windows, and macOS).
 
-Run directly with Java 21+ installed:
+---
+
+## 🚀 Key Features
+
+* **Interactive Phase Portrait Rendering:**
+  * Real-time vector field and direction field generation with customizable grid density.
+  * Interactive trajectory tracing: click anywhere in the phase plane to compute forward and backward orbits.
+  * Continuous viewport navigation (smooth pan and multi-level zoom).
+* **High-Precision Numerical Solvers:**
+  * Adaptive step-size Runge-Kutta methods (Dormand-Prince / RK45, standard RK4, and Euler).
+  * Robust real-domain arithmetic evaluation across complex boundaries.
+* **Qualitative and Equilibrium Analysis:**
+  * Numerical identification of equilibrium points ($f(x^*, y^*) = 0$ and $g(x^*, y^*) = 0$).
+  * Automatic Jacobian matrix computation and linear stability classification (saddles, stable/unstable nodes, foci/spirals, and centers).
+  * Nullcline computation and visualization ($x$-nullclines and $y$-nullclines).
+* **Curated Gallery of Classical Dynamical Systems:**
+  * Population dynamics and ecology (Lotka-Volterra predator-prey, competing species).
+  * Nonlinear oscillations and physics (Van der Pol oscillator, Duffing oscillator, simple and damped pendulums).
+  * Epidemic models, chemical oscillators, and limit cycle benchmarks.
+* **Vector and Raster Graphics Export:**
+  * High-resolution **PNG** export with transparent background support.
+  * Scalable **SVG** vector export for LaTeX documents, publications, and presentations.
+* **Universal Cross-Platform Fat JAR:**
+  * Single self-contained binary packaging native acceleration modules for **Linux (x86_64)**, **Windows (x86_64)**, and **macOS (Apple Silicon M-Series and Intel x86_64)**.
+
+---
+
+## 📋 Prerequisites
+
+To run the application, you only need **Java 21 or higher** (JRE or JDK) installed.
+
+Check your current Java version:
 ```bash
-java -jar phase-plane-analyzer-1.0.0-en.jar
+java -version
