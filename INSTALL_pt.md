@@ -16,7 +16,7 @@ Nenhuma instalação prévia do Java é necessária. Este guia assume que o Java
 
 Faça o download da versão mais recente no GitHub:
 
-- dfieldX: https://github.com/luiz-santana/dfieldX
+- dfieldX: https://tinyurl.com/dfieldx-ufpr
 - pplaneX: https://tinyurl.com/pplanex-ufpr
 
 Salve o arquivo JAR baixado em um local fácil de encontrar, como a Área de Trabalho ou a pasta Downloads.
