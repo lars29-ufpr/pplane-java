@@ -52,18 +52,23 @@ public class ModelGalleryDialog {
 
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(12));
-        root.setPrefSize(780, 500);
+        root.setPrefSize(980, 540);
+        stage.setMinWidth(980);
+        stage.setMinHeight(540);
 
         // Centro: Abas à esquerda e painel de detalhes à direita
         SplitPane splitPane = new SplitPane();
         splitPane.getItems().addAll(createTabsPanel(), createDetailPanel());
-        splitPane.setDividerPositions(0.42);
+        splitPane.setDividerPositions(0.48);
         root.setCenter(splitPane);
 
         // Rodapé com botões de ação
         root.setBottom(createFooter());
 
         Scene scene = new Scene(root);
+        if (owner != null && owner.getScene() != null) {
+            scene.getStylesheets().addAll(owner.getScene().getStylesheets());
+        }
         stage.setScene(scene);
     }
 
@@ -200,6 +205,12 @@ public class ModelGalleryDialog {
 
         Button btnClose = new Button(I18n.get("btn.close"));
         btnClose.setOnAction(e -> stage.close());
+
+        btnSaveCurrent.setMinWidth(Region.USE_PREF_SIZE);
+        btnImport.setMinWidth(Region.USE_PREF_SIZE);
+        btnExport.setMinWidth(Region.USE_PREF_SIZE);
+        btnLoad.setMinWidth(Region.USE_PREF_SIZE);
+        btnClose.setMinWidth(Region.USE_PREF_SIZE);
 
         hbox.getChildren().addAll(btnSaveCurrent, btnImport, btnExport, spacer, btnLoad, btnClose);
         return hbox;
