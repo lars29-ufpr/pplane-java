@@ -17,7 +17,7 @@ Nenhuma instalação prévia do Java é necessária. Este guia assume que o Java
 Faça o download da versão mais recente no GitHub:
 
 - dfieldX: https://github.com/luiz-santana/dfieldX
-- pplaneX: https://github.com/luiz-santana/pplane-java
+- pplaneX: https://tinyurl.com/pplanex-ufpr
 
 Salve o arquivo JAR baixado em um local fácil de encontrar, como a Área de Trabalho ou a pasta Downloads.
 
@@ -48,7 +48,7 @@ Qualquer versão 21 ou superior é suportada.
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ---
 
@@ -79,7 +79,7 @@ Abra o Terminal e execute:
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ## Se o macOS Bloquear a Aplicação
 
@@ -106,7 +106,7 @@ Executar:
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ---
 
@@ -126,7 +126,7 @@ Executar:
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ---
 
@@ -146,7 +146,7 @@ Executar:
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ---
 
@@ -160,7 +160,7 @@ Execute o programa pelo terminal:
 
 ou
 
-    java -jar pplaneX.jar
+    java -jar phase-plane-analyzer-1.0.0.jar
 
 ## Erro de Versão da Classe (Unsupported Class Version)
 
