@@ -13,6 +13,25 @@ Inspired by the classic educational tool `pplane` originally created by **John C
 
 ---
 
+## 📥 Installation & Quick Start
+
+**pplaneX** is distributed as a self-contained executable JAR and requires **Java 21 (LTS) or newer**.
+
+If you do not have Java installed or need step-by-step guidance for your operating system (Windows, macOS, or Linux), see our installation guides:
+
+- 📖 **[Installation Guide (English)](INSTALL.md)**
+- 📖 **[Guia de Instalação (Português)](INSTALL_pt.md)**
+
+### Running the Application
+
+Once Java 21+ is installed, run from your terminal:
+
+```bash
+java -jar pplaneX.jar
+```
+
+---
+
 ## 🚀 Key Features
 
 * **Interactive Phase Portrait Rendering:**
