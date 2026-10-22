@@ -28,4 +28,7 @@ private static Locale currentLocale = Locale.getDefault();
         }
         return "!" + key + "!";
     }
+public static String format(String key, Object... args) {
+        return String.format(currentLocale, get(key), args);
+    }
 }

@@ -114,7 +114,7 @@ BorderPane mainLayout = new BorderPane();
 
                 if (eqOpt.isPresent()) {
                     com.phaseplane.math.EquilibriumPoint eq = eqOpt.get();
-                    statusLabel.setText(String.format("Ponto crítico em (%.5f, %.5f): %s", eq.x(), eq.y(), eq.classificacaoFormatada()));
+statusLabel.setText(I18n.format("status.no_equilibrium_near", x0, y0));
                     
                     EquilibriumDetailDialog dialog = new EquilibriumDetailDialog(primaryStage, eq, saddle -> {
                         computeSeparatrices();
@@ -136,7 +136,7 @@ BorderPane mainLayout = new BorderPane();
             );
             this.lastTrajectory = trajectory;
             canvas.addTrajectory(trajectory);
-            statusLabel.setText(String.format("Órbita traçada a partir de (%.3f, %.3f) com %d passos.", x0, y0, trajectory.size()));
+statusLabel.setText(I18n.format("status.orbit_plotted", x0, y0, trajectory.size()));
         });
         // Atualização contínua das coordenadas do cursor
         canvas.setOnPointerMoved((wx, wy) -> coordLabel.setText(String.format("x: %+.3f  |  y: %+.3f", wx, wy)));
@@ -277,7 +277,7 @@ Button btnStudio = new Button(I18n.get("btn.parameter_studio"));
                 double y0 = Double.parseDouble(y0Field.getText().trim().replace(',', '.'));
                 computeTrajectory(x0, y0);
             } catch (NumberFormatException ex) {
-                statusLabel.setText("Coordenadas iniciais inválidas.");
+statusLabel.setText(I18n.get("status.invalid_initial_coords"));
             }
         });
 
@@ -306,10 +306,10 @@ btnInspectMode = new ToggleButton(I18n.get("btn.inspect"));
         btnInspectMode.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
             if (isSelected) {
                 btnInspectMode.setStyle("-fx-background-color: #1f6feb; -fx-text-fill: white; -fx-font-weight: bold;");
-                statusLabel.setText("Modo Inspeção ativo: clique próximo a um ponto crítico no plano.");
+statusLabel.setText(I18n.get("status.mode_inspect"));
             } else {
                 btnInspectMode.setStyle("-fx-background-color: #21262d; -fx-text-fill: #58a6ff; -fx-border-color: #388bfd;");
-                statusLabel.setText("Modo Trajetória ativo: clique no plano para traçar órbitas.");
+statusLabel.setText(I18n.get("status.mode_trajectory"));
             }
         });
         HBox boxInspectClear = new HBox(8, btnInspectMode, btnClear);
@@ -471,7 +471,7 @@ this.autoScanEquilibria = true;
         }
 this.lastEquilibria = found;
         canvas.setEquilibria(found);
-        statusLabel.setText(String.format("Busca concluída: %d ponto(s) de equilíbrio localizado(s).", found.size()));
+statusLabel.setText(I18n.format("status.search_completed", found.size()));
     }
 
     private void applyPreset(String name) {
@@ -598,7 +598,7 @@ initialPoints.add(new double[]{x0, y0});
         );
         this.lastTrajectory = trajectory;
         canvas.addTrajectory(trajectory);
-        statusLabel.setText(String.format("Órbita traçada a partir de (%.3f, %.3f) com %d passos.", x0, y0, trajectory.size()));
+statusLabel.setText(I18n.format("status.orbit_plotted", x0, y0, trajectory.size()));
     }
 
     private void recalculateCurves() {
@@ -640,7 +640,7 @@ private void computeSeparatrices() {
             applySystem();
         }
         if (system == null) {
-            statusLabel.setText("Defina um sistema válido antes de calcular separatrizes.");
+statusLabel.setText(I18n.get("status.define_system_first"));
             return;
         }
 
@@ -649,7 +649,7 @@ private void computeSeparatrices() {
         }
 
         if (this.lastEquilibria == null || this.lastEquilibria.isEmpty()) {
-            statusLabel.setText("Nenhum ponto de equilíbrio localizado para calcular separatrizes.");
+statusLabel.setText(I18n.get("status.no_equilibria_for_separatrices"));
             return;
         }
 
@@ -698,9 +698,9 @@ private void computeSeparatrices() {
         }
 
         if (count > 0) {
-            statusLabel.setText(String.format("Calculadas %d separatrizes estáveis e instáveis nos pontos de sela.", count));
+statusLabel.setText(I18n.format("status.separatrices_computed", count));
         } else {
-            statusLabel.setText("Nenhum ponto de sela identificado nesta janela.");
+statusLabel.setText(I18n.get("status.no_saddles_in_window"));
         }
     }
 private void openParameterStudio() {
