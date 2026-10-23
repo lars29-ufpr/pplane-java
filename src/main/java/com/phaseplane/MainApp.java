@@ -212,10 +212,11 @@ tMinField.setPrefWidth(70);
 Button btnGallery = new Button(I18n.get("btn.gallery"));
         btnGallery.setMaxWidth(Double.MAX_VALUE);
         btnGallery.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
-        btnGallery.setOnAction(e -> {
+btnGallery.setOnAction(e -> {
             PredefinedModel snapshot = captureCurrentModelSnapshot();
-            ModelGalleryDialog dialog = new ModelGalleryDialog(btnGallery.getScene() != null ? btnGallery.getScene().getWindow() : null, snapshot, this::loadPredefinedModel);
-            dialog.show();
+            Stage stageOwner = (btnGallery.getScene() != null && btnGallery.getScene().getWindow() instanceof Stage s) ? s : null;
+            ModelGalleryDialog dialog = new ModelGalleryDialog(stageOwner, snapshot);
+            dialog.showAndWait().ifPresent(this::loadPredefinedModel);
         });
 
 Button btnGuide = new Button(I18n.get("btn.tutorial"));
@@ -322,8 +323,17 @@ Button btnTimeSeries = new Button(I18n.get("btn.time_series"));
         btnTimeSeries.setOnAction(e -> {
             if (lastTrajectory != null) {
                 timeSeriesViewer.updateTrajectory(lastTrajectory);
+            } else if (system != null) {
+                double x0 = parseDouble(x0Field.getText(), 1.0);
+                double y0 = parseDouble(y0Field.getText(), 1.0);
+                double tMin = parseDouble(tMinField.getText(), -10.0);
+                double tMax = parseDouble(tMaxField.getText(), 20.0);
+                lastTrajectory = integrator.integrateBidirectional(system, x0, y0, tMin, tMax, null);
+                canvas.addTrajectory(lastTrajectory);
+                timeSeriesViewer.updateTrajectory(lastTrajectory);
             }
         });
+
 Button btnExportPNG = new Button(I18n.get("btn.export_png"));
         btnExportPNG.setMaxWidth(Double.MAX_VALUE);
         btnExportPNG.setStyle("-fx-background-color: #0f766e; -fx-text-fill: white; -fx-font-weight: bold;");
