@@ -47,8 +47,8 @@ private static final Color BG_COLOR = Color.web("#0d1117");
 private final List<Trajectory> stableSeparatrices = new ArrayList<>();
     private final List<Trajectory> unstableSeparatrices = new ArrayList<>();
 
-    private static final Color STABLE_COLOR = Color.web("#10b981");    // Verde esmeralda (Ws)
-    private static final Color UNSTABLE_COLOR = Color.web("#f97316");  // Laranja vibrante (Wu)
+private static final Color STABLE_COLOR = Color.web("#00e5ff");    // Ciano elétrico (Ws - Separatriz principal)
+    private static final Color UNSTABLE_COLOR = Color.web("#ff6d00");  // Laranja elétrico (Wu)
     private final List<EquilibriumPoint> equilibria = new ArrayList<>();
     
     // Callback disparado ao clicar no plano (passa x0, y0)
@@ -555,15 +555,14 @@ double[] deriv = system.evaluate(x, y);
         }
 
         gc.save();
-
-        // x-nullcline: dx/dt = 0 em vermelho (#ff5252)
-        gc.setStroke(Color.web("#ff5252"));
-        gc.setLineWidth(2.0);
+// x-nullcline: dx/dt = 0 em amarelo ouro (#ffd600)
+        gc.setStroke(Color.web("#ffd600"));
+        gc.setLineWidth(1.5);
         renderContour(gc, fGrid, cols, rows, dx, dy);
 
-        // y-nullcline: dy/dt = 0 em verde (#69f0ae)
-        gc.setStroke(Color.web("#69f0ae"));
-        gc.setLineWidth(2.0);
+        // y-nullcline: dy/dt = 0 em magenta (#d946ef)
+        gc.setStroke(Color.web("#d946ef"));
+        gc.setLineWidth(1.5);
         renderContour(gc, gGrid, cols, rows, dx, dy);
 
         gc.restore();

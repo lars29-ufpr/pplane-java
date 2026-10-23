@@ -1,228 +1,323 @@
 package com.phaseplane.ui;
 
 import com.phaseplane.math.PredefinedModel;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Consumer;
 
-public class ModelGalleryDialog {
+public class ModelGalleryDialog extends Dialog<PredefinedModel> {
 
-    private final Stage stage;
-    private final Consumer<PredefinedModel> onModelSelected;
+    private final ComboBox<String> cmbCategories = new ComboBox<>();
+    private final ListView<PredefinedModel> listView = new ListView<>();
+
+    // Detalhes do Modelo
+    private final Label lblDetailName = new Label();
+    private final Label lblDetailCategory = new Label();
+    private final TextArea txtDetailDescription = new TextArea();
+    private final Label lblDetailEquations = new Label();
+    private final Label lblDetailBounds = new Label();
+    private final Label lblDetailParameters = new Label();
+
+    private final ButtonType btnLoadType;
     private final PredefinedModel currentSystemSnapshot;
-    private PredefinedModel selectedModel;
-
-    private Label lblTitle;
-    private Label lblEquations;
-    private Label lblBounds;
-    private Label lblParams;
-    private Label lblDescription;
-    private Button btnLoad;
-    private Button btnExport;
-
-    private ListView<PredefinedModel> userListView;
     private final List<PredefinedModel> userModels = new ArrayList<>();
     private final Path userDir = Paths.get(System.getProperty("user.home"), ".pplane", "models");
 
-    public ModelGalleryDialog(Window owner, PredefinedModel currentSystemSnapshot, Consumer<PredefinedModel> onModelSelected) {
-        this.currentSystemSnapshot = currentSystemSnapshot;
-        this.onModelSelected = onModelSelected;
+    private Button btnExport;
 
-        stage = new Stage();
-        stage.initOwner(owner);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setTitle(I18n.get("gallery.window_title"));
-        stage.setResizable(true);
+    public ModelGalleryDialog(Stage owner, PredefinedModel currentSystemSnapshot) {
+        this.currentSystemSnapshot = currentSystemSnapshot;
+
+        initOwner(owner);
+        initModality(Modality.APPLICATION_MODAL);
+        setTitle(I18n.get("gallery.window_title"));
+        setResizable(true);
+
+        // Herda o ícone da aplicação para evitar o ícone riscado/quebrado
+        if (owner != null && !owner.getIcons().isEmpty()) {
+            Stage dialogStage = (Stage) getDialogPane().getScene().getWindow();
+            dialogStage.getIcons().addAll(owner.getIcons());
+        }
 
         loadUserModelsFromDisk();
 
+        DialogPane dialogPane = getDialogPane();
+        dialogPane.setPrefSize(960, 600);
+        dialogPane.setStyle("-fx-background-color: #0d1117;");
+
+        // Carrega estilos CSS se existirem
+        URL cssResource = getClass().getResource("/css/style.css");
+        if (cssResource != null) {
+            dialogPane.getStylesheets().add(cssResource.toExternalForm());
+        } else if (owner != null && owner.getScene() != null) {
+            dialogPane.getStylesheets().addAll(owner.getScene().getStylesheets());
+        }
+
+        // Botões nativos do rodapé
+        this.btnLoadType = new ButtonType(I18n.get("gallery.btn_load"), ButtonBar.ButtonData.OK_DONE);
+        dialogPane.getButtonTypes().addAll(btnLoadType, ButtonType.CANCEL);
+
+        initLayout(dialogPane);
+        initEvents();
+
+        setResultConverter(buttonType -> {
+            if (buttonType == btnLoadType) {
+                return listView.getSelectionModel().getSelectedItem();
+            }
+            return null;
+        });
+    }
+
+    private void initLayout(DialogPane dialogPane) {
         BorderPane root = new BorderPane();
-        root.setPadding(new Insets(12));
-        root.setPrefSize(980, 540);
-        stage.setMinWidth(980);
-        stage.setMinHeight(540);
+        root.setPadding(new Insets(16));
+        root.setStyle("-fx-background-color: #0d1117;");
 
-        // Centro: Abas à esquerda e painel de detalhes à direita
+        // --- TOPO: Título, Filtro e Ações ---
+        VBox topBox = new VBox(12);
+        topBox.setPadding(new Insets(0, 0, 14, 0));
+
+        Label lblTitle = new Label(I18n.get("gallery.window_title"));
+        lblTitle.setStyle("-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #f0f6fc;");
+
+        HBox filterBox = new HBox(10);
+        filterBox.setAlignment(Pos.CENTER_LEFT);
+
+        String filterText = I18n.get("gallery.filter");
+        if (filterText == null || filterText.startsWith("!")) {
+            filterText = "Category:";
+        }
+        Label lblFilter = new Label(filterText);
+        lblFilter.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
+
+        List<String> categories = new ArrayList<>();
+        categories.add(I18n.get("gallery.cat_physics"));
+        categories.add(I18n.get("gallery.cat_biomath"));
+        categories.add(I18n.get("gallery.cat_climate"));
+        categories.add(I18n.get("gallery.cat_finance"));
+        categories.add(I18n.get("gallery.tab_user_models"));
+
+        cmbCategories.setItems(FXCollections.observableArrayList(categories));
+        cmbCategories.setValue(I18n.get("gallery.cat_biomath"));
+        cmbCategories.setPrefWidth(260);
+        cmbCategories.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-border-radius: 4;");
+
+        Region topSpacer = new Region();
+        HBox.setHgrow(topSpacer, Priority.ALWAYS);
+
+        String darkBtnStyle = "-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 6 12;";
+
+        Button btnSaveCurrent = new Button(I18n.get("gallery.btn_save_current"));
+        btnSaveCurrent.setStyle(darkBtnStyle);
+        btnSaveCurrent.setOnAction(e -> handleSaveCurrent());
+
+        Button btnImport = new Button(I18n.get("gallery.btn_import"));
+        btnImport.setStyle(darkBtnStyle);
+        btnImport.setOnAction(e -> handleImport());
+
+        btnExport = new Button(I18n.get("gallery.btn_export"));
+        btnExport.setStyle(darkBtnStyle);
+        btnExport.setDisable(true);
+        btnExport.setOnAction(e -> handleExport());
+
+        filterBox.getChildren().addAll(lblFilter, cmbCategories, topSpacer, btnSaveCurrent, btnImport, btnExport);
+        topBox.getChildren().addAll(lblTitle, filterBox);
+        root.setTop(topBox);
+
+        // --- CENTRO: SplitPane com Lista Escura e Painel de Detalhes ---
         SplitPane splitPane = new SplitPane();
-        splitPane.getItems().addAll(createTabsPanel(), createDetailPanel());
-        splitPane.setDividerPositions(0.48);
-        root.setCenter(splitPane);
+        splitPane.setStyle("-fx-background-color: transparent; -fx-box-border: transparent;");
 
-        // Rodapé com botões de ação
-        root.setBottom(createFooter());
-
-        Scene scene = new Scene(root);
-        if (owner != null && owner.getScene() != null) {
-            scene.getStylesheets().addAll(owner.getScene().getStylesheets());
-        }
-        stage.setScene(scene);
-    }
-
-    private TabPane createTabsPanel() {
-        TabPane tabPane = new TabPane();
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-        List<PredefinedModel> defaults = PredefinedModel.getDefaultModels();
-
-        Map<String, List<PredefinedModel>> byCategory = new LinkedHashMap<>();
-        byCategory.put("Física & Mecânica", new ArrayList<>());
-        byCategory.put("Biomatemática & Ecologia", new ArrayList<>());
-        byCategory.put("Clima & Oceanografia", new ArrayList<>());
-        byCategory.put("Finanças & Dinâmica Não Linear", new ArrayList<>());
-
-        for (PredefinedModel m : defaults) {
-            byCategory.computeIfAbsent(m.getCategory(), k -> new ArrayList<>()).add(m);
-        }
-
-        for (Map.Entry<String, List<PredefinedModel>> entry : byCategory.entrySet()) {
-            Tab tab = new Tab(getCategoryDisplayName(entry.getKey()));
-            ListView<PredefinedModel> lv = new ListView<>();
-            lv.getItems().addAll(entry.getValue());
-            configureListView(lv);
-            tab.setContent(lv);
-            tabPane.getTabs().add(tab);
-        }
-
-        // Aba: Meus Modelos
-        Tab userTab = new Tab(I18n.get("gallery.tab_user_models"));
-        userListView = new ListView<>();
-        userListView.getItems().addAll(userModels);
-        configureListView(userListView);
-        userTab.setContent(userListView);
-        tabPane.getTabs().add(userTab);
-
-        return tabPane;
-    }
-
-    private void configureListView(ListView<PredefinedModel> lv) {
-        lv.setCellFactory(param -> new ListCell<>() {
+        // Lista de Modelos (Esquerda)
+        listView.setStyle("-fx-background-color: #161b22; -fx-control-inner-background: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6;");
+        listView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(PredefinedModel item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
+                    setStyle("-fx-background-color: transparent;");
                 } else {
                     setText(getModelDisplayName(item.getName()));
+                    if (isSelected()) {
+                        setStyle("-fx-background-color: #1f6feb; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 6 10;");
+                    } else {
+                        setStyle("-fx-background-color: transparent; -fx-text-fill: #c9d1d9; -fx-padding: 6 10;");
+                    }
                 }
             }
         });
 
-        lv.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                updateDetailPanel(newVal);
-            }
+        VBox leftBox = new VBox(listView);
+        VBox.setVgrow(listView, Priority.ALWAYS);
+
+        // Painel de Detalhes (Direita)
+        VBox rightBox = buildDetailPanel();
+        rightBox.setPadding(new Insets(16));
+        rightBox.setStyle("-fx-background-color: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-background-radius: 6;");
+
+        splitPane.getItems().addAll(leftBox, rightBox);
+        splitPane.setDividerPositions(0.36);
+
+        root.setCenter(splitPane);
+        dialogPane.setContent(root);
+
+        // Rodapé de Ações do DialogPane
+        Button btnLoad = (Button) dialogPane.lookupButton(btnLoadType);
+        btnLoad.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 6 16;");
+        btnLoad.setDisable(true);
+
+        Button btnCancel = (Button) dialogPane.lookupButton(ButtonType.CANCEL);
+        String closeText = I18n.get("btn.close");
+        if (closeText == null || closeText.startsWith("!")) closeText = "Close";
+        btnCancel.setText(closeText);
+        btnCancel.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-padding: 6 16;");
+
+        // Barra de botões do diálogo com fundo escuro
+        ButtonBar buttonBar = (ButtonBar) dialogPane.lookup(".button-bar");
+        if (buttonBar != null) {
+            buttonBar.setStyle("-fx-background-color: #0d1117;");
+        }
+
+        listView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, selected) -> {
+            btnLoad.setDisable(selected == null);
+            btnExport.setDisable(selected == null);
+            updateDetails(selected);
         });
     }
 
-    private VBox createDetailPanel() {
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(12));
+    private VBox buildDetailPanel() {
+        VBox box = new VBox(12);
 
-        lblTitle = new Label(I18n.get("gallery.lbl_select_model"));
-        lblTitle.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+        lblDetailName.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #58a6ff;");
+        lblDetailCategory.setStyle("-fx-font-size: 12px; -fx-text-fill: #8b949e;");
 
-        lblEquations = new Label();
-        lblEquations.setStyle("-fx-font-family: monospace; -fx-font-size: 13px;");
+        txtDetailDescription.setEditable(false);
+        txtDetailDescription.setWrapText(true);
+        txtDetailDescription.setPrefRowCount(4);
+        txtDetailDescription.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-border-radius: 4; -fx-font-size: 12px;");
 
-        lblBounds = new Label();
-        lblBounds.setStyle("-fx-font-size: 12px;");
+        lblDetailEquations.setStyle("-fx-font-family: 'JetBrains Mono', 'Consolas', monospace; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #7ee787;");
+        lblDetailBounds.setStyle("-fx-font-size: 12px; -fx-text-fill: #e6edf3;");
+        lblDetailParameters.setStyle("-fx-font-size: 12px; -fx-text-fill: #e6edf3;");
 
-        lblParams = new Label();
-        lblParams.setStyle("-fx-font-size: 12px;");
+        GridPane grid = new GridPane();
+        grid.setHgap(12);
+        grid.setVgap(10);
 
-        lblDescription = new Label();
-        lblDescription.setWrapText(true);
-        lblDescription.setStyle("-fx-font-size: 12px; -fx-text-fill: #555555;");
+        Label lblEqHeader = new Label("Equations:");
+        lblEqHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
+        Label lblParamHeader = new Label("Parameters:");
+        lblParamHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
+        Label lblDomainHeader = new Label("Domain:");
+        lblDomainHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
 
-        vbox.getChildren().addAll(lblTitle, new Separator(), lblEquations, lblBounds, lblParams, new Separator(), lblDescription);
-        return vbox;
+        grid.addRow(0, lblEqHeader, lblDetailEquations);
+        grid.addRow(1, lblParamHeader, lblDetailParameters);
+        grid.addRow(2, lblDomainHeader, lblDetailBounds);
+
+        Separator sep1 = new Separator();
+        sep1.setStyle("-fx-background-color: #30363d;");
+        Separator sep2 = new Separator();
+        sep2.setStyle("-fx-background-color: #30363d;");
+
+        box.getChildren().addAll(
+                lblDetailName,
+                lblDetailCategory,
+                sep1,
+                txtDetailDescription,
+                sep2,
+                grid
+        );
+
+        return box;
     }
 
-    private void updateDetailPanel(PredefinedModel m) {
-        this.selectedModel = m;
-        lblTitle.setText(getModelDisplayName(m.getName()));
+    private void initEvents() {
+        cmbCategories.valueProperty().addListener((obs, oldVal, newCategory) -> refreshList(newCategory));
 
-        lblEquations.setText(String.format("d%s/dt = %s\nd%s/dt = %s",
+        listView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && listView.getSelectionModel().getSelectedItem() != null) {
+                Button btnLoad = (Button) getDialogPane().lookupButton(btnLoadType);
+                btnLoad.fire();
+            }
+        });
+
+        refreshList(cmbCategories.getValue());
+    }
+
+    private void refreshList(String categoryDisplay) {
+        List<PredefinedModel> list = new ArrayList<>();
+        String userCat = I18n.get("gallery.tab_user_models");
+
+        if (Objects.equals(categoryDisplay, userCat)) {
+            list.addAll(userModels);
+        } else {
+            for (PredefinedModel m : PredefinedModel.getDefaultModels()) {
+                if (getCategoryDisplayName(m.getCategory()).equals(categoryDisplay)) {
+                    list.add(m);
+                }
+            }
+        }
+
+        listView.setItems(FXCollections.observableArrayList(list));
+        if (!list.isEmpty()) {
+            listView.getSelectionModel().selectFirst();
+        } else {
+            updateDetails(null);
+        }
+    }
+
+    private void updateDetails(PredefinedModel m) {
+        if (m == null) {
+            lblDetailName.setText(I18n.get("gallery.lbl_select_model"));
+            lblDetailCategory.setText("");
+            txtDetailDescription.setText("");
+            lblDetailEquations.setText("-");
+            lblDetailBounds.setText("-");
+            lblDetailParameters.setText("-");
+            return;
+        }
+
+        lblDetailName.setText(getModelDisplayName(m.getName()));
+        lblDetailCategory.setText(getCategoryDisplayName(m.getCategory()));
+        txtDetailDescription.setText(getModelDisplayDescription(m.getName(), m.getDescription()));
+
+        lblDetailEquations.setText(String.format("d%s/dt = %s\nd%s/dt = %s",
                 m.getVarX(), m.getExprDx(), m.getVarY(), m.getExprDy()));
 
-        lblBounds.setText(String.format(Locale.US, I18n.get("gallery.lbl_bounds_format"),
-                m.getXMin(), m.getXMax(), m.getYMin(), m.getYMax(), m.getTMax()));
+        lblDetailBounds.setText(String.format(Locale.US, "[%s: %.2f to %.2f] × [%s: %.2f to %.2f] (tMax: %.1f)",
+                m.getVarX(), m.getXMin(), m.getXMax(), m.getVarY(), m.getYMin(), m.getYMax(), m.getTMax()));
 
-        StringBuilder sb = new StringBuilder(I18n.get("gallery.lbl_params"));
-        if (m.getParameters().isEmpty()) {
+        StringBuilder sb = new StringBuilder();
+        if (m.getParameters() == null || m.getParameters().isEmpty()) {
             sb.append(I18n.get("gallery.lbl_none"));
         } else {
             m.getParameters().forEach((k, v) -> sb.append(k).append(" = ").append(v).append(";  "));
         }
-        lblParams.setText(sb.toString());
-
-        lblDescription.setText(getModelDisplayDescription(m.getName(), m.getDescription()));
-        btnLoad.setDisable(false);
-        btnExport.setDisable(false);
-    }
-
-    private HBox createFooter() {
-        HBox hbox = new HBox(10);
-        hbox.setPadding(new Insets(12, 0, 0, 0));
-        hbox.setAlignment(Pos.CENTER_RIGHT);
-
-        Button btnSaveCurrent = new Button(I18n.get("gallery.btn_save_current"));
-        btnSaveCurrent.setOnAction(e -> handleSaveCurrent());
-
-        Button btnImport = new Button(I18n.get("gallery.btn_import"));
-        btnImport.setOnAction(e -> handleImport());
-
-        btnExport = new Button(I18n.get("gallery.btn_export"));
-        btnExport.setDisable(true);
-        btnExport.setOnAction(e -> handleExport());
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        btnLoad = new Button(I18n.get("gallery.btn_load"));
-        btnLoad.setStyle("-fx-font-weight: bold;");
-        btnLoad.setDisable(true);
-        btnLoad.setOnAction(e -> {
-            if (selectedModel != null && onModelSelected != null) {
-                onModelSelected.accept(selectedModel);
-                stage.close();
-            }
-        });
-
-        Button btnClose = new Button(I18n.get("btn.close"));
-        btnClose.setOnAction(e -> stage.close());
-
-        btnSaveCurrent.setMinWidth(Region.USE_PREF_SIZE);
-        btnImport.setMinWidth(Region.USE_PREF_SIZE);
-        btnExport.setMinWidth(Region.USE_PREF_SIZE);
-        btnLoad.setMinWidth(Region.USE_PREF_SIZE);
-        btnClose.setMinWidth(Region.USE_PREF_SIZE);
-
-        hbox.getChildren().addAll(btnSaveCurrent, btnImport, btnExport, spacer, btnLoad, btnClose);
-        return hbox;
+        lblDetailParameters.setText(sb.toString());
     }
 
     private void handleSaveCurrent() {
         if (currentSystemSnapshot == null) return;
         TextInputDialog dialog = new TextInputDialog(currentSystemSnapshot.getName());
+        dialog.initOwner(getOwner());
         dialog.setTitle(I18n.get("gallery.save_dialog_title"));
         dialog.setHeaderText(I18n.get("gallery.save_dialog_header"));
         dialog.setContentText(I18n.get("gallery.save_dialog_content"));
-        dialog.initOwner(stage);
 
         dialog.showAndWait().ifPresent(name -> {
             if (!name.trim().isEmpty()) {
@@ -239,9 +334,11 @@ public class ModelGalleryDialog {
 
                 saveModelToDisk(userM);
                 userModels.add(userM);
-                if (userListView != null) {
-                    userListView.getItems().setAll(userModels);
-                }
+
+                String userCat = I18n.get("gallery.tab_user_models");
+                cmbCategories.setValue(userCat);
+                refreshList(userCat);
+                listView.getSelectionModel().select(userM);
             }
         });
     }
@@ -250,15 +347,16 @@ public class ModelGalleryDialog {
         FileChooser fc = new FileChooser();
         fc.setTitle(I18n.get("gallery.import_title"));
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("gallery.file_filter"), "*.pplane"));
-        File file = fc.showOpenDialog(stage);
+        File file = fc.showOpenDialog(getOwner());
         if (file != null) {
             try {
                 PredefinedModel imported = PredefinedModel.loadFromFile(file);
                 saveModelToDisk(imported);
                 userModels.add(imported);
-                if (userListView != null) {
-                    userListView.getItems().setAll(userModels);
-                }
+                String userCat = I18n.get("gallery.tab_user_models");
+                cmbCategories.setValue(userCat);
+                refreshList(userCat);
+                listView.getSelectionModel().select(imported);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -266,16 +364,17 @@ public class ModelGalleryDialog {
     }
 
     private void handleExport() {
-        if (selectedModel == null) return;
+        PredefinedModel selected = listView.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
         FileChooser fc = new FileChooser();
         fc.setTitle(I18n.get("gallery.export_title"));
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter(I18n.get("gallery.file_filter"), "*.pplane"));
-        fc.setInitialFileName(selectedModel.getName().toLowerCase().replace(" ", "_") + ".pplane");
+        fc.setInitialFileName(selected.getName().toLowerCase().replace(" ", "_") + ".pplane");
 
-        File file = fc.showSaveDialog(stage);
+        File file = fc.showSaveDialog(getOwner());
         if (file != null) {
             try {
-                selectedModel.saveToFile(file);
+                selected.saveToFile(file);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -304,10 +403,6 @@ public class ModelGalleryDialog {
             File target = userDir.resolve(safeName).toFile();
             model.saveToFile(target);
         } catch (Exception ignored) {}
-    }
-
-    public void show() {
-        stage.show();
     }
 
     private String getCategoryDisplayName(String rawCategory) {
@@ -362,5 +457,10 @@ public class ModelGalleryDialog {
             case "Oscilador Químico Brusselator" -> I18n.get("model.brusselator.desc");
             default -> rawDesc;
         };
+    }
+
+    public static Optional<PredefinedModel> showGallery(Stage owner, PredefinedModel currentSystemSnapshot) {
+        ModelGalleryDialog dialog = new ModelGalleryDialog(owner, currentSystemSnapshot);
+        return dialog.showAndWait();
     }
 }
