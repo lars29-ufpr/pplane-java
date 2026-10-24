@@ -88,36 +88,25 @@ public class GuideViewerDialog {
     }
 
     private static String loadGuideContent() {
-        boolean isEnglish = "en".equalsIgnoreCase(I18n.getLocale().getLanguage());
-        String primaryResource = isEnglish ? "/docs/GUIA_MODELOS_en.md" : "/docs/GUIA_MODELOS.md";
-        String fallbackResource = "/docs/GUIA_MODELOS.md";
-
-        try (var is = GuideViewerDialog.class.getResourceAsStream(primaryResource)) {
-            if (is != null) {
-                return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
-            }
+        String lang = I18n.getLocale().getLanguage();
+        String fileName = lang.equals("pt") ? "GUIA_MODELOS.md" : "GUIA_MODELOS_" + lang + ".md";
+        
+        try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/" + fileName)) {
+            if (is != null) return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
         } catch (Exception ignored) {}
-
-        if (isEnglish) {
-            try (var is = GuideViewerDialog.class.getResourceAsStream(fallbackResource)) {
-                if (is != null) {
-                    return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
-                }
-            } catch (Exception ignored) {}
-        }
-
-        File file = new File(isEnglish ? "GUIA_MODELOS_en.md" : "GUIA_MODELOS.md");
-        if (!file.exists() && isEnglish) {
-            file = new File("GUIA_MODELOS.md");
-        }
-
+        
+        try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/GUIA_MODELOS.md")) {
+            if (is != null) return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        } catch (Exception ignored) {}
+        
+        java.io.File file = new java.io.File(fileName);
+        if (!file.exists()) file = new java.io.File("GUIA_MODELOS.md");
+        
         if (file.exists()) {
-            try {
-                return Files.readString(file.toPath());
-            } catch (IOException e) {
-                return I18n.get("guide.read_error") + e.getMessage();
-            }
+            try { return java.nio.file.Files.readString(file.toPath()); } 
+            catch (java.io.IOException e) { return I18n.get("guide.read_error") + e.getMessage(); }
         }
+        
         return I18n.get("guide.not_found");
     }
 }

@@ -98,7 +98,7 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
 
         String filterText = I18n.get("gallery.filter");
         if (filterText == null || filterText.startsWith("!")) {
-            filterText = "Category:";
+            filterText = I18n.get("gallery.lbl_category");
         }
         Label lblFilter = new Label(filterText);
         lblFilter.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
@@ -218,11 +218,11 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         grid.setHgap(12);
         grid.setVgap(10);
 
-        Label lblEqHeader = new Label("Equations:");
+        Label lblEqHeader = new Label(I18n.get("gallery.lbl_equations"));
         lblEqHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
-        Label lblParamHeader = new Label("Parameters:");
+        Label lblParamHeader = new Label(I18n.get("gallery.lbl_parameters"));
         lblParamHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
-        Label lblDomainHeader = new Label("Domain:");
+        Label lblDomainHeader = new Label(I18n.get("gallery.lbl_domain"));
         lblDomainHeader.setStyle("-fx-text-fill: #8b949e; -fx-font-weight: bold;");
 
         grid.addRow(0, lblEqHeader, lblDetailEquations);

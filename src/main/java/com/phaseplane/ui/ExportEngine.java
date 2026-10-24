@@ -26,9 +26,9 @@ import java.util.Locale;
 public class ExportEngine {
 
     public enum ExportTheme {
-        LIGHT("Claro / LaTeX (Fundo Branco)"),
-        TRANSPARENT("Transparente (Sem fundo / Slides)"),
-        DARK("Escuro (Como na Tela)");
+        LIGHT(I18n.get("export.theme_light")),
+        TRANSPARENT(I18n.get("export.theme_transparent")),
+        DARK(I18n.get("export.theme_dark"));
 
         private final String description;
         ExportTheme(String description) { this.description = description; }

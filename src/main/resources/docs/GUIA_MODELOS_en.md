@@ -1,5 +1,5 @@
 # Educational Guide to Two-Dimensional Dynamical Models
-Phase Plane Analyzer — Version 1.0
+pplaneX — Version 1.2
 
 This educational guide details the formulations, parameters, and exploration scripts for the standard models available in the gallery.
 

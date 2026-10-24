@@ -6,34 +6,34 @@ import java.util.Locale;
 /**
  * Ponto de entrada universal do pplaneX.
  * Permite contornar a validação de módulos do JavaFX em Fat JARs
- * e configura o Locale de forma transparente (multiplataforma).
+ * e configura o Locale de forma transparente e cumulativa.
  */
 public final class Launcher {
 
     public static void main(String[] args) {
-        Locale chosenLocale = null;
+        // O Java já inicia o Locale.getDefault() lendo o sistema operacional 
+        // ou a flag -Duser.language injetada no terminal.
+        Locale chosenLocale = Locale.getDefault();
 
-        // 1. Permite forçar idioma via argumento CLI (--lang=pt, --lang=en)
+        // 1. Permite sobrescrever via argumento CLI (--lang=es, --lang=fr, -pt, -en)
         for (String arg : args) {
-            if (arg.equalsIgnoreCase("--lang=pt") || arg.equalsIgnoreCase("-pt")) {
+            if (arg.toLowerCase().startsWith("--lang=")) {
+                chosenLocale = new Locale(arg.substring(7));
+                break;
+            } else if (arg.equalsIgnoreCase("-pt")) {
                 chosenLocale = new Locale("pt", "BR");
                 break;
-            } else if (arg.equalsIgnoreCase("--lang=en") || arg.equalsIgnoreCase("-en")) {
+            } else if (arg.equalsIgnoreCase("-en")) {
                 chosenLocale = Locale.ENGLISH;
+                break;
+            } else if (arg.equalsIgnoreCase("-es")) {
+                chosenLocale = new Locale("es");
                 break;
             }
         }
 
-        // 2. Se não foi forçado, detecta o idioma do sistema operacional
-        if (chosenLocale == null) {
-            Locale sys = Locale.getDefault();
-            if (sys.getLanguage().equalsIgnoreCase("pt")) {
-                chosenLocale = new Locale("pt", "BR");
-            } else {
-                chosenLocale = Locale.ENGLISH;
-            }
-        }
-
+        // 2. Define o idioma. Se o arquivo correspondente não existir, 
+        // o próprio Java fará o fallback (recuo automático) para o Inglês.
         Locale.setDefault(chosenLocale);
         I18n.setLocale(chosenLocale);
 
