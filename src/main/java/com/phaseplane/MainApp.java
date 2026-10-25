@@ -253,11 +253,15 @@ Button btnEquilibria = new Button(I18n.get("btn.equilibria"));
 
 Button btnSeparatrices = new Button(I18n.get("btn.separatrices"));
         btnSeparatrices.setMaxWidth(Double.MAX_VALUE);
+        btnSeparatrices.setWrapText(true);
+        btnSeparatrices.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnSeparatrices.setStyle("-fx-background-color: #8957e5; -fx-text-fill: white; -fx-font-weight: bold;");
         btnSeparatrices.setOnAction(e -> computeSeparatrices());
 
 Button btnStudio = new Button(I18n.get("btn.parameter_studio"));
         btnStudio.setMaxWidth(Double.MAX_VALUE);
+        btnStudio.setWrapText(true);
+        btnStudio.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnStudio.setStyle("-fx-background-color: #d29922; -fx-text-fill: #0d1117; -fx-font-weight: bold;");
         btnStudio.setOnAction(e -> openParameterStudio());
 

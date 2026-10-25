@@ -2,9 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.phaseplane</groupId>
-  <artifactId>phase-plane-analyzer</artifactId>
-  <version>1.0.0</version>
+  <artifactId>pplaneX</artifactId>
+  <version>1.2</version>
   <build>
+    <finalName>pplaneX</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -18,43 +19,15 @@
         <version>3.5.2</version>
         <executions>
           <execution>
-            <id>shade-pt</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
             <configuration>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>pt</shadedClassifierName>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
               <transformers>
                 <transformer>
-                  <mainClass>com.phaseplane.MainPT</mainClass>
-                </transformer>
-              </transformers>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-          <execution>
-            <id>shade-en</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>en</shadedClassifierName>
-              <transformers>
-                <transformer>
-                  <mainClass>com.phaseplane.MainEN</mainClass>
+                  <mainClass>com.phaseplane.Launcher</mainClass>
                 </transformer>
               </transformers>
               <filters>

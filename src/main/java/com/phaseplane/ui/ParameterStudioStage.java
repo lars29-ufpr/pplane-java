@@ -28,6 +28,7 @@ public class ParameterStudioStage extends Stage {
         }
 
         setTitle(I18n.get("studio.window_title"));
+        setMinWidth(550);
 
         VBox root = new VBox(14);
         root.setPadding(new Insets(16));
