@@ -1,5 +1,7 @@
 # pplaneX
 
+> 🌍 **Languages:** [English](README.md) | [Português](README.pt-BR.md) | [Español](README.es.md) | [Français](README_fr.md)
+
 **pplaneX** est une application interactive basée sur JavaFX pour l'analyse qualitative des systèmes d'équations différentielles ordinaires bidimensionnelles (champ de vecteurs, isoclines, orbites et équilibres).
 
 ## Fonctionnalités
