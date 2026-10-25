@@ -28,6 +28,7 @@ If you do not have Java installed or need step-by-step guidance for your operati
 - 📖 **[Installation Guide (English)](INSTALL.md)**
 - 📖 **[Guia de Instalação (Português)](INSTALL_pt.md)**
 - 📖 [Guía de Instalación (Español)](INSTALL_es.md)
+* 🇫🇷 [Guide d'Installation (Français)](INSTALL_fr.md)
 ### Running the Application
 
 Once Java 21+ is installed, run from your terminal:
