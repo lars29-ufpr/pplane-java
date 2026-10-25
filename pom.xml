@@ -5,9 +5,9 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.phaseplane</groupId>
-    <artifactId>phase-plane-analyzer</artifactId>
-    <version>1.0.0</version>
+   <groupId>com.phaseplane</groupId>
+    <artifactId>pplaneX</artifactId>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -151,7 +151,8 @@
     </dependencies>
 
     <build>
-        <plugins>
+<finalName>pplaneX</finalName>    
+    <plugins>
             <!-- Compilador Java 21 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
