@@ -1,210 +1,90 @@
-[English Version](INSTALL.md)
+# Guia de Instalação (dfieldX & pplaneX)
 
-# Guia de Instalação
+> **Language / Idiomas:** [English](INSTALL.md) | **Português** | [Español](INSTALL_es.md)
 
-# dfieldX e pplaneX
+Este guia explica como instalar e executar o **dfieldX** e o **pplaneX** no Windows, macOS e Linux.
 
-Este guia explica como instalar e executar o dfieldX e o pplaneX nos sistemas Windows, macOS e Linux.
-
-Esses programas exigem Java 21 ou superior.
-
-Nenhuma instalação prévia do Java é necessária. Este guia assume que o Java ainda não está instalado em seu computador.
+Estes aplicativos requerem o **Java 21 ou mais recente**.
+Nenhuma instalação prévia do Java é necessária. Este guia assume que o Java ainda não está instalado no seu computador.
 
 ---
 
-# 1. Baixando o Programa
+## 1. Baixando o Aplicativo
 
-Faça o download da versão mais recente no GitHub:
+Baixe a versão mais recente no GitHub:
+- **dfieldX:** https://tinyurl.com/dfieldx-ufpr
+- **pplaneX:** https://tinyurl.com/pplanex-ufpr
 
-- dfieldX: https://tinyurl.com/dfieldx-ufpr
-- pplaneX: https://tinyurl.com/pplanex-ufpr
-
-Salve o arquivo JAR baixado em um local fácil de encontrar, como a Área de Trabalho ou a pasta Downloads.
+Salve o arquivo `.jar` baixado em um local de fácil acesso, como sua Área de Trabalho ou pasta de Downloads.
 
 ---
 
-# 2. Windows
+## 2. Windows
 
-## Instalar o Java
+### Instalando o Java
+1. Abra o navegador e acesse: https://adoptium.net/
+2. Baixe o Eclipse Temurin Java 21 LTS para Windows x64.
+3. Execute o instalador baixado.
+4. Em "Custom Setup" (Instalação Personalizada), certifique-se de que as opções "Add to PATH" e "Associate .jar files" estejam habilitadas.
+5. Conclua a instalação.
 
-1. Abra seu navegador.
-2. Acesse: https://adoptium.net/
-3. Baixe o Eclipse Temurin Java 21 LTS para Windows x64.
-4. Execute o instalador baixado.
-5. Na tela "Custom Setup", garanta que "Add to PATH" e "Associate .jar files" estejam marcados.
-6. Conclua a instalação.
+### Verificando e Executando
+Abra o Prompt de Comando e digite:
+  java -version
 
-## Verificar a Instalação
-
-Abra o Prompt de Comando e execute:
-
-    java -version
-
-Qualquer versão 21 ou superior é suportada.
-
-## Executar o Programa
-
-    java -jar dfieldX.jar
-
+Para executar o programa:
+  java -jar dfieldX.jar
 ou
-
-    java -jar phase-plane-analyzer-1.0.0.jar
+  java -jar pplaneX.jar
 
 ---
 
-# 3. macOS
+## 3. macOS
 
-## Identifique o Tipo do seu Mac
-
-Abra “Sobre Este Mac”.
-
-Escolha a versão Apple Silicon para Macs com processadores M1, M2, M3, M4 ou superiores, e a versão Intel para Macs Intel.
-
-## Instalar o Java
-
+### Instalando o Java
 1. Acesse https://adoptium.net/
-2. Baixe o Java 21 LTS para macOS.
-3. Execute o instalador.
-4. Siga as instruções na tela.
+2. Baixe o Java 21 LTS para macOS (escolha Apple Silicon para M1/M2/M3/M4 ou Intel para Macs mais antigos).
+3. Execute o instalador e siga as instruções.
 
-## Verificar a Instalação
+### Verificando e Executando
+Abra o Terminal e digite:
+  java -version
 
-Abra o Terminal e execute:
-
-    java -version
-
-## Executar o Programa
-
-    java -jar dfieldX.jar
-
+Para executar o programa:
+  java -jar dfieldX.jar
 ou
+  java -jar pplaneX.jar
 
-    java -jar phase-plane-analyzer-1.0.0.jar
-
-## Se o macOS Bloquear a Aplicação
-
-Abra:
-
-Ajustes do Sistema → Privacidade e Segurança → Abrir Mesmo Assim
+### 🍎 Aviso do Gatekeeper no macOS
+Se o macOS bloquear o aplicativo dizendo que "não pode verificar se está livre de malware":
+**Método 1 (Interface):** Abra Ajustes do Sistema → Privacidade e Segurança → Role para baixo e clique em "Abrir Mesmo Assim".
+**Método 2 (Terminal):** Execute `xattr -d com.apple.quarantine *.jar`
 
 ---
 
-# 4. Linux (Ubuntu, Debian e Linux Mint)
+## 4. Linux
 
-Instalar Java:
+**Ubuntu, Debian, Linux Mint:**
+  sudo apt update
+  sudo apt install openjdk-21-jre
 
-    sudo apt update
-    sudo apt install openjdk-21-jre
+**Fedora, Rocky Linux, AlmaLinux:**
+  sudo dnf install java-21-openjdk
 
-Verificar:
+**Arch Linux, Manjaro:**
+  sudo pacman -S jre21-openjdk
 
-    java -version
+### Verificando e Executando
+Abra o Terminal e digite:
+  java -version
 
-Executar:
-
-    java -jar dfieldX.jar
-
+Para executar o programa:
+  java -jar dfieldX.jar
 ou
-
-    java -jar phase-plane-analyzer-1.0.0.jar
-
----
-
-# 5. Linux (Fedora, Rocky Linux e AlmaLinux)
-
-Instalar Java:
-
-    sudo dnf install java-21-openjdk
-
-Verificar:
-
-    java -version
-
-Executar:
-
-    java -jar dfieldX.jar
-
-ou
-
-    java -jar phase-plane-analyzer-1.0.0.jar
+  java -jar pplaneX.jar
 
 ---
 
-# 6. Linux (Arch Linux e Manjaro)
-
-Instalar Java:
-
-    sudo pacman -S jre21-openjdk
-
-Verificar:
-
-    java -version
-
-Executar:
-
-    java -jar dfieldX.jar
-
-ou
-
-    java -jar phase-plane-analyzer-1.0.0.jar
-
----
-
-# Solução de Problemas
-
-## Nada Acontece ao Dar Duplo Clique no Arquivo JAR
-
-Execute o programa pelo terminal:
-
-    java -jar dfieldX.jar
-
-ou
-
-    java -jar phase-plane-analyzer-1.0.0.jar
-
-## Erro de Versão da Classe (Unsupported Class Version)
-
-Instale o Java 21 ou superior.
-
-## O Programa Não Inicia
-
-Verifique:
-
-    java -version
-
-E informe ao desenvolvedor qualquer mensagem de erro apresentada.
-
----
-
-# Informações Adicionais
-
-O dfieldX e o pplaneX são distribuídos como arquivos JAR executáveis independentes.
-
-Após instalar o Java 21 ou superior, nenhuma instalação adicional é necessária.
-
-Basta manter o arquivo JAR em uma pasta de sua preferência e executá-lo sempre que desejar.
-
-Aproveite a exploração de equações diferenciais e sistemas dinâmicos!
-
----
-
-## 🍎 Aviso de Segurança no macOS (Apple Gatekeeper)
-
-Se ao abrir o arquivo `.jar` surgir um aviso informando que **"a Apple não pôde verificar se o arquivo está livre de malware"**, isso ocorre porque o software é livre e não possui uma assinatura comercial paga da Apple.
-
-### Método 1: Ajustes do Sistema (Interface Gráfica)
-1. Clique em **Concluído** (Done) na janela de aviso.
-2. Abra **Ajustes do Sistema** (System Settings) → **Privacidade e Segurança** (Privacy & Security).
-3. Role até a seção **Segurança** (Security).
-4. Localize o aviso sobre o bloqueio do arquivo `.jar` e clique em **Abrir Mesmo Assim** (Open Anyway).
-5. Confirme com sua senha/Touch ID e clique em **Abrir**.
-
-### Método 2: Terminal
-Remova o atributo de quarentena do macOS executando:
-```bash
-xattr -d com.apple.quarantine *.jar
-```
-Ou execute o programa diretamente pelo terminal:
-```bash
-java -jar *.jar
-```
+## Solução de Problemas
+- **Nada acontece ao clicar duas vezes no JAR:** Tente sempre executar pelo terminal usando `java -jar <nome-do-arquivo>.jar` para ver as mensagens de erro.
+- **Unsupported Class Version Error:** Você tem uma versão antiga do Java. Instale o Java 21 ou superior.
