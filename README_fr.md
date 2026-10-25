@@ -10,4 +10,4 @@
 * **Séparatrices :** Tracé automatisé des variétés stables et instables pour les points cols.
 * **Internationalisation :** Support complet de l'anglais, du portugais, de l'espagnol et du français.
 
-Pour les instructions de compilation et d'exécution, consultez [INSTALL_fr.md](INSTALL_fr.md).
+Pour les instructions de compilation et d'exécution, consultez 🇫🇷 [Guide d'Installation (Français)](INSTALL_fr.md).

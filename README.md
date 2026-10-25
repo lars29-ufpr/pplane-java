@@ -25,9 +25,6 @@ Inspired by the classic educational tool `pplane` originally created by John C. 
 **pplaneX** is distributed as a self-contained executable JAR and requires **Java 21 (LTS) or newer**.
 
 If you do not have Java installed or need step-by-step guidance for your operating system (Windows, macOS, or Linux), see our installation guides:
-- 📖 **[Installation Guide (English)](INSTALL.md)*
-* 🇺🇸 [Installation Guide (English)](INSTALL.md)
-- 📖 [Guía de Instalación (Español)](INSTALL_es.md)
 * 🇺🇸 [Installation Guide (English)](INSTALL.md)
 ### Running the Application
 
