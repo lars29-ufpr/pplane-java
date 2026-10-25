@@ -27,7 +27,7 @@ Inspired by the classic educational tool `pplane` originally created by John C. 
 If you do not have Java installed or need step-by-step guidance for your operating system (Windows, macOS, or Linux), see our installation guides:
 - 📖 **[Installation Guide (English)](INSTALL.md)**
 - 📖 **[Guia de Instalação (Português)](INSTALL_pt.md)**
-
+- 📖 [Guía de Instalación (Español)](INSTALL_es.md)
 ### Running the Application
 
 Once Java 21+ is installed, run from your terminal:
