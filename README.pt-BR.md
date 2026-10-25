@@ -25,8 +25,8 @@ Inspirado na clássica ferramenta educacional `pplane` criada originalmente por 
 O **pplaneX** é distribuído como um JAR executável autônomo e requer o **Java 21 (LTS) ou superior**.
 
 Se você não tem o Java instalado ou precisa de ajuda passo a passo, consulte nossos guias:
-- 📖 **[Guia de Instalação (Português)](INSTALL_pt.md)**
-- 📖 **[Installation Guide (English)](INSTALL.md)**
+- 📖 **[Guia de Instalação (Português)](INSTALL_pt.md)*
+* 🇧🇷 [Guia de Instalação (Português)](INSTALL_pt.md)
 
 ### Executando a Aplicação
 
