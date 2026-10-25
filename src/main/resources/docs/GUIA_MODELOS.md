@@ -1,7 +1,7 @@
 # Guia Didático de Modelos Dinâmicos Bidimensionais
-pplaneX — Versão 1.2
+## Phase Plane Analyzer — Versão 1.2
 
-Este guia reúne o catálogo canônico de sistemas de equações diferenciais ordinárias bidimensionais ($2 \times 2$) implementados no **pplaneX**. Cada modelo conta com a respectiva formulação matemática, roteiro didático de experimentação no plano de fase e referências conceituais clássicas.
+Este guia reúne o catálogo canônico de sistemas de equações diferenciais ordinárias bidimensionais ($2 \times 2$) implementados no **Phase Plane Analyzer**. Cada modelo conta com a respectiva formulação matemática, roteiro didático de experimentação no plano de fase e referências conceituais clássicas.
 
 ---
 
@@ -226,7 +226,7 @@ $$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
 O modelo emblemático que acompanhou historicamente o utilitário MATLAB `pplane` de John Polking, projetado intencionalmente para ilustrar múltiplos tipos de equilíbrios e separatrizes concorrentes em uma única tela:
 
 $$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + 3xy$$
+$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
 
 * **Variáveis de Estado:**
   * $x, y \in \mathbb{R}$: Coordenadas cartesianas no plano de fase.
@@ -244,41 +244,32 @@ $$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + 3xy$$
 
 ---
 
-### 9. Sistemas Lineares 2D (Classificação & O Amor de Strogatz)
+### 9. Sistema Linear de Referência e Classificação Espectral
 
 #### Formulação Matemática e Parâmetros
-O arcabouço canônico de sistemas lineares invariantes no tempo no plano, utilizado metaforicamente por Steven Strogatz para descrever a dinâmica afetiva de afetos recíprocos entre Romeu ($R$) e Julieta ($J$):
+O arcabouço canônico de sistemas lineares invariantes no tempo com coeficientes matriciais constantes:
 
-$$\begin{pmatrix} \dot{R} \\ \dot{J} \end{pmatrix} = \begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} R \\ J \end{pmatrix}$$
+$$\begin{pmatrix} \dot{x} \\ \dot{y} \end{pmatrix} = \begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}$$
 
-$$\frac{dR}{dt} = a R + b J$$
-$$\frac{dJ}{dt} = c R + d J$$
+$$\frac{dx}{dt} = a x + b y$$
+$$\frac{dy}{dt} = c x + d y$$
 
-* **Variáveis de Estado:**
-  * $R(t)$: Nível de afeto de Romeu por Julieta ($R > 0$ paixão arrebatadora; $R < 0$ aversão/desprezo).
-  * $J(t)$: Nível de afeto de Julieta por Romeu ($J > 0$ correspondência; $J < 0$ apatia/fuga).
 * **Parâmetros Típicos de Entrada:**
-  * $a = -0.1$: Tendência de cautela amorosa de Romeu (amor próprio decadente).
-  * $b = 1.0$: Julieta aquece o coração de Romeu com facilidade.
-  * $c = -1.0$: Julieta recua e foge diante da insistência amorosa de Romeu.
-  * $d = -0.1$: Tendência natural de Julieta à indiferença com o tempo.
+  * $a = 0.0, b = 1.0, c = -2.0, d = -0.5$.
 * **Classificação Espectral segundo Traço ($\tau$) e Determinante ($\Delta$):**
-  * Equação característica: $\lambda^2 - \tau \lambda + \Delta = 0$, com $\tau = a + d$ e $\Delta = ad - bc$.
-  * Discriminante: $D = \tau^2 - 4\Delta$.
-  * $\Delta < 0$: **Ponto de Sela** (amantes volúveis e instabilidade hiperbólica divergente).
-  * $\Delta > 0, D > 0$: **Nó** (assintoticamente estável se $\tau < 0$, instável se $\tau > 0$).
-  * $\Delta > 0, D < 0$: **Foco / Espiral** (espiral estável rumo à trágica apatia emocional se $\tau < 0$, oscilações explosivas se $\tau > 0$).
-  * $\tau = 0, \Delta > 0$: **Centro Conservativo** (ciclo infinito de desencontros periódicos: quando Romeu ama, Julieta foge; quando Romeu desiste, Julieta se apaixona).
+  * Equação característica: $\lambda^2 - \tau \lambda + \Delta = 0$, onde $\tau = a + d$ e $\Delta = ad - bc$.
+  * Discriminante: $\Lambda = \tau^2 - 4\Delta$.
+  * $\Delta < 0$: **Ponto de Sela** (sempre instável).
+  * $\Delta > 0, \Lambda > 0$: **Nó** (estável se $\tau < 0$, instável se $\tau > 0$).
+  * $\Delta > 0, \Lambda < 0$: **Foco / Espiral** (atrator se $\tau < 0$, repulsor se $\tau > 0$, **Centro** se $\tau = 0$).
 
 #### Roteiro Prático de Exploração
-1. **Espiral Amortecida (Apatia):** Com os parâmetros padrão, clique em $(2.0, 1.0)$. Observe as trajetórias espiralando em direção à origem $(0, 0)$.
-2. **Ciclo Perpétuo (Centro):** Ajuste $a = 0.0$ e $d = 0.0$ no *Parameter Studio*. O traço anula-se ($\tau = 0$), gerando órbitas elípticas fechadas.
-3. **Ponto de Sela:** Altere $c = 1.0$. Constate que $\Delta < 0$, gerando um ponto de sela com separatrizes bem delineadas.
+1. **Inspeção de Autovalores:** Utilize o botão **Inspecionar Equilíbrio** e clique na origem para inspecionar a matriz Jacobiana calculada, os autovalores $\lambda_1, \lambda_2$ e os autovetores direcionais.
+2. **Exploração no Parameter Studio:** Abra os *sliders* e varie o coeficiente $d$ mantendo os demais constantes. Observe a transição contínua e visual de foco estável $\to$ centro $\to$ foco instável conforme o traço cruza o zero.
 
 #### Referências Conceituais
-* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering* (2nd ed.). CRC Press.
-* Hirsch, M. W., Smale, S., & Devaney, R. L. (2013). *Differential Equations, Dynamical Systems, and an Introduction to Chaos* (3rd ed.). Academic Press.
-
+* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering*. CRC Press.
+* Perko, L. (2001). *Differential Equations and Dynamical Systems* (3rd ed.). Springer-Verlag.
 ---
 
 ### 10. Dinâmica Não-Linear de Polking (Múltiplos Equilíbrios)
@@ -299,44 +290,24 @@ $$\frac{dy}{dt} = x(2 - y)$$
 * **Fenomenologia:**
   * Apresenta coexistência de 4 equilíbrios no plano, gerando um mapa rico de separatrizes onde trajetórias vizinhas tomam destinos diametralmente opostos.
 
-#### Roteiro Prático de Exploração
-1. **Localização dos 4 Equilíbrios:** Pressione **Localizar Equilíbrios** e clique em cada ponto destacado para verificar as propriedades da Jacobiana local.
-2. **Separatrizes Simétricas:** Trace as variedades estáveis e instáveis das selas em $(-2, 2)$ e $(2, 2)$ para demarcar os limites das bacias de atração.
-
-#### Referências Conceituais
-* Polking, J. C. (1995). *Ordinary Differential Equations using MATLAB*. Prentice Hall.
-* Perko, L. (2001). *Differential Equations and Dynamical Systems* (3rd ed.). Springer-Verlag.
-
 ---
 
-### 11. Oscilador Químico Brusselator
+### 11. Dinâmica do Amor (Romeu & Julieta de Strogatz)
 
 #### Formulação Matemática e Parâmetros
-Modelo canônico formulado pela Escola de Bruxelas (Prigogine e Lefever) para descrever reações químicas autocatalíticas trimoleculares longe do equilíbrio termodinâmico:
+Formalizado pelo matemático Steven Strogatz (*Nonlinear Dynamics and Chaos*), este modelo mapeia a dinâmica afetiva de um casal através de um sistema linear homogêneo:
 
-$$\frac{dx}{dt} = a - (b + 1) x + x^2 y$$
-$$\frac{dy}{dt} = b x - x^2 y$$
+$$\frac{dx}{dt} = a x + b y$$
+$$\frac{dy}{dt} = c x + d y$$
 
 * **Variáveis de Estado:**
-  * $x(t) \ge 0$: Concentração adimensional do intermediário químico $X$.
-  * $y(t) \ge 0$: Concentração adimensional do intermediário químico $Y$.
-* **Parâmetros Típicos:**
-  * $a = 1.0$: Concentração constante suprida do reagente inicial $A$.
-  * $b = 3.0$: Concentração do reagente $B$ (parâmetro de controle da bifurcação).
-* **Ponto de Equilíbrio e Linearização:**
-  * Ponto fixo único no primeiro quadrante: $(x^*, y^*) = \left(a, \frac{b}{a}\right) = (1.0, 3.0)$.
-  * Matriz Jacobiana:
-    $$J(x^*, y^*) = \begin{pmatrix} b - 1 & a^2 \\ -b & -a^2 \end{pmatrix}$$
-  * Determinante: $\Delta = a^2 > 0$ (nunca é sela para $a \neq 0$).
-  * Traço: $\tau = b - (1 + a^2)$.
-* **Bifurcação de Hopf Supercrítica:**
-  * Em $b_c = 1 + a^2 = 2.0$, o traço anula-se e ocorre uma bifurcação de Hopf.
-  * Para $b > 1 + a^2$ (como no valor padrão $b = 3.0$), o equilíbrio torna-se instável e emerge um **ciclo-limite atrator periódico estável** (estruturas dissipativas no tempo que renderam a Ilya Prigogine o Prêmio Nobel de Química de 1977).
-
-#### Roteiro Prático de Exploração
-1. **Ciclo-Limite Químico:** Com $a = 1.0$ e $b = 3.0$, clique próximo ao equilíbrio em $(1.0, 3.0)$ e em um ponto externo como $(4.0, 4.0)$. Observe ambas as trajetórias convergindo para o mesmo ciclo-limite atrator estável.
-2. **Estabilização por Bifurcação Subcrítica:** Reduza $b$ para $1.5$ no *Parameter Studio* ($b < 1 + a^2$). Repita as condições iniciais e comprove que o ciclo desaparece, com as soluções decaindo diretamente para o foco atrator $(1.0, 1.5)$.
-
-#### Referências Conceituais
-* Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
-* Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. John Wiley & Sons.
+  * $x(t)$: Nível de afeto de Romeu por Julieta ($x > 0$: paixão arrebatadora; $x < 0$: ranço absoluto).
+  * $y(t)$: Nível de afeto de Julieta por Romeu ($y > 0$: amor correspondido; $y < 0$: indiferença/desprezo).
+* **Parâmetros Pré-configurados (Caso das Almas Volúveis):**
+  * $a = -0.1$: Amor próprio decadente de Romeu.
+  * $b = 1.0$: Julieta aquece o coração de Romeu com facilidade.
+  * $c = -1.0$: Julieta se assusta com a insistência de Romeu e se afasta.
+  * $d = -0.1$: Tendência natural de Julieta à indiferença com o tempo.
+* **Fenomenologia e Advertência Amorosa:**
+  * Com autovalores complexos conjugados de parte real negativa, o sistema forma uma espiral estável em direção à origem $(0, 0)$: a trágica e monótona apatia emocional mútua.
+  * Em configurações não amortecidas, o amor vira uma órbita periódica fechada (centro): quando Romeu ama, Julieta foge; quando Romeu desiste, Julieta volta a se apaixonar — um ciclo infinito de desencontros amorosos matematicamente inevitáveis.
