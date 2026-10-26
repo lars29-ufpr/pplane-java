@@ -1,6 +1,6 @@
 # pplaneX — Analyse Qualitative et Numérique des Systèmes Autonomes 2D
 
-> 🌍 **Languages:** [English](README.md) | [Português](README.pt-BR.md) | [Español](README.es.md) | [Français](README_fr.md)
+> 🌍 **Languages:** [English](README.md) | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md)
 
 **pplaneX** est une application de bureau interactive moderne, très performante, développée avec Java 21 et JavaFX pour l'analyse qualitative et numérique des systèmes d'équations différentielles ordinaires (EDO) autonomes bidimensionnelles et des portraits de phase plans :
 

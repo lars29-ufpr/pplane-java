@@ -1,6 +1,6 @@
 # pplaneX — Análisis Cualitativo y Numérico de Sistemas Autónomos 2D
 
-> **> 🌍 **Languages:** [English](README.md) | [Português](README.pt-BR.md) | [Español](README.es.md) | [Français](README_fr.md)
+> **> 🌍 **Languages:** [English](README.md) | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md)
 
 ---
 

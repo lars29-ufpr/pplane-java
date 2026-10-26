@@ -1,6 +1,6 @@
 # pplaneX — Качественный и численный анализ автономных 2D систем
 
-> 🌍 **Languages:** [English](README.md) | [Português](README.pt-BR.md) | [Español](README.es.md) | [Français](README_fr.md) | **Русский**
+> 🌍 **Languages:** [English](README.md) | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md) | **Русский**
 
 ---
 

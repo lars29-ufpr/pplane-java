@@ -1,6 +1,6 @@
 # pplaneX — Análise Qualitativa e Numérica de Sistemas Autônomos 2D
 
-> **> 🌍 **Languages:** [English](README.md) | [Português](README.pt-BR.md) | [Español](README.es.md) | [Français](README_fr.md)
+> **> 🌍 **Languages:** [English](README.md) | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md)
 
 ---
 
@@ -25,7 +25,7 @@ Inspirado na clássica ferramenta educacional `pplane` criada originalmente por 
 O **pplaneX** é distribuído como um JAR executável autônomo e requer o **Java 21 (LTS) ou superior**.
 
 Se você não tem o Java instalado ou precisa de ajuda passo a passo, consulte nossos guias:
-* 🇧🇷 [Guia de Instalação (Português)](INSTALL_pt.md)
+* 🇧🇷 [Guia de Instalação (Português)](INSTALL_pt_BR.md)
 
 ### Executando a Aplicação
 
