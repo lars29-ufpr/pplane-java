@@ -29,6 +29,7 @@ Une fois Java 21+ installé, exécutez la commande suivante dans votre terminal 
 
 ```bash
 java -jar pplaneX.jar
+```
 
 ## Crédits et Licence
 
