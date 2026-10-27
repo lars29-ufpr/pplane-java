@@ -41,3 +41,7 @@ java -Duser.language=pt -jar pplaneX.jar
 - **Análise Qualitativa:** Identificação de equilíbrios, cálculo da matriz Jacobiana e traçado de nulclinas.
 - **Galeria Curada de Sistemas:** Modelos clássicos de biomatemática, epidemiologia e osciladores.
 - **Exportação Gráfica:** SVG vetorial puro (ideal para LaTeX) e PNG em alta resolução.
+
+## Créditos e Licença
+
+Este projeto é uma expansão educacional baseada nos softwares originais dfield e pplane (copyright de John C. Polking, Rice University) e suas respectivas versões em Java (Joel Castellanos). Distribuído para uso em instituições de ensino, sem fins lucrativos, respeitando o trabalho dos autores originais.

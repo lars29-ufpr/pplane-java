@@ -33,3 +33,7 @@ Con Java 21+ instalado, ejecuta en tu terminal:
 
 ```bash
 java -jar pplaneX.jar
+
+## Créditos y Licencia
+
+Este proyecto es una expansión educativa basada en los programas originales dfield y pplane (copyright de John C. Polking, Rice University) y sus respectivas versiones en Java (Joel Castellanos). Distribuido para su uso en instituciones educativas, sin fines de lucro, respetando el trabajo de los autores originales.
