@@ -15,7 +15,7 @@ Inspirado na clássica ferramenta educacional `pplane` criada originalmente por 
 
 ## 🎉 Novidades da Versão 1.2
 - **Internacionalização Completa (i18n):** A arquitetura do aplicativo foi totalmente reestruturada para suportar múltiplos idiomas.
-- **Traduções Nativas:** A interface, menus, caixas de diálogo e o abrangente Guia de Modelos Educacionais agora estão disponíveis em **Inglês**, **Português (PT-BR)** e **Espanhol**.
+- **Traduções Nativas:** A interface, menus, caixas de diálogo e o abrangente Guia de Modelos Educacionais agora estão disponíveis em **Inglês**, **Português (PT-BR)**, **Espanhol**, **Francês** e **Russo**.
 - **Localização Dinâmica:** O sistema detecta automaticamente o idioma do sistema operacional e possui o inglês como rede de segurança.
 
 ---
