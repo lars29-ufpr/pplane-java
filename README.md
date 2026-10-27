@@ -1,6 +1,6 @@
 # pplaneX — Qualitative and Numerical Analysis of 2D Autonomous Systems
 
-> **> 🌍 **Languages:** [English](README.md) | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md)
+🌍 **Languages:** [English] | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md) | [Русский](README_ru.md)
 
 ---
 
@@ -15,7 +15,7 @@ Inspired by the classic educational tool `pplane` originally created by John C. 
 
 ## 🎉 What's New in Version 1.2
 - **Full Internationalization (i18n):** The application architecture has been completely overhauled to support multiple languages.
-- **Native Translations:** Interface, menus, dialogs, and the comprehensive Educational Models Guide are now available in **English**, **Portuguese (PT-BR)**, and **Spanish**.
+- **Native Translations:** Interface, menus, dialogs, and the comprehensive Educational Models Guide are now available in **English**, **Portuguese (PT-BR)**, **French**, **Russian** and **Spanish**.
 - **Dynamic Localization:** The system automatically detects the OS language and falls back to English, ensuring a seamless experience worldwide.
 
 ---
