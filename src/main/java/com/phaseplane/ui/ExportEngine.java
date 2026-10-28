@@ -42,6 +42,11 @@ public class ExportEngine {
         dialog.setHeaderText(I18n.get("export.theme_dialog_header"));
         dialog.setContentText(I18n.get("export.theme_dialog_content"));
         dialog.initOwner(window);
+javafx.scene.control.Button okBtn = (javafx.scene.control.Button) dialog.getDialogPane().lookupButton(javafx.scene.control.ButtonType.OK);
+    if (okBtn != null) okBtn.setText(I18n.get("dialog.btn_ok"));
+    
+    javafx.scene.control.Button cancelBtn = (javafx.scene.control.Button) dialog.getDialogPane().lookupButton(javafx.scene.control.ButtonType.CANCEL);
+    if (cancelBtn != null) cancelBtn.setText(I18n.get("dialog.btn_cancel"));
         return dialog.showAndWait().orElse(null);
     }
 
