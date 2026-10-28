@@ -33,6 +33,7 @@ Con Java 21+ instalado, ejecuta en tu terminal:
 
 ```bash
 java -jar pplaneX.jar
+```
 
 ## Créditos y Licencia
 

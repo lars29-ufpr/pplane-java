@@ -31,7 +31,9 @@ If you do not have Java installed or need step-by-step guidance for your operati
 Once Java 21+ is installed, run from your terminal:
 
 ```bash
+
 java -jar pplaneX.jar
+```
 
 ## Credits and License
 

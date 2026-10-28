@@ -133,9 +133,58 @@ private boolean showNullclines = true;
             }
         });
 
-        // Zoom focal com a rodinha do mouse (Scroll Wheel) centrado no cursor
+  // Variável de controle para o Throttling (30ms de intervalo)
+        final long[] lastDragTime = {0};
+
+        // Arrastar para navegar (Pan)
+        canvas.setOnMouseDragged(event -> {
+            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+                if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
+
+                // THROTTLING: Se passaram menos de 30ms, ignora o evento para não engasgar a CPU
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastDragTime[0] < 30) {
+                    return; 
+                }
+                lastDragTime[0] = currentTime;
+
+                double dxPixels = event.getX() - lastDragScreenX;
+                double dyPixels = event.getY() - lastDragScreenY;
+
+                lastDragScreenX = event.getX();
+                lastDragScreenY = event.getY();
+
+                double worldSpanX = bounds.xMax() - bounds.xMin();
+                double worldSpanY = bounds.yMax() - bounds.yMin();
+
+                double dxWorld = (dxPixels / getWidth()) * worldSpanX;
+                double dyWorld = -(dyPixels / getHeight()) * worldSpanY;
+
+                BoundingBox newBounds = new BoundingBox(
+                    bounds.xMin() - dxWorld,
+                    bounds.xMax() - dxWorld,
+                    bounds.yMin() - dyWorld,
+                    bounds.yMax() - dyWorld
+                );
+
+                setBounds(newBounds);
+                if (onBoundsChanged != null) {
+                    onBoundsChanged.accept(newBounds);
+                }
+            }
+        });
+// Zoom focal com a rodinha do mouse (Scroll Wheel) centrado no cursor
         canvas.setOnScroll(event -> {
             if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
+
+            // TRAVA DE SEGURANÇA: Ignora os eventos "fantasmas" do driver do mouse
+            if (event.getDeltaY() == 0.0) {
+                event.consume();
+                return;
+            }
+
+            // Radar de detecção no terminal do Linux
+            System.out.println("Scroll deltaY detectado: " + event.getDeltaY());
 
             double mouseScreenX = event.getX();
             double mouseScreenY = event.getY();
@@ -158,10 +207,10 @@ private boolean showNullclines = true;
                     onBoundsChanged.accept(newBounds);
                 }
             }
-            scrollDebounce.playFromStart();
+            
+            // Consome o evento e impede que elementos pai roubem o scroll para cima!
             event.consume();
         });
-
         canvas.setOnMouseMoved(event -> {
             if (onPointerMoved != null) {
                 double worldX = screenToWorldX(event.getX());
