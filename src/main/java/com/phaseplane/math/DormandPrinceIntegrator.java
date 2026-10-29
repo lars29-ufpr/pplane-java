@@ -131,8 +131,28 @@ public final class DormandPrinceIntegrator {
 
         system.evaluate(x, y, k1);
 
+        // ==========================================
+        // TRAVAS DE SEGURANÇA (Anti-Congelamento)
+        // ==========================================
+        final int MAX_ITERATIONS = 20000;
+        int iterCount = 0;
+
         while ((backward && t > tTarget) || (!backward && t < tTarget)) {
-            // Checagem de Timeout
+            
+            // 1. Limite absoluto de pontos (Impede estouro de memória e UI freeze)
+            iterCount++;
+            if (iterCount > MAX_ITERATIONS) {
+                reason = Trajectory.TerminationReason.TIMEOUT;
+                break;
+            }
+
+            // 2. Trava de Estagnação (Impede laços infinitos por underflow numérico)
+            if (t + h == t) {
+                reason = Trajectory.TerminationReason.TIMEOUT;
+                break;
+            }
+
+            // Checagem de Timeout no Relógio da CPU
             if (System.currentTimeMillis() - startTime > maxWallClockMillis) {
                 reason = Trajectory.TerminationReason.TIMEOUT;
                 break;
