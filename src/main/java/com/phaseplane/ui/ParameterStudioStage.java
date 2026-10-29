@@ -28,7 +28,14 @@ public class ParameterStudioStage extends Stage {
         }
 
         setTitle(I18n.get("studio.window_title"));
-        setMinWidth(550);
+try {
+            var iconStream = getClass().getResourceAsStream("/icons/pplaneX_32.png");
+            if (iconStream == null) iconStream = getClass().getResourceAsStream("/icons/pplaneX_icon.png");
+            if (iconStream != null) getIcons().add(new javafx.scene.image.Image(iconStream));
+        } catch (Exception e) {
+            // Ignora silenciosamente para não travar a tela caso a imagem falte
+        }       
+ setMinWidth(550);
 
         VBox root = new VBox(14);
         root.setPadding(new Insets(16));
@@ -107,6 +114,11 @@ public class ParameterStudioStage extends Stage {
             valField.setPrefWidth(70);
             styleNumericField(valField);
 
+// Blinda o limite mínimo contra a singularidade de divisão por zero
+            if (min == 0.0) {
+                min = 0.001;
+                minField.setText("0.001");
+            }
             Slider slider = new Slider(min, max, val);
             slider.setShowTickMarks(false);
             slider.setShowTickLabels(false);

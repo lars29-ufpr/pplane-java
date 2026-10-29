@@ -1,6 +1,6 @@
 # Руководство по установке (dfieldX и pplaneX)
 
-> **Languages:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md) | [Français](INSTALL_fr.md) | **Русский**
+> **Languages:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md) | [Български](INSTALL_bg.md) | [Українська](INSTALL_uk.md) | [Français](INSTALL_fr.md) | **Русский**
 
 Это руководство объясняет, как установить и запустить **dfieldX** и **pplaneX** в Windows, macOS и Linux.
 

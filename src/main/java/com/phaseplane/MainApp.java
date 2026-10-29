@@ -581,12 +581,29 @@ case "Pplane Clássico (Polking)" -> {
         }
     }
 
-    private void showError(String header, String content) {
+   private void showError(String header, String content) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-alert.setTitle(I18n.get("alert.error.title"));
-            alert.setHeaderText(header);
+            alert.setTitle(I18n.get("alert.error.title"));
+            
+            // Intercepta o texto fixo e usa a sua tradução
+            if (header != null && header.contains("Erro na expressão")) {
+                alert.setHeaderText(I18n.get("alert.syntax_error"));
+            } else {
+                alert.setHeaderText(header);
+            }
+            
             alert.setContentText(content);
+            
+            // Aplica o tema escuro do pplaneX
+            alert.getDialogPane().getStylesheets().add(createDarkThemeStyle());
+            
+            // Adiciona a logo
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            try {
+                loadAppIcons(alertStage);
+            } catch (Exception e) {}
+            
             alert.showAndWait();
         });
     }

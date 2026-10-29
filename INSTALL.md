@@ -1,6 +1,6 @@
 # Installation Guide (dfieldX & pplaneX)
 
-> **Language / Idiomas:** **English** | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md)
+> **Language / Idiomas:** **English** | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md) | [Български](INSTALL_bg.md) | [Українська](INSTALL_uk.md)
 
 This guide explains how to install and run **dfieldX** and **pplaneX** on Windows, macOS, and Linux.
 

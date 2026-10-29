@@ -38,6 +38,11 @@ public class ExportEngine {
     private static ExportTheme askTheme(Window window) {
         List<ExportTheme> choices = Arrays.asList(ExportTheme.LIGHT, ExportTheme.TRANSPARENT, ExportTheme.DARK);
         ChoiceDialog<ExportTheme> dialog = new ChoiceDialog<>(ExportTheme.LIGHT, choices);
+        // Remove o "X" duplo fantasma no Linux forçando o estilo de janela padrão
+// Remove o ponto de interrogação gigante nativo do Java
+        dialog.setGraphic(null);
+        dialog.setTitle(I18n.get("export.theme_dialog_title"));
+        dialog.setTitle(I18n.get("export.theme_dialog_title"));
         dialog.setTitle(I18n.get("export.theme_dialog_title"));
         dialog.setHeaderText(I18n.get("export.theme_dialog_header"));
         dialog.setContentText(I18n.get("export.theme_dialog_content"));

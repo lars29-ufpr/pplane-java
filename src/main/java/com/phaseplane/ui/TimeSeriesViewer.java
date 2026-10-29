@@ -23,6 +23,13 @@ public class TimeSeriesViewer {
 
     public TimeSeriesViewer() {
         stage.setTitle(I18n.get("timeseries.window_title"));
+try {
+            var iconStream = TimeSeriesViewer.class.getResourceAsStream("/icons/pplaneX_32.png");
+            if (iconStream == null) iconStream = TimeSeriesViewer.class.getResourceAsStream("/icons/pplaneX_icon.png");
+            if (iconStream != null) stage.getIcons().add(new javafx.scene.image.Image(iconStream));
+        } catch (Exception e) {
+            // Ignora silenciosamente
+        }
         chartsBox.setPadding(new Insets(12));
         root.setStyle("-fx-background-color: #0b0f14;");
 
