@@ -89,21 +89,26 @@ public class GuideViewerDialog {
 
     private static String loadGuideContent() {
         String lang = I18n.getLocale().getLanguage();
+        // Para português, mantém o nome legado. Para outros, usa o sufixo do idioma.
         String fileName = lang.equals("pt") ? "GUIA_MODELOS.md" : "GUIA_MODELOS_" + lang + ".md";
         
+        // 1ª Tentativa: Carregar o guia no idioma atual do sistema (ex: _de, _it, ou .md para pt)
         try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/" + fileName)) {
             if (is != null) return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
         } catch (Exception ignored) {}
         
-        try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/GUIA_MODELOS.md")) {
+        // 2ª Tentativa (Fallback Segura): Se falhar, tenta carregar o guia universal em inglês (_en)
+        try (var is = GuideViewerDialog.class.getResourceAsStream("/docs/GUIA_MODELOS_en.md")) {
             if (is != null) return new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
         } catch (Exception ignored) {}
         
+        // 3ª Tentativa: Verificação de arquivos externos (caso o usuário esteja rodando fora do .jar)
         java.io.File file = new java.io.File(fileName);
+        if (!file.exists()) file = new java.io.File("GUIA_MODELOS_en.md");
         if (!file.exists()) file = new java.io.File("GUIA_MODELOS.md");
         
         if (file.exists()) {
-            try { return java.nio.file.Files.readString(file.toPath()); } 
+            try { return java.nio.file.Files.readString(file.toPath()); }  
             catch (java.io.IOException e) { return I18n.get("guide.read_error") + e.getMessage(); }
         }
         

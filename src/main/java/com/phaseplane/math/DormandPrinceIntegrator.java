@@ -202,42 +202,53 @@ public final class DormandPrinceIntegrator {
             double ratioY = errY / scaleY;
             double errorNorm = Math.sqrt(0.5 * (ratioX * ratioX + ratioY * ratioY));
 // ========================================================
-            // Controle Geométrico: impede retas longas no plano de fase
+            // BLOCO DE CONTROLE DEFINITIVO (Substitui até o fim do while)
             // ========================================================
             double dist = Math.hypot(xNext - x, yNext - y);
             double maxDist = (bounds != null)
                     ? Math.hypot(bounds.xMax() - bounds.xMin(), bounds.yMax() - bounds.yMin()) * 0.02
                     : 0.1;
 
-            if (dist > maxDist && Math.abs(h) > minStep * 2.0) {
-                h *= 0.5;
-                continue; // Rejeita e recalcula o mesmo ponto com h menor
-            }
-            // ========================================================
-            if (errorNorm <= 1.0 || Math.abs(h) <= minStep) {
-                // Passo aceito
-                t += h;
-                x = xNext;
-                y = yNext;
+            boolean reject = false;
+            
+            // 1. Rejeita se o cálculo estourar para o infinito
+            if (!Double.isFinite(xNext) || !Double.isFinite(yNext)) reject = true;
+            // 2. Rejeita se pular uma distância enorme num único passo (Cruzamento de Assíntota)
+            if (dist > maxDist) reject = true;
+            // 3. Rejeita se o erro numérico for inaceitável
+            if (errorNorm > 1.0) reject = true;
 
-                tList.add(t);
-
-
-                xList.add(x);
-                yList.add(y);
-
-                // Checagem de limites de domínio
-                if (bounds != null && !bounds.contains(x, y)) {
+            if (reject) {
+                if (Math.abs(h) > minStep * 1.5) {
+                    h *= 0.5; // Reduz o passo de tempo e tenta de novo
+                    continue;
+                } else {
+                    // O relógio chegou ao limite mínimo e o cálculo continua absurdo. Blow-up!
                     reason = Trajectory.TerminationReason.OUT_OF_BOUNDS;
                     break;
                 }
-
-                // Prepara k1 para o próximo passo através da propriedade FSAL
-                k1[0] = k7[0];
-                k1[1] = k7[1];
             }
 
-            // Fator de escala adaptativo de passo
+            // ========================================================
+            // Passo aceite com segurança absoluta
+            // ========================================================
+            t += h;
+            x = xNext;
+            y = yNext;
+
+            tList.add(t);
+            xList.add(x);
+            yList.add(y);
+
+            if (bounds != null && !bounds.contains(x, y)) {
+                reason = Trajectory.TerminationReason.OUT_OF_BOUNDS;
+                break;
+            }
+
+            k1[0] = k7[0];
+            k1[1] = k7[1];
+
+            // Fator de escala adaptativo para o próximo passo
             double factor = (errorNorm == 0) ? 2.0 : 0.9 * Math.pow(errorNorm, -0.2);
             factor = Math.max(0.2, Math.min(5.0, factor));
             h *= factor;
@@ -246,7 +257,6 @@ public final class DormandPrinceIntegrator {
                 h = direction * maxStep;
             }
         }
-
         double[] tArr = tList.stream().mapToDouble(Double::doubleValue).toArray();
         double[] xArr = xList.stream().mapToDouble(Double::doubleValue).toArray();
         double[] yArr = yList.stream().mapToDouble(Double::doubleValue).toArray();

@@ -63,29 +63,15 @@ try {
             double[] y = traj.y();
             int total = traj.size();
 
-            // 1. Considera pontos fisicamente válidos e próximos do domínio do modelo
-            // Filtra valores que explodem para o infinito no passado
+           // 1. Filtra apenas valores que explodem para o infinito (Blow-up)
             List<Integer> validIndices = new ArrayList<>();
             for (int i = 0; i < total; i++) {
                 if (Double.isFinite(t[i]) && Double.isFinite(x[i]) && Double.isFinite(y[i])) {
-                    // Mantém pontos dentro de uma margem realista de visualização (ex: <= 3.5 e >= -0.5)
-                    if (x[i] >= -0.2 && x[i] <= 3.5 && y[i] >= -0.2 && y[i] <= 3.5) {
+                    if (Math.abs(x[i]) < 1e5 && Math.abs(y[i]) < 1e5) {
                         validIndices.add(i);
                     }
                 }
             }
-
-            // Fallback: se nenhum caiu na janela estreita, relaxa o limite
-            if (validIndices.isEmpty()) {
-                for (int i = 0; i < total; i++) {
-                    if (Double.isFinite(t[i]) && Double.isFinite(x[i]) && Double.isFinite(y[i])) {
-                        if (Math.abs(x[i]) < 100.0 && Math.abs(y[i]) < 100.0) {
-                            validIndices.add(i);
-                        }
-                    }
-                }
-            }
-
             if (validIndices.isEmpty()) {
                 return;
             }
@@ -137,8 +123,7 @@ try {
 
             NumberAxis tAxisX = new NumberAxis(minT - spanT, maxT + spanT, Math.max(0.1, (maxT - minT) / 8));
             tAxisX.setLabel(I18n.get("timeseries.axis_time"));
-
-            NumberAxis valAxisX = new NumberAxis(Math.max(0, minX - spanX), maxX + spanX, Math.max(0.05, (maxX - minX) / 6));
+NumberAxis valAxisX = new NumberAxis(minX - spanX, maxX + spanX, Math.max(0.05, (maxX - minX) / 6));
             valAxisX.setLabel("x(t)");
 
             LineChart<Number, Number> chartX = new LineChart<>(tAxisX, valAxisX);
@@ -150,9 +135,9 @@ try {
             NumberAxis tAxisY = new NumberAxis(minT - spanT, maxT + spanT, Math.max(0.1, (maxT - minT) / 8));
             tAxisY.setLabel(I18n.get("timeseries.axis_time"));
 
-            NumberAxis valAxisY = new NumberAxis(Math.max(0, minY - spanY), maxY + spanY, Math.max(0.05, (maxY - minY) / 6));
+            NumberAxis valAxisY = new NumberAxis(minY - spanY, maxY + spanY, Math.max(0.05, (maxY - minY) / 6));
             valAxisY.setLabel("y(t)");
-
+           
             LineChart<Number, Number> chartY = new LineChart<>(tAxisY, valAxisY);
             chartY.setTitle(I18n.get("timeseries.chart_y_title"));
             chartY.setCreateSymbols(false);
