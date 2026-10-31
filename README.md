@@ -1,8 +1,8 @@
-# pplaneX — Qualitative and Numerical Analysis of 2D Autonomous Systems
-
-🌍 **Languages:** [English] | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md) | [Русский](README_ru.md) | [Български](README_bg.md) | [Українська](README_uk.md)
+> **Language / Languages:** **English** | [Português](README_pt_BR.md) | [Español](README_es.md) | [Français](README_fr.md) | [Русский](README_ru.md) | [Български](README_bg.md) | [Українська](README_uk.md) | [Deutsch](README_de.md) | [Italiano](README_it.md)
 
 ---
+
+# pplaneX — Qualitative and Numerical Analysis of 2D Autonomous Systems
 
 **pplaneX** is a modern, high-performance interactive desktop application built with Java 21 and JavaFX for the qualitative and numerical analysis of two-dimensional autonomous systems of Ordinary Differential Equations (ODEs) and planar phase portraits:
 
@@ -13,10 +13,11 @@ Inspired by the classic educational tool `pplane` originally created by John C. 
 
 ---
 
-## 🎉 What's New in Version 1.2
-- **Full Internationalization (i18n):** The application architecture has been completely overhauled to support multiple languages.
-- **Native Translations:** Interface, menus, dialogs, and the comprehensive Educational Models Guide are now available in **English**, **Portuguese (PT-BR)**, **French**, **Russian** and **Spanish**.
+## 🎉 What's New in Version 1.2.0
+- **Full Internationalization (i18n):** The application architecture has been completely overhauled to support multiple languages dynamically.
+- **Native Translations:** Interface, menus, dialogs, and the comprehensive Educational Models Guide are now available in **9 languages** (English, Portuguese, Spanish, French, Russian, Bulgarian, Ukrainian, German, and Italian).
 - **Dynamic Localization:** The system automatically detects the OS language and falls back to English, ensuring a seamless experience worldwide.
+- **Robust Documentation:** Fully updated `README` and `INSTALL` guides across all supported languages, featuring streamlined macOS installation steps (Adoptium `.dmg` installer and Gatekeeper bypass instructions).
 
 ---
 
@@ -24,16 +25,19 @@ Inspired by the classic educational tool `pplane` originally created by John C. 
 
 **pplaneX** is distributed as a self-contained executable JAR and requires **Java 21 (LTS) or newer**.
 
-If you do not have Java installed or need step-by-step guidance for your operating system (Windows, macOS, or Linux), see our installation guides:
-* 🇺🇸 [Installation Guide (English)](INSTALL.md)
+If you do not have Java installed or need step-by-step guidance for your operating system (Windows, macOS, or Linux), see our localized installation guides:
+
+- 📖 **[Installation Guide (English)](INSTALL.md)**
+
 ### Running the Application
 
 Once Java 21+ is installed, run from your terminal:
 
 ```bash
-
 java -jar pplaneX.jar
 ```
+
+---
 
 ## Credits and License
 

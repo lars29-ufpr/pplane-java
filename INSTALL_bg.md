@@ -1,108 +1,117 @@
-# Ръководство за инсталиране (dfieldX & pplaneX)
+> **Language / Език:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md) | [Français](INSTALL_fr.md) | [Русский](INSTALL_ru.md) | **Български** | [Українська](INSTALL_uk.md) | [Deutsch](INSTALL_de.md) | [Italiano](INSTALL_it.md)
 
-> **Language / Езици:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | [Español](INSTALL_es.md) | [Български](INSTALL_bg.md) | [Українська](INSTALL_uk.md) | **Български** | [Українська](INSTALL_uk.md)
+# Ръководство за инсталиране: pplaneX и dfieldX
 
-Това ръководство обяснява как да инсталирате и стартирате **dfieldX** и **pplaneX** на Windows, macOS и Linux.
+Това ръководство обяснява как да инсталирате и стартирате **pplaneX** и **dfieldX** на Windows, macOS и Linux.
 
-Тези приложения изискват **Java 21 или по-нова версия**.
-Не е необходима предишна инсталация на Java. Това ръководство предполага, че Java все още не е инсталирана на вашия компютър.
+Тези приложения изискват **Java 21 (LTS)** или по-нова версия. Не е необходима предварителна инсталация на Java. Това ръководство предполага, че Java все още не е инсталирана на вашия компютър.
 
 ---
 
 ## 1. Изтегляне на приложението
 
 Изтеглете най-новата версия от GitHub:
-- **dfieldX:** [https://tinyurl.com/dfieldx-ufpr](https://tinyurl.com/dfieldx-ufpr)
-- **pplaneX:** [https://tinyurl.com/pplanex-ufpr](https://tinyurl.com/pplanex-ufpr)
+- **pplaneX:** https://tinyurl.com/pplanex-ufpr
+- **dfieldX:** https://tinyurl.com/difieldx-ufpr
 
-Запазете изтегления `.jar` файл на място, което лесно можете да намерите по-късно, като например работния плот (Desktop) или папката с изтегляния (Downloads).
+Запазете изтегления `.jar` файл на място, където лесно можете да го намерите по-късно, например на вашия Работен плот или в папката "Изтегляния".
 
 ---
 
 ## 2. Windows
 
-### Инсталиране на Java
-1. Отворете вашия уеб браузър и посетете: [https://adoptium.net/](https://adoptium.net/)
-2. Изтеглете Eclipse Temurin Java 21 LTS за Windows x64.
+### Част A: Инсталиране на Java
+1. Отворете уеб браузъра си и посетете: https://adoptium.net/
+2. Изтеглете **Eclipse Temurin Java 21 LTS** за Windows x64.
 3. Стартирайте изтегления инсталатор.
-4. В "Custom Setup" (Персонализирана инсталация), уверете се, че опциите "Add to PATH" и "Associate .jar files" са активирани.
+4. На екрана "Custom Setup" (Персонализирана инсталация) се уверете, че опциите **"Add to PATH"** (Добавяне към PATH) и **"Associate .jar files"** (Свързване на .jar файлове) са активирани.
 5. Завършете инсталацията.
 
-### Проверка и стартиране
-Отворете Command Prompt и изпълнете:
+### Част B: Проверка и стартиране
+Отворете Command Prompt (Команден ред) и изпълнете:
 ```bash
 java -version
 ```
-
-За да стартирате приложението:
-```bash
-java -jar dfieldX.jar
-```
-или
+Поддържа се всяка версия 21 или по-нова. За да стартирате приложението:
 ```bash
 java -jar pplaneX.jar
 ```
+*(или заменете с `dfieldX.jar`)*
 
 ---
 
 ## 3. macOS
 
-### Инсталиране на Java
-1. Посетете [https://adoptium.net/](https://adoptium.net/)
-2. Изтеглете Java 21 LTS за macOS (изберете Apple Silicon за M1/M2/M3/M4 или Intel за по-стари Mac компютри).
-3. Стартирайте инсталатора и следвайте инструкциите.
+### Част A: Инсталиране на Java
+1. Посетете https://adoptium.net/
+2. Изтеглете най-новата **Java 21 LTS** за macOS.
+   * *Съвет:* Изберете `.dmg` инсталатор (напр. `jdk-21_macos-x64_bin.dmg` за Mac с Intel процесор, или еквивалента `aarch64` за Apple Silicon M1/M2/M3/M4).
+3. Стартирайте изтегления `.dmg` инсталатор и следвайте инструкциите на екрана.
 
-### Проверка и стартиране
-Отворете Terminal и изпълнете:
-```bash
-java -version
-```
+### Част B: Организиране и стартиране (Заобикаляне на Gatekeeper)
+macOS включва функция за сигурност, която блокира приложения от неидентифицирани разработчици. Следвайте тези стъпки при първото стартиране:
 
-За да стартирате приложението:
-```bash
-java -jar dfieldX.jar
-```
-или
-```bash
-java -jar pplaneX.jar
-```
+1. **Организиране:** За по-добра организация преместете изтеглените файлове `pplaneX.jar` и `dfieldX.jar` във вашата папка **Applications** (Приложения).
+2. **Не щраквайте два пъти** върху `.jar` файла първия път. Ако го направите, macOS ще покаже предупреждение и ще предотврати отварянето му.
+3. Вместо това **щракнете с десния бутон** (или Control-щракване) върху `.jar` файла и изберете **Open** (Отваряне) от контекстното меню.
+4. Ще се появи диалогов прозорец с искане за потвърждение. Щракнете отново върху **Open**.
 
-### 🍎 Предупреждение на macOS Gatekeeper
-Ако macOS блокира приложението, заявявайки, че "cannot verify it is free of malware" (не може да потвърди, че не съдържа зловреден софтуер):
-**Метод 1 (Графичен интерфейс):** Отворете System Settings (Системни настройки) → Privacy & Security (Поверителност и сигурност) → Превъртете надолу и кликнете върху "Open Anyway" (Отвори въпреки това).
-**Метод 2 (Терминал):** Изпълнете `xattr -d com.apple.quarantine *.jar`
+*Забележка: Трябва да направите това само веднъж. За всички последващи използвания можете просто да щракнете два пъти върху `.jar` файла, за да стартирате приложението нормално.*
+
+### Стартиране чрез терминал (Алтернатива)
+Ако предпочитате командния ред, отворете Terminal и изпълнете:
+```bash
+java -jar /Applications/pplaneX.jar
+```
 
 ---
 
-## 4. Linux
+## 4. Linux (Ubuntu, Debian, Linux Mint)
 
-**Ubuntu, Debian, Linux Mint:**
+Инсталиране на Java:
 ```bash
 sudo apt update
 sudo apt install openjdk-21-jre
 ```
-
-**Fedora, Rocky Linux, AlmaLinux:**
-```bash
-sudo dnf install java-21-openjdk
-```
-
-**Arch Linux, Manjaro:**
-```bash
-sudo pacman -S jre21-openjdk
-```
-
-### Проверка и стартиране
-Отворете Terminal и изпълнете:
+Проверка:
 ```bash
 java -version
 ```
-
-За да стартирате приложението:
+Стартиране:
 ```bash
-java -jar dfieldX.jar
+java -jar pplaneX.jar
 ```
-или
+
+---
+
+## 5. Linux (Fedora, Rocky Linux, AlmaLinux)
+
+Инсталиране на Java:
+```bash
+sudo dnf install java-21-openjdk
+```
+Проверка:
+```bash
+java -version
+```
+Стартиране:
+```bash
+java -jar pplaneX.jar
+```
+
+---
+
+## 6. Linux (Arch Linux, Manjaro)
+
+Инсталиране на Java:
+```bash
+sudo pacman -S jre21-openjdk
+```
+Проверка:
+```bash
+java -version
+```
+Стартиране:
 ```bash
 java -jar pplaneX.jar
 ```
@@ -110,5 +119,19 @@ java -jar pplaneX.jar
 ---
 
 ## Отстраняване на неизправности
-- **Нищо не се случва при двукратно кликване върху JAR файла:** Винаги опитвайте да стартирате от терминала, използвайки `java -jar <filename>.jar`, за да видите съобщенията за грешка.
-- **Грешка Unsupported Class Version Error:** Имате стара версия на Java. Инсталирайте Java 21 или по-нова версия.
+
+### Нищо не се случва при двукратно щракване върху JAR файла
+Стартирайте приложението от терминал, за да видите системния изход:
+```bash
+java -jar pplaneX.jar
+```
+
+### Грешка "Unsupported Class Version"
+Използвате стара версия на Java. Инсталирайте Java 21 или по-нова версия.
+
+### Приложението не успява да стартира
+Проверете версията си на Java:
+```bash
+java -version
+```
+Съобщете за всякакви съобщения за грешка заедно с версията си на Java на разработчика.

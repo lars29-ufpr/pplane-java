@@ -1,90 +1,137 @@
-# Guía de Instalación (dfieldX & pplaneX)
+> **Language / Idioma:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | **Español** | [Français](INSTALL_fr.md) | [Русский](INSTALL_ru.md) | [Български](INSTALL_bg.md) | [Українська](INSTALL_uk.md) | [Deutsch](INSTALL_de.md) | [Italiano](INSTALL_it.md)
 
-> **Language / Idiomas:** [English](INSTALL.md) | [Português](INSTALL_pt_BR.md) | **Español**
+# Guía de Instalación: pplaneX y dfieldX
 
-Esta guía explica cómo instalar y ejecutar **dfieldX** y **pplaneX** en Windows, macOS y Linux.
+Esta guía explica cómo instalar y ejecutar **pplaneX** y **dfieldX** en Windows, macOS y Linux.
 
-Estas aplicaciones requieren **Java 21 o superior**.
-No se requiere una instalación previa de Java. Esta guía asume que Java aún no está instalado en su computadora.
+Estas aplicaciones requieren **Java 21 (LTS)** o una versión más reciente. No es necesaria ninguna instalación previa de Java. Esta guía asume que Java aún no está instalado en su computadora.
 
 ---
 
 ## 1. Descargar la Aplicación
 
 Descargue la última versión desde GitHub:
-- **dfieldX:** https://tinyurl.com/dfieldx-ufpr
 - **pplaneX:** https://tinyurl.com/pplanex-ufpr
+- **dfieldX:** https://tinyurl.com/difieldx-ufpr
 
-Guarde el archivo `.jar` descargado en una ubicación de fácil acceso, como su Escritorio o carpeta de Descargas.
+Guarde el archivo `.jar` descargado en una ubicación donde pueda encontrarlo fácilmente más tarde, como en su Escritorio o en la carpeta de Descargas.
 
 ---
 
 ## 2. Windows
 
-### Instalar Java
+### Parte A: Instalar Java
 1. Abra su navegador web y visite: https://adoptium.net/
-2. Descargue Eclipse Temurin Java 21 LTS para Windows x64.
+2. Descargue **Eclipse Temurin Java 21 LTS** para Windows x64.
 3. Ejecute el instalador descargado.
-4. En "Custom Setup" (Instalación Personalizada), asegúrese de habilitar "Add to PATH" y "Associate .jar files".
+4. En la pantalla "Custom Setup" (Configuración Personalizada), asegúrese de que las opciones **"Add to PATH"** (Agregar a PATH) y **"Associate .jar files"** (Asociar archivos .jar) estén habilitadas.
 5. Finalice la instalación.
 
-### Verificar y Ejecutar
-Abra el Símbolo del sistema y ejecute:
-  java -version
-
-Para ejecutar la aplicación:
-  java -jar dfieldX.jar
-o
-  java -jar pplaneX.jar
+### Parte B: Verificar y Ejecutar
+Abra el Símbolo del sistema (Command Prompt) y ejecute:
+```bash
+java -version
+```
+Cualquier versión 21 o superior es compatible. Para ejecutar la aplicación:
+```bash
+java -jar pplaneX.jar
+```
+*(o sustituya por `dfieldX.jar`)*
 
 ---
 
 ## 3. macOS
 
-### Instalar Java
+### Parte A: Instalar Java
 1. Visite https://adoptium.net/
-2. Descargue Java 21 LTS para macOS (elija Apple Silicon para M1/M2/M3/M4 o Intel para Macs más antiguos).
-3. Ejecute el instalador y siga las instrucciones.
+2. Descargue el **Java 21 LTS** más reciente para macOS.
+   * *Consejo:* Elija el instalador `.dmg` (ej. `jdk-21_macos-x64_bin.dmg` para Macs con procesador Intel, o el equivalente `aarch64` para Apple Silicon M1/M2/M3/M4).
+3. Ejecute el instalador `.dmg` descargado y siga las instrucciones en pantalla.
 
-### Verificar y Ejecutar
-Abra la Terminal y ejecute:
-  java -version
+### Parte B: Organizar y Ejecutar (Omitir Gatekeeper)
+macOS incluye una función de seguridad que bloquea aplicaciones de desarrolladores no identificados. Siga estos pasos en la primera ejecución:
 
-Para ejecutar la aplicación:
-  java -jar dfieldX.jar
-o
-  java -jar pplaneX.jar
+1. **Organizar:** Para una mejor organización, mueva los archivos `pplaneX.jar` y `dfieldX.jar` descargados a su carpeta de **Aplicaciones** (Applications).
+2. **No haga doble clic** en el archivo `.jar` la primera vez. Si lo hace, macOS mostrará una advertencia y evitará que se abra.
+3. En su lugar, **haga clic derecho** (o Control-clic) en el archivo `.jar` y seleccione **Abrir** (Open) en el menú contextual.
+4. Aparecerá un cuadro de diálogo pidiendo confirmación. Haga clic en **Abrir** nuevamente.
 
-### 🍎 Advertencia de Gatekeeper en macOS
-Si macOS bloquea la aplicación indicando que "no puede verificar que esté libre de malware":
-**Método 1 (Interfaz):** Abra Configuración del Sistema → Privacidad y Seguridad → Desplácese hacia abajo y haga clic en "Abrir de todos modos".
-**Método 2 (Terminal):** Ejecute `xattr -d com.apple.quarantine *.jar`
+*Nota: Solo necesita hacer esto una vez. Para todos los usos posteriores, simplemente haga doble clic en el archivo `.jar` para iniciar la aplicación normalmente.*
+
+### Ejecutar vía Terminal (Alternativa)
+Si prefiere la línea de comandos, abra la Terminal y ejecute:
+```bash
+java -jar /Applications/pplaneX.jar
+```
 
 ---
 
-## 4. Linux
+## 4. Linux (Ubuntu, Debian, Linux Mint)
 
-**Ubuntu, Debian, Linux Mint:**
-  sudo apt update
-  sudo apt install openjdk-21-jre
+Instalar Java:
+```bash
+sudo apt update
+sudo apt install openjdk-21-jre
+```
+Verificar:
+```bash
+java -version
+```
+Ejecutar:
+```bash
+java -jar pplaneX.jar
+```
 
-**Fedora, Rocky Linux, AlmaLinux:**
-  sudo dnf install java-21-openjdk
+---
 
-**Arch Linux, Manjaro:**
-  sudo pacman -S jre21-openjdk
+## 5. Linux (Fedora, Rocky Linux, AlmaLinux)
 
-### Verificar y Ejecutar
-Abra la Terminal y ejecute:
-  java -version
+Instalar Java:
+```bash
+sudo dnf install java-21-openjdk
+```
+Verificar:
+```bash
+java -version
+```
+Ejecutar:
+```bash
+java -jar pplaneX.jar
+```
 
-Para ejecutar la aplicación:
-  java -jar dfieldX.jar
-o
-  java -jar pplaneX.jar
+---
+
+## 6. Linux (Arch Linux, Manjaro)
+
+Instalar Java:
+```bash
+sudo pacman -S jre21-openjdk
+```
+Verificar:
+```bash
+java -version
+```
+Ejecutar:
+```bash
+java -jar pplaneX.jar
+```
 
 ---
 
 ## Solución de Problemas
-- **No sucede nada al hacer doble clic en el JAR:** Intente siempre ejecutar desde la terminal usando `java -jar <nombre-del-archivo>.jar` para ver los mensajes de error.
-- **Unsupported Class Version Error:** Tiene una versión antigua de Java. Instale Java 21 o superior.
+
+### No Sucede Nada al Hacer Doble Clic en el Archivo JAR
+Ejecute la aplicación desde una terminal para ver la salida del sistema:
+```bash
+java -jar pplaneX.jar
+```
+
+### Error "Unsupported Class Version"
+Está ejecutando una versión antigua de Java. Instale Java 21 o una versión más reciente.
+
+### La Aplicación Falla al Iniciar
+Verifique su versión de Java:
+```bash
+java -version
+```
+Informe cualquier mensaje de error junto con su versión de Java al desarrollador.
