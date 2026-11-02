@@ -1,5 +1,5 @@
 # Guide des Modèles Mathématiques (Phase Plane)
-## pplaneX — Version 1.2
+## pplaneX — Version 1.2.1
 
 Ce guide rassemble le catalogue canonique des systèmes d'équations différentielles ordinaires bidimensionnelles ($2 \times 2$) implémentés dans **pplaneX**. Chaque modèle comprend sa formulation mathématique, un guide didactique d'expérimentation dans le plan de phase et des références conceptuelles classiques.
 
@@ -187,60 +187,67 @@ $$\frac{d\omega}{dt} = -\frac{g}{L} \sin(\theta) - \gamma \omega$$
 
 ---
 
-### 7. Oscillateur de Duffing Autonome
+# III. Finance, Climat & Dynamique Non Linéaire
+
+---
+
+### 7. Cycle Économique Non Linéaire de Kaldor
 
 #### Formulation Mathématique et Paramètres
-Représente une poutre élastique déformable soumise à des forces mécaniques avec un potentiel à double puits symétrique :
+Modèle macroéconomique fondamental qui endogénéise les cycles économiques grâce à une fonction d'investissement non linéaire (sigmoïde) couplée au stock de capital :
 
-$$\frac{dx}{dt} = y$$
-$$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
+$$\frac{dY}{dt} = \alpha (\tanh(Y) - s Y - \gamma K)$$
+$$\frac{dK}{dt} = s Y - \delta K$$
 
 - **Variables d'État :**
-  * $x(t)$ : Position de déflexion latérale de la poutre.
-  * $y(t)$ : Vitesse mécanique instantanée.
+  * $Y(t)$ : Revenu ou production nationale (écarts par rapport à l'équilibre).
+  * $K(t)$ : Stock de capital accumulé.
 - **Paramètres Typiques :**
-  * $\delta = 0.2$ : Amortissement visqueux structurel.
-  * $\beta = -1.0$ : Terme linéaire de rigidité négative (provoque l'instabilité au repos central).
-  * $\alpha = 1.0$ : Terme cubique de restauration non linéaire.
-- **Topologie à Double Puits :**
-  * L'origine $(0, 0)$ est un point col.
-  * Les deux fonds des puits latéraux en $(\pm 1, 0)$ sont des foyers stables.
+  * $\alpha = 1.2$ : Vitesse d'ajustement du marché des biens.
+  * $\gamma = 0.8$ : Sensibilité de l'investissement au stock de capital.
+  * $s = 0.3$ : Propension marginale à épargner.
+  * $\delta = 0.1$ : Taux de dépréciation du capital.
+- **Phénoménologie Géométrique :**
+  * Le système présente un cycle limite attracteur représentant des fluctuations économiques endogènes persistantes.
 
 #### Guide Pratique d'Exploration
-1. **Frontière Fragile des Bassins :** Cliquez sur **Tracer les Séparatrices** au niveau du point col $(0, 0)$. Les variétés stables s'enroulent dans le plan, dessinant une frontière délicate entre les deux puits.
-2. **Sensibilité aux Conditions Initiales :** Lancez deux points initiaux presque identiques autour de l'origine et vérifiez que des trajectoires voisines peuvent converger vers des puits d'attraction opposés.
+1. **Attraction Cyclique :** Cliquez sur n'importe quel point initial (ex. : $Y = 3.0, K = -2.0$). La trajectoire forme une spirale vers une orbite fermée bien définie.
+2. **Isocline en S :** Notez la forme en "S" de l'isocline de $Y$. Cette non-linéarité empêche le système de rester au centre, forçant des oscillations de relaxation continues.
 
 #### Références Conceptuelles
-- Duffing, G. (1918). *Erzwungene Schwingungen bei veränderlicher Eigenfrequenz*. Vieweg, Braunschweig.
-- Guckenheimer, J., & Holmes, P. (1983). *Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields*. Springer-Verlag.
+- Kaldor, N. (1940). *A Model of the Trade Cycle*. The Economic Journal, 50(197), 78-92.
+- Chang, W. W., & Smyth, D. J. (1971). *The existence and persistence of cycles in a non-linear model: Kaldor's 1940 model re-examined*. The Review of Economic Studies.
 
 ---
 
-# III. Fondements Mathématiques et Théorie Qualitative
-
----
-
-### 8. Pplane Classique (Polking)
+### 8. Circulation Thermohaline de Stommel (Modèle à Deux Boîtes)
 
 #### Formulation Mathématique et Paramètres
-Le modèle emblématique qui a historiquement accompagné l'utilitaire MATLAB `pplane` de John Polking, conçu intentionnellement pour illustrer plusieurs types d'équilibres et de séparatrices concurrentes sur un seul écran :
+Modèle fondamental en océanographie physique décrivant l'échange d'eau entre les régions équatoriale et polaire, démontrant la possibilité de multiples équilibres climatiques :
 
-$$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
+$$\frac{dx}{dt} = \eta_1 - x - x|x - y|$$
+$$\frac{dy}{dt} = \eta_2 - y - y|x - y|$$
 
 - **Variables d'État :**
-  * $x, y \in \mathbb{R}$ : Coordonnées cartésiennes dans le plan de phase.
+  * $x(t)$ : Différence de température adimensionnelle entre les boîtes.
+  * $y(t)$ : Différence de salinité adimensionnelle entre les boîtes.
+- **Paramètres Typiques :**
+  * $\eta_1 = 3.0$ : Forçage thermique de surface.
+  * $\eta_2 = 1.2$ : Forçage halin de surface.
 - **Phénoménologie Géométrique :**
-  * Présente de multiples équilibres isolés dans une fenêtre planaire compacte (nœuds, cols et foyers simultanés).
-  * Connexions riches de séparatrices qui démontrent la subdivision complète du plan en régions dynamiquement disjointes.
+  * Présente une bistabilité, avec deux régimes climatiques stables (nœuds) séparés par un col instable.
 
 #### Guide Pratique d'Exploration
-1. **Balayage avec Points d'Équilibre :** Appuyez sur **Points d'Équilibre** et cliquez sur chaque point mis en évidence pour vérifier la valeur propre et la classification jacobienne locale.
-2. **Cartographie des Séparatrices :** Tracez les variétés stables et instables des points cols présents dans le système pour construire la structure globale du champ de vecteurs.
+1. **Bassin de Concurrence :** Utilisez **Tracer les Séparatrices** sur le point col central pour voir la frontière séparant l'état de circulation thermique de l'état inversé.
+2. **Perturbation Climatique :** Cliquez près de la séparatrice pour voir comment de légères modifications des conditions initiales peuvent entraîner le système vers des climats totalement différents.
 
 #### Références Conceptuelles
-- Polking, J. C. (1995). *Ordinary Differential Equations using MATLAB*. Prentice Hall.
-- Boyce, W. E., DiPrima, R. C., & Meade, D. B. (2021). *Elementary Differential Equations and Boundary Value Problems*. Wiley.
+- Stommel, H. (1961). *Thermohaline convection with two stable regimes of flow*. Tellus, 13(2), 224-230.
+- Dijkstra, H. A. (2005). *Nonlinear Physical Oceanography*. Springer.
+
+---
+
+# IV. Fondements Mathématiques et Théorie Qualitative
 
 ---
 
@@ -290,25 +297,3 @@ $$\frac{dy}{dt} = x(2 - y)$$
   * $(0, 2)$ : Équilibre avec convergence asymptotique verticale.
 - **Phénoménologie :**
   * Présente la coexistence de 4 équilibres dans le plan, générant une carte riche en séparatrices où des trajectoires voisines prennent des destinations diamétralement opposées.
-
----
-
-### 11. Dynamique de l'Amour (Roméo & Juliette de Strogatz)
-
-#### Formulation Mathématique et Paramètres
-Formalisé par le mathématicien Steven Strogatz (*Nonlinear Dynamics and Chaos*), ce modèle cartographie la dynamique affective d'un couple à travers un système linéaire homogène :
-
-$$\frac{dx}{dt} = a x + b y$$
-$$\frac{dy}{dt} = c x + d y$$
-
-- **Variables d'État :**
-  * $x(t)$ : Niveau d'affection de Roméo pour Juliette ($x > 0$ : passion débordante ; $x < 0$ : ressentiment absolu).
-  * $y(t)$ : Niveau d'affection de Juliette pour Roméo ($y > 0$ : amour réciproque ; $y < 0$ : indifférence/mépris).
-- **Paramètres Préconfigurés (Cas des Âmes Volages) :**
-  * $a = -0.1$ : Amour-propre déclinant de Roméo.
-  * $b = 1.0$ : Juliette réchauffe le cœur de Roméo avec facilité.
-  * $c = -1.0$ : Juliette prend peur face à l'insistance de Roméo et s'éloigne.
-  * $d = -0.1$ : Tendance naturelle de Juliette à l'indifférence avec le temps.
-- **Phénoménologie et Avertissement Amoureux :**
-  * Avec des valeurs propres complexes conjuguées à partie réelle négative, le système forme une spirale stable vers l'origine $(0, 0)$ : la tragique et monotone apathie émotionnelle mutuelle.
-  * Dans les configurations non amorties, l'amour devient une orbite périodique fermée (centre) : quand Roméo aime, Juliette fuit ; quand Roméo renonce, Juliette retombe amoureuse — un cycle infini de chassés-croisés amoureux mathématiquement inévitables.

@@ -1,5 +1,5 @@
 # Guida Didattica ai Modelli Dinamici (Piano delle Fasi)
-## pplaneX — Versione 1.2
+## pplaneX — Versione 1.2.1
 
 Questa guida raccoglie il catalogo canonico dei sistemi di equazioni differenziali ordinarie bidimensionali ($2 \times 2$) implementati in **pplaneX**. Ogni modello include la sua formulazione matematica, una guida pratica all'esplorazione nel piano delle fasi e i classici riferimenti concettuali.
 
@@ -18,17 +18,14 @@ $$\frac{dx}{dt} = \alpha x - \beta x y = x(\alpha - \beta y)$$
 $$\frac{dy}{dt} = \delta x y - \gamma y = y(\delta x - \gamma)$$
 
 - **Variabili di Stato:**
-
   * $x(t) \ge 0$: Densità della popolazione delle prede.
   * $y(t) \ge 0$: Densità della popolazione dei predatori.
 - **Parametri Tipici:**
-
   * $\alpha = 1.0$: Tasso di crescita intrinseco delle prede in assenza di predatori.
   * $\beta = 0.5$: Tasso di predazione (frequenza di cattura e consumo).
   * $\delta = 0.5$: Efficienza di conversione biologica delle prede consumate in nuovi predatori.
   * $\gamma = 1.0$: Tasso di mortalità pro capite dei predatori.
 - **Punti di Equilibrio e Invariante:**
-
   * $(0, 0)$: Punto di sella instabile.
   * $(x^*, y^*) = \left(\frac{\gamma}{\delta}, \frac{\alpha}{\beta}\right) = (2.0, 2.0)$: Centro conservativo linearmente neutro.
 
@@ -47,7 +44,6 @@ $$\frac{dx}{dt} = r_1 x \left(1 - \frac{x}{K_1} - \alpha_{12} \frac{y}{K_1}\righ
 $$\frac{dy}{dt} = r_2 y \left(1 - \frac{y}{K_2} - \alpha_{21} \frac{x}{K_2}\right)$$
 
 - **Parametri Tipici:**
-
   * $r_1 = 1.0, r_2 = 1.0$: Tassi di crescita intrinseca pro capite.
   * $K_1 = 3.0, K_2 = 3.0$: Capacità portanti individuali.
   * $\alpha_{12} = 0.5, \alpha_{21} = 0.7$: Coefficienti di inibizione interspecifica.
@@ -67,7 +63,6 @@ $$\frac{dv}{dt} = v - \frac{v^3}{3} - w + I_{\text{ext}}$$
 $$\frac{dw}{dt} = \epsilon (v + a - b w)$$
 
 - **Parametri Tipici:**
-
   * $a = 0.7, b = 0.8$: Parametri della cinetica di recupero.
   * $\epsilon = 0.08$: Separazione della scala temporale lenta/veloce.
   * $I_{\text{ext}} = 0.5$: Corrente di stimolo esterno iniettata.
@@ -83,7 +78,6 @@ $$\frac{dS}{dt} = -\beta S I$$
 $$\frac{dI}{dt} = \beta S I - \gamma I = I (\beta S - \gamma)$$
 
 - **Parametri Tipici:**
-
   * $\beta = 0.5$: Tasso di trasmissione.
   * $\gamma = 0.2$: Tasso di recupero.
 
@@ -94,36 +88,81 @@ $$\frac{dI}{dt} = \beta S I - \gamma I = I (\beta S - \gamma)$$
 ---
 
 ### 5. Oscillatore di Van der Pol
+
+#### Formulazione Matematica e Parametri
 $$\frac{dx}{dt} = y$$
 $$\frac{dy}{dt} = \mu (1 - x^2) y - x$$
 - **Fenomenologia:** Presenta un ciclo limite di rilassamento stabile.
 
+---
+
 ### 6. Pendolo Non Lineare Smorzato
+
+#### Formulazione Matematica e Parametri
 $$\frac{d\theta}{dt} = \omega$$
 $$\frac{d\omega}{dt} = -\frac{g}{L} \sin(\theta) - \gamma \omega$$
 - **Fenomenologia:** Mostra fuochi stabili a riposo e punti di sella instabili nelle posizioni invertite.
 
-### 7. Oscillatore di Duffing Autonomo
-$$\frac{dx}{dt} = y$$
-$$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
-- **Fenomenologia:** Sistema bistabile con un potenziale a doppia buca.
+---
+
+# III. Finanza, Clima e Dinamica Non Lineare
 
 ---
 
-# III. Fondamenti Matematici e Teoria Qualitativa
+### 7. Ciclo Economico Non Lineare di Kaldor
+
+#### Formulazione Matematica e Parametri
+Un modello macroeconomico fondamentale che endogenizza i cicli economici (espansione e recessione) attraverso una funzione di investimento non lineare (sigmoide) accoppiata allo stock di capitale:
+
+$$\frac{dY}{dt} = \alpha (\tanh(Y) - s Y - \gamma K)$$
+$$\frac{dK}{dt} = s Y - \delta K$$
+
+- **Variabili di Stato:**
+  * $Y(t)$: Reddito o produzione nazionale (deviazioni dall'equilibrio).
+  * $K(t)$: Stock di capitale accumulato.
+- **Parametri Tipici:**
+  * $\alpha = 1.2$: Velocità di aggiustamento del mercato dei beni.
+  * $\gamma = 0.8$: Sensibilità dell'investimento allo stock di capitale.
+  * $s = 0.3$: Propensione marginale al risparmio.
+  * $\delta = 0.1$: Tasso di deprezzamento del capitale.
+- **Fenomenologia:** Presenta un ciclo limite attrattivo che rappresenta fluttuazioni economiche endogene persistenti.
 
 ---
 
-### 8. Pplane Classico (Polking)
-$$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
+### 8. Circolazione Termoalina di Stommel (Modello a Due Scatole)
+
+#### Formulazione Matematica e Parametri
+Un modello fondamentale nell'oceanografia fisica che descrive lo scambio d'acqua tra le regioni equatoriale e polare, dimostrando la possibilità di molteplici equilibri climatici globali:
+
+$$\frac{dx}{dt} = \eta_1 - x - x|x - y|$$
+$$\frac{dy}{dt} = \eta_2 - y - y|x - y|$$
+
+- **Variabili di Stato:**
+  * $x(t)$: Differenza di temperatura adimensionale tra le scatole equatoriale e polare.
+  * $y(t)$: Differenza di salinità adimensionale tra le scatole.
+- **Parametri Tipici:**
+  * $\eta_1 = 3.0$: Forzante termica superficiale.
+  * $\eta_2 = 1.2$: Forzante alina superficiale.
+- **Fenomenologia:** Mostra bistabilità, ammettendo due regimi climatici stabili (nodi) separati da una sella instabile.
+
+---
+
+# IV. Fondamenti Matematici e Teoria Qualitativa
+
+---
 
 ### 9. Sistema Lineare di Riferimento
+
+#### Formulazione Matematica e Parametri
 $$\frac{dx}{dt} = a x + b y$$
 $$\frac{dy}{dt} = c x + d y$$
 - **Classificazione Spettrale:** Basata su Traccia e Determinante della matrice Jacobiana.
 
-### 10. Dinamica dell'Amore (Strogatz)
-$$\frac{dx}{dt} = a x + b y$$
-$$\frac{dy}{dt} = c x + d y$$
-- **Fenomenologia:** Sistema lineare che rappresenta l'affetto tra Romeo e Giulietta.
+---
+
+### 10. Dinamica Non Lineare di Polking (Equilibri Multipli)
+
+#### Formulazione Matematica e Parametri
+$$\frac{dx}{dt} = x^2 - y^2$$
+$$\frac{dy}{dt} = x(2 - y)$$
+- **Fenomenologia:** Presenta la coesistenza di 4 equilibri nel piano, generando una ricca mappa di separatrici in competizione.

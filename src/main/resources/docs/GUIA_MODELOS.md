@@ -1,5 +1,5 @@
 # Guia Didático de Modelos Dinâmicos Bidimensionais
-## Phase Plane Analyzer — Versão 1.2
+## Phase Plane Analyzer — Versão 1.2.1
 
 Este guia reúne o catálogo canônico de sistemas de equações diferenciais ordinárias bidimensionais ($2 \times 2$) implementados no **Phase Plane Analyzer**. Cada modelo conta com a respectiva formulação matemática, roteiro didático de experimentação no plano de fase e referências conceituais clássicas.
 
@@ -17,15 +17,15 @@ O modelo clássico de Lotka e Volterra descreve a interação de predação entr
 $$\frac{dx}{dt} = \alpha x - \beta x y = x(\alpha - \beta y)$$
 $$\frac{dy}{dt} = \delta x y - \gamma y = y(\delta x - \gamma)$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $x(t) \ge 0$: Densidade da população de presas.
   * $y(t) \ge 0$: Densidade da população de predadores.
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $\alpha = 1.0$: Taxa intrínseca de crescimento da presa na ausência de predadores.
   * $\beta = 0.5$: Taxa de predação (frequência de captura e consumo).
   * $\delta = 0.5$: Eficiência de conversão biológica de presas consumidas em novos predadores.
   * $\gamma = 1.0$: Taxa de mortalidade per capita dos predadores.
-* **Pontos de Equilíbrio e Invariante:**
+- **Pontos de Equilíbrio e Invariante:**
   * $(0, 0)$: Ponto de sela instável.
   * $(x^*, y^*) = \left(\frac{\gamma}{\delta}, \frac{\alpha}{\beta}\right) = (2.0, 2.0)$: Centro conservativo linearmente neutro.
   * Possui uma integral primeira conservada: $V(x, y) = \delta x - \gamma \ln(x) + \beta y - \alpha \ln(y) = \text{constante}$.
@@ -36,9 +36,9 @@ $$\frac{dy}{dt} = \delta x y - \gamma y = y(\delta x - \gamma)$$
 3. **Série Temporal:** Abra a janela de *Soluções vs Tempo* e constate o clássico descompasso de fase de um quarto de ciclo entre o pico de presas e o subsequente pico de predadores.
 
 #### Referências Conceituais
-* Lotka, A. J. (1925). *Elements of Physical Biology*. Williams & Wilkins, Baltimore.
-* Volterra, V. (1926). *Variazioni e fluttuazioni del numero d'individui in specie animali conviventi*. Mem. Accad. Lincei, 2, 31-113.
-* Murray, J. D. (2002). *Mathematical Biology: I. An Introduction* (3rd ed.). Springer.
+- Lotka, A. J. (1925). *Elements of Physical Biology*. Williams & Wilkins, Baltimore.
+- Volterra, V. (1926). *Variazioni e fluttuazioni del numero d'individui in specie animali conviventi*. Mem. Accad. Lincei, 2, 31-113.
+- Murray, J. D. (2002). *Mathematical Biology: I. An Introduction* (3rd ed.). Springer.
 
 ---
 
@@ -50,14 +50,14 @@ Descreve a dinâmica de duas espécies biológicas disputando os mesmos nichos o
 $$\frac{dx}{dt} = r_1 x \left(1 - \frac{x}{K_1} - \alpha_{12} \frac{y}{K_1}\right)$$
 $$\frac{dy}{dt} = r_2 y \left(1 - \frac{y}{K_2} - \alpha_{21} \frac{x}{K_2}\right)$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $x(t) \ge 0$: Densidade da espécie concorrente 1.
   * $y(t) \ge 0$: Densidade da espécie concorrente 2.
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $r_1 = 1.0, r_2 = 1.0$: Taxas intrínsecas de crescimento per capita.
   * $K_1 = 3.0, K_2 = 3.0$: Capacidades de suporte individuais do habitat.
   * $\alpha_{12} = 0.5, \alpha_{21} = 0.7$: Coeficientes de inibição interespecífica recíproca.
-* **Fenomenologia:**
+- **Fenomenologia:**
   * Quando $\alpha_{12} < 1$ e $\alpha_{21} < 1$, o sistema admite **coexistência estável** em um nó atrator no interior do primeiro quadrante.
 
 #### Roteiro Prático de Exploração
@@ -66,8 +66,8 @@ $$\frac{dy}{dt} = r_2 y \left(1 - \frac{y}{K_2} - \alpha_{21} \frac{x}{K_2}\righ
 3. **Exclusão Competitiva:** Altere os parâmetros via *Parameter Studio* para $\alpha_{12} = 1.5$ e $\alpha_{21} = 1.3$ e clique em **Traçar Separatrizes** para visualizar a bacia dividida por uma sela instável.
 
 #### Referências Conceituais
-* Murray, J. D. (2002). *Mathematical Biology: I. An Introduction*. Springer-Verlag.
-* Begon, M., Townsend, C. R., & Harper, J. L. (2006). *Ecology: From Individuals to Ecosystems*. Blackwell Publishing.
+- Murray, J. D. (2002). *Mathematical Biology: I. An Introduction*. Springer-Verlag.
+- Begon, M., Townsend, C. R., & Harper, J. L. (2006). *Ecology: From Individuals to Ecosystems*. Blackwell Publishing.
 
 ---
 
@@ -79,14 +79,14 @@ Redução planar canônica do modelo biofísico de quatro variáveis de Hodgkin-
 $$\frac{dv}{dt} = v - \frac{v^3}{3} - w + I_{\text{ext}}$$
 $$\frac{dw}{dt} = \epsilon (v + a - b w)$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $v(t)$: Potencial de membrana neuronal (variável rápida de ativação).
   * $w(t)$: Variável de recuperação de condutância iônica de potássio (variável lenta).
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $a = 0.7, b = 0.8$: Parâmetros de cinética da recuperação transmembrana.
   * $\epsilon = 0.08$: Separação de escalas temporais lenta/rápida ($\epsilon \ll 1$).
   * $I_{\text{ext}} = 0.5$: Corrente de estímulo elétrico externo injetada.
-* **Dinâmica Excitável:** A nulclina cúbica de $v$ combinada com o relaxamento linear de $w$ produz oscilações por disparo (*spiking*) ou excitabilidade limiar.
+- **Dinâmica Excitável:** A nulclina cúbica de $v$ combinada com o relaxamento linear de $w$ produz oscilações por disparo (*spiking*) ou excitabilidade limiar.
 
 #### Roteiro Prático de Exploração
 1. **Equilíbrio em Repouso ($I_{\text{ext}} = 0$):** Inspecione o equilíbrio único na haste esquerda da cúbica; observe que perturbações pequenas amortecem, mas perturbações que superam o joelho da cúbica dão um disparo amplo no plano antes de retornar.
@@ -94,9 +94,9 @@ $$\frac{dw}{dt} = \epsilon (v + a - b w)$$
 3. **Trajetórias Rápidas e Lentas:** Observe o paralelismo quase horizontal das trajetórias fora da cúbica (fase rápida) versus a aderência lenta ao longo da cúbica (fase refratária).
 
 #### Referências Conceituais
-* FitzHugh, R. (1961). *Impulses and physiological states in theoretical models of nerve membrane*. Biophysical Journal, 1(6), 445-466.
-* Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). *An active pulse transmission line simulating nerve axon*. Proc. IRE, 50(10), 2061-2070.
-* Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience*. MIT Press.
+- FitzHugh, R. (1961). *Impulses and physiological states in theoretical models of nerve membrane*. Biophysical Journal, 1(6), 445-466.
+- Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). *An active pulse transmission line simulating nerve axon*. Proc. IRE, 50(10), 2061-2070.
+- Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience*. MIT Press.
 
 ---
 
@@ -108,13 +108,13 @@ O modelo fundamental da epidemiologia teórica descreve a transmissão de patóg
 $$\frac{dS}{dt} = -\beta S I$$
 $$\frac{dI}{dt} = \beta S I - \gamma I = I (\beta S - \gamma)$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $S(t) \in [0, 1]$: Fração da população suscetível à infecção.
   * $I(t) \in [0, 1]$: Fração da população infectada e transmissora ativa.
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $\beta = 0.5$: Taxa efetiva de transmissão por contato contagioso.
   * $\gamma = 0.2$: Taxa per capita de recuperação infecciosa ($\gamma = 1/\tau_{\text{inf}}$).
-* **Limiar Crítico e Reprodução Básica:**
+- **Limiar Crítico e Reprodução Básica:**
   $$R_0 = \frac{\beta}{\gamma} = \frac{0.5}{0.2} = 2.5, \quad S_c = \frac{1}{R_0} = \frac{\gamma}{\beta} = 0.4$$
 
 #### Roteiro Prático de Exploração
@@ -123,8 +123,8 @@ $$\frac{dI}{dt} = \beta S I - \gamma I = I (\beta S - \gamma)$$
 3. **Fim da Epidemia sem Exaustão Total:** Constate que a curva desce assintoticamente até o eixo horizontal $I = 0$ em um valor $S_\infty > 0$. A epidemia cessa por quebra da densidade crítica de contatos e não pelo contágio da totalidade dos indivíduos.
 
 #### Referências Conceituais
-* Kermack, W. O., & McKendrick, A. G. (1927). *A contribution to the mathematical theory of epidemics*. Proc. R. Soc. Lond. A, 115(772), 700-721.
-* Brauer, F., & Castillo-Chavez, C. (2012). *Mathematical Models in Population Biology and Epidemiology*. Springer.
+- Kermack, W. O., & McKendrick, A. G. (1927). *A contribution to the mathematical theory of epidemics*. Proc. R. Soc. Lond. A, 115(772), 700-721.
+- Brauer, F., & Castillo-Chavez, C. (2012). *Mathematical Models in Population Biology and Epidemiology*. Springer.
 
 ---
 
@@ -140,12 +140,12 @@ Desenvolvido originariamente para circuitos elétricos com triodos valvulados, o
 $$\frac{dx}{dt} = y$$
 $$\frac{dy}{dt} = \mu (1 - x^2) y - x$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $x(t)$: Posição ou tensão elétrica normalizada.
   * $y(t)$: Velocidade ou derivada temporal $\dot{x}$.
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $\mu = 1.0$: Coeficiente de amortecimento não linear dependente da amplitude.
-* **Fenomenologia Geométrica:**
+- **Fenomenologia Geométrica:**
   * O ponto de equilíbrio na origem $(0, 0)$ é um foco instável.
   * Existe um **ciclo-limite atrator estável** isolado no plano que absorve todas as soluções não nulas.
 
@@ -154,8 +154,8 @@ $$\frac{dy}{dt} = \mu (1 - x^2) y - x$$
 2. **Oscilações de Relaxamento:** Aumente $\mu$ para $3.0$ ou $5.0$ no *Parameter Studio*. O ciclo perde a sua simetria quase elíptica e desenvolve saltos ultrarrápidos alternados com deslizamentos lentos ao longo dos ramos da curva $y = \frac{x - x^3/3}{\mu}$.
 
 #### Referências Conceituais
-* Van der Pol, B. (1926). *On relaxation-oscillations*. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11), 978-992.
-* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
+- Van der Pol, B. (1926). *On relaxation-oscillations*. The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11), 978-992.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
 
 ---
 
@@ -167,13 +167,13 @@ Modela as oscilações mecânicas de uma haste rígida com massa concentrada na 
 $$\frac{d\theta}{dt} = \omega$$
 $$\frac{d\omega}{dt} = -\frac{g}{L} \sin(\theta) - \gamma \omega$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $\theta(t)$: Posição angular da haste em radianos.
   * $\omega(t)$: Velocidade angular instantânea ($d\theta/dt$).
-* **Parâmetros Típicos:**
+- **Parâmetros Típicos:**
   * $\frac{g}{L} = 1.0$: Frequência natural característica normalizada.
   * $\gamma = 0.2$: Coeficiente de fricção viscosa do ar ou pivô.
-* **Estrutura Topológica:**
+- **Estrutura Topológica:**
   * Família periódica de equilíbrios estáveis em $(2k\pi, 0)$ (focos atratores estáveis — pêndulo em repouso vertical para baixo).
   * Família de pontos de sela em $((2k+1)\pi, 0)$ (haste invertida para cima instável).
 
@@ -182,65 +182,73 @@ $$\frac{d\omega}{dt} = -\frac{g}{L} \sin(\theta) - \gamma \omega$$
 2. **Bacias de Oscilação Amortecida:** Com $\gamma = 0.2$, clique em velocidades angulares elevadas ($\omega_0 = 2.5$) e acompanhe o pêndulo dando várias rotações antes de ser capturado pelo atrator local mais próximo.
 
 #### Referências Conceituais
-* Marion, J. B., & Thornton, S. T. (2004). *Classical Dynamics of Particles and Systems*. Brooks/Cole.
-* Hirsch, M. W., Smale, S., & Devaney, R. L. (2013). *Differential Equations, Dynamical Systems, and an Introduction to Chaos*. Academic Press.
+- Marion, J. B., & Thornton, S. T. (2004). *Classical Dynamics of Particles and Systems*. Brooks/Cole.
+- Hirsch, M. W., Smale, S., & Devaney, R. L. (2013). *Differential Equations, Dynamical Systems, and an Introduction to Chaos*. Academic Press.
 
 ---
 
-### 7. Oscilador de Duffing Autônomo
+# III. Finanças, Clima & Dinâmica Não Linear
+
+---
+
+### 7. Ciclo Econômico Não Linear de Kaldor
 
 #### Formulação Matemática e Parâmetros
-Representa uma viga elástica deformável submetida a forças mecânicas com potencial de duplo poço simétrico:
+Modelo macroeconômico seminal que endogeniza os ciclos de negócios (expansão e recessão) através de uma função de investimento não linear (sigmoide) acoplada ao estoque de capital:
 
-$$\frac{dx}{dt} = y$$
-$$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
+$$\frac{dY}{dt} = \alpha (\tanh(Y) - s Y - \gamma K)$$
+$$\frac{dK}{dt} = s Y - \delta K$$
 
-* **Variáveis de Estado:**
-  * $x(t)$: Posição de deflexão lateral da viga.
-  * $y(t)$: Velocidade mecânica instantânea.
-* **Parâmetros Típicos:**
-  * $\delta = 0.2$: Amortecimento viscoso estrutural.
-  * $\beta = -1.0$: Termo linear de rigidez negativa (causa instabilidade no repouso central).
-  * $\alpha = 1.0$: Termo cúbico restaurador não linear.
-* **Topologia de Duplo Poço:**
-  * A origem $(0, 0)$ é um ponto de sela.
-  * Os dois fundos dos poços laterais em $(\pm 1, 0)$ são focos estáveis.
+- **Variáveis de Estado:**
+  * $Y(t)$: Renda nacional ou produto (desvios em relação ao equilíbrio).
+  * $K(t)$: Estoque de capital acumulado.
+- **Parâmetros Típicos:**
+  * $\alpha = 1.2$: Velocidade de ajuste do mercado de bens.
+  * $\gamma = 0.8$: Sensibilidade do investimento ao estoque de capital.
+  * $s = 0.3$: Propensão marginal a poupar.
+  * $\delta = 0.1$: Taxa de depreciação do capital.
+- **Fenomenologia Geométrica:**
+  * O sistema exibe um ciclo-limite atrator que representa as flutuações endógenas persistentes da economia, nascendo tipicamente de uma bifurcação de Hopf quando os parâmetros de ajuste econômico cruzam limites críticos.
 
 #### Roteiro Prático de Exploração
-1. **Fronteira Frágil das Bacias:** Clique em **Traçar Separatrizes** sobre a sela $(0, 0)$. As variedades estáveis enrolam-se no plano desenhando uma fronteira delicada entre os dois poços.
-2. **Sensibilidade às Condições Iniciais:** Lance dois pontos iniciais quase idênticos ao redor da origem e comprove que trajetórias vizinhas podem convergir para poços de atração opostos.
+1. **Atração Cíclica:** Clique em qualquer ponto inicial com capital ou renda extremos (ex: $Y = 3.0, K = -2.0$). Observe como a trajetória espirala em direção a uma órbita fechada bem definida, mostrando que tanto booms irreais quanto depressões severas tendem a estabilizar no ciclo natural.
+2. **Nulclina em S:** Observe o formato em "S" da nulclina de $Y$ (derivada de $\tanh(Y)$). É essa não linearidade geométrica que impede que a economia repouse no centro e força as oscilações contínuas de relaxamento.
 
 #### Referências Conceituais
-* Duffing, G. (1918). *Erzwungene Schwingungen bei veränderlicher Eigenfrequenz*. Vieweg, Braunschweig.
-* Guckenheimer, J., & Holmes, P. (1983). *Nonlinear Oscillations, Dynamical Systems, and Bifurcations of Vector Fields*. Springer-Verlag.
+- Kaldor, N. (1940). *A Model of the Trade Cycle*. The Economic Journal, 50(197), 78-92.
+- Chang, W. W., & Smyth, D. J. (1971). *The existence and persistence of cycles in a non-linear model: Kaldor's 1940 model re-examined*. The Review of Economic Studies.
 
 ---
 
-# III. Fundamentos Matemáticos e Teoria Qualitativa
-
----
-
-### 8. Pplane Clássico (Polking)
+### 8. Circulação Termoalina de Stommel (Modelo de Duas Caixas)
 
 #### Formulação Matemática e Parâmetros
-O modelo emblemático que acompanhou historicamente o utilitário MATLAB `pplane` de John Polking, projetado intencionalmente para ilustrar múltiplos tipos de equilíbrios e separatrizes concorrentes em uma única tela:
+Um modelo fundamental em oceanografia física que descreve a dinâmica de troca de águas entre a região equatorial (quente/salgada) e a região polar (fria/doce), demonstrando a possibilidade de múltiplos equilíbrios climáticos globais:
 
-$$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
+$$\frac{dx}{dt} = \eta_1 - x - x|x - y|$$
+$$\frac{dy}{dt} = \eta_2 - y - y|x - y|$$
 
-* **Variáveis de Estado:**
-  * $x, y \in \mathbb{R}$: Coordenadas cartesianas no plano de fase.
-* **Fenomenologia Geométrica:**
-  * Apresenta múltiplos equilíbrios isolados em uma janela planar compacta (nós, selas e focos simultâneos).
-  * Conexões ricas de separatrizes que demonstram a subdivisão completa do plano em regiões dinamicamente disjuntas.
+- **Variáveis de Estado:**
+  * $x(t)$: Diferença de temperatura adimensional entre as caixas equatorial e polar.
+  * $y(t)$: Diferença de salinidade adimensional entre as caixas.
+- **Parâmetros Típicos:**
+  * $\eta_1 = 3.0$: Forçamento térmico superficial (radiação solar).
+  * $\eta_2 = 1.2$: Forçamento halino superficial (evaporação/precipitação).
+- **Múltiplos Equilíbrios (Biestabilidade):**
+  * O sistema pode admitir até três pontos de equilíbrio, sendo dois estáveis (nós) separados por um instável (sela). 
+  * Os nós representam dois regimes climáticos distintos: um fluxo termoalino intenso (dominado pela temperatura) e um fluxo reverso ou lento (dominado pela salinidade).
 
 #### Roteiro Prático de Exploração
-1. **Varredura com Localizar Equilíbrios:** Pressione **Localizar Equilíbrios** e clique em cada ponto destacado para verificar o autovalor e a classificação jacobiana local.
-2. **Mapeamento de Separatrizes:** Trace as variedades estáveis e instáveis das selas presentes no sistema para construir a estrutura global do campo vetorial.
+1. **Concorrência de Bacias:** Utilize a ferramenta de **Traçar Separatrizes** sobre o ponto de sela central. Você visualizará a fronteira exata que divide o oceano entre o estado de circulação térmica atual (águas polares afundando) e o estado revertido.
+2. **Perturbação Climática:** Clique em pontos logo acima e logo abaixo da separatriz para ver como mudanças muito sutis nas condições iniciais (como um influxo abrupto de água doce) levam o sistema para equilíbrios climáticos completamente diferentes e distantes.
 
 #### Referências Conceituais
-* Polking, J. C. (1995). *Ordinary Differential Equations using MATLAB*. Prentice Hall.
-* Boyce, W. E., DiPrima, R. C., & Meade, D. B. (2021). *Elementary Differential Equations and Boundary Value Problems*. Wiley.
+- Stommel, H. (1961). *Thermohaline convection with two stable regimes of flow*. Tellus, 13(2), 224-230.
+- Dijkstra, H. A. (2005). *Nonlinear Physical Oceanography*. Springer.
+
+---
+
+# IV. Fundamentos Matemáticos e Teoria Qualitativa
 
 ---
 
@@ -254,9 +262,9 @@ $$\begin{pmatrix} \dot{x} \\ \dot{y} \end{pmatrix} = \begin{pmatrix} a & b \\ c 
 $$\frac{dx}{dt} = a x + b y$$
 $$\frac{dy}{dt} = c x + d y$$
 
-* **Parâmetros Típicos de Entrada:**
+- **Parâmetros Típicos de Entrada:**
   * $a = 0.0, b = 1.0, c = -2.0, d = -0.5$.
-* **Classificação Espectral segundo Traço ($\tau$) e Determinante ($\Delta$):**
+- **Classificação Espectral segundo Traço ($\tau$) e Determinante ($\Delta$):**
   * Equação característica: $\lambda^2 - \tau \lambda + \Delta = 0$, onde $\tau = a + d$ e $\Delta = ad - bc$.
   * Discriminante: $\Lambda = \tau^2 - 4\Delta$.
   * $\Delta < 0$: **Ponto de Sela** (sempre instável).
@@ -268,8 +276,9 @@ $$\frac{dy}{dt} = c x + d y$$
 2. **Exploração no Parameter Studio:** Abra os *sliders* e varie o coeficiente $d$ mantendo os demais constantes. Observe a transição contínua e visual de foco estável $\to$ centro $\to$ foco instável conforme o traço cruza o zero.
 
 #### Referências Conceituais
-* Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering*. CRC Press.
-* Perko, L. (2001). *Differential Equations and Dynamical Systems* (3rd ed.). Springer-Verlag.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering*. CRC Press.
+- Perko, L. (2001). *Differential Equations and Dynamical Systems* (3rd ed.). Springer-Verlag.
+
 ---
 
 ### 10. Dinâmica Não-Linear de Polking (Múltiplos Equilíbrios)
@@ -280,34 +289,12 @@ O clássico sistema polinomial imortalizado por John Polking no PPLANE original 
 $$\frac{dx}{dt} = x^2 - y^2$$
 $$\frac{dy}{dt} = x(2 - y)$$
 
-* **Variáveis de Estado:**
+- **Variáveis de Estado:**
   * $x(t)$: Primeira coordenada de fase.
   * $y(t)$: Segunda coordenada de fase.
-* **Pontos de Equilíbrio:**
+- **Pontos de Equilíbrio:**
   * $(0, 0)$: Ponto crítico degenerado na origem.
   * $(2, 2)$ e $(-2, 2)$: Pontos de sela simétricos com separatrizes bem delineadas.
   * $(0, 2)$: Equilíbrio com convergência assintótica vertical.
-* **Fenomenologia:**
+- **Fenomenologia:**
   * Apresenta coexistência de 4 equilíbrios no plano, gerando um mapa rico de separatrizes onde trajetórias vizinhas tomam destinos diametralmente opostos.
-
----
-
-### 11. Dinâmica do Amor (Romeu & Julieta de Strogatz)
-
-#### Formulação Matemática e Parâmetros
-Formalizado pelo matemático Steven Strogatz (*Nonlinear Dynamics and Chaos*), este modelo mapeia a dinâmica afetiva de um casal através de um sistema linear homogêneo:
-
-$$\frac{dx}{dt} = a x + b y$$
-$$\frac{dy}{dt} = c x + d y$$
-
-* **Variáveis de Estado:**
-  * $x(t)$: Nível de afeto de Romeu por Julieta ($x > 0$: paixão arrebatadora; $x < 0$: ranço absoluto).
-  * $y(t)$: Nível de afeto de Julieta por Romeu ($y > 0$: amor correspondido; $y < 0$: indiferença/desprezo).
-* **Parâmetros Pré-configurados (Caso das Almas Volúveis):**
-  * $a = -0.1$: Amor próprio decadente de Romeu.
-  * $b = 1.0$: Julieta aquece o coração de Romeu com facilidade.
-  * $c = -1.0$: Julieta se assusta com a insistência de Romeu e se afasta.
-  * $d = -0.1$: Tendência natural de Julieta à indiferença com o tempo.
-* **Fenomenologia e Advertência Amorosa:**
-  * Com autovalores complexos conjugados de parte real negativa, o sistema forma uma espiral estável em direção à origem $(0, 0)$: a trágica e monótona apatia emocional mútua.
-  * Em configurações não amortecidas, o amor vira uma órbita periódica fechada (centro): quando Romeu ama, Julieta foge; quando Romeu desiste, Julieta volta a se apaixonar — um ciclo infinito de desencontros amorosos matematicamente inevitáveis.

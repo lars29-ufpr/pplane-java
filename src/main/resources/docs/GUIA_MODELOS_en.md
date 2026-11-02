@@ -1,5 +1,5 @@
 # Educational Guide to Dynamical Models (Phase Plane)
-## pplaneX — Version 1.2
+## pplaneX — Version 1.2.1
 
 This guide gathers the canonical catalog of two-dimensional ($2 \times 2$) ordinary differential equation systems implemented in **pplaneX**. Each model includes its mathematical formulation, a practical exploration guide in the phase plane, and classic conceptual references.
 
@@ -88,36 +88,92 @@ $$\frac{dI}{dt} = \beta S I - \gamma I = I (\beta S - \gamma)$$
 ---
 
 ### 5. Van der Pol Oscillator
+
+#### Mathematical Formulation and Parameters
 $$\frac{dx}{dt} = y$$
 $$\frac{dy}{dt} = \mu (1 - x^2) y - x$$
+
+- **Typical Parameters:**
+  * $\mu = 1.0$: Non-linear damping coefficient.
 - **Phenomenology:** Features a stable relaxation limit cycle.
 
+---
+
 ### 6. Damped Non-Linear Pendulum
+
+#### Mathematical Formulation and Parameters
 $$\frac{d\theta}{dt} = \omega$$
 $$\frac{d\omega}{dt} = -\frac{g}{L} \sin(\theta) - \gamma \omega$$
+
+- **Typical Parameters:**
+  * $\frac{g}{L} = 1.0$: Normalized natural frequency.
+  * $\gamma = 0.2$: Viscous friction coefficient.
 - **Phenomenology:** Exhibits stable foci at rest and unstable saddle points at the inverted positions.
 
-### 7. Autonomous Duffing Oscillator
-$$\frac{dx}{dt} = y$$
-$$\frac{dy}{dt} = - \delta y - \beta x - \alpha x^3$$
-- **Phenomenology:** Bistable system with a double-well potential.
+---
+
+# III. Finance, Climate & Non-Linear Dynamics
 
 ---
 
-# III. Mathematical Foundations and Qualitative Theory
+### 7. Kaldor's Non-Linear Business Cycle
+
+#### Mathematical Formulation and Parameters
+A seminal macroeconomic model that endogenizes business cycles through a non-linear (sigmoid) investment function coupled with the capital stock:
+
+$$\frac{dY}{dt} = \alpha (\tanh(Y) - s Y - \gamma K)$$
+$$\frac{dK}{dt} = s Y - \delta K$$
+
+- **State Variables:**
+  * $Y(t)$: National income or output (deviations from equilibrium).
+  * $K(t)$: Accumulated capital stock.
+- **Typical Parameters:**
+  * $\alpha = 1.2$: Goods market adjustment speed.
+  * $\gamma = 0.8$: Investment sensitivity to capital stock.
+  * $s = 0.3$: Marginal propensity to save.
+  * $\delta = 0.1$: Capital depreciation rate.
+- **Phenomenology:** Features an attracting limit cycle representing persistent endogenous economic fluctuations.
 
 ---
 
-### 8. Classic Pplane (Polking)
-$$\frac{dx}{dt} = 2x - y + 3(x^2 - y^2) + 2xy$$
-$$\frac{dy}{dt} = x - 3y - 3(x^2 - y^2) + xy$$
+### 8. Stommel's Thermohaline Circulation (Two-Box Model)
+
+#### Mathematical Formulation and Parameters
+A fundamental model in physical oceanography describing water exchange between equatorial and polar regions, demonstrating the possibility of multiple global climate equilibria:
+
+$$\frac{dx}{dt} = \eta_1 - x - x|x - y|$$
+$$\frac{dy}{dt} = \eta_2 - y - y|x - y|$$
+
+- **State Variables:**
+  * $x(t)$: Dimensionless temperature difference between equatorial and polar boxes.
+  * $y(t)$: Dimensionless salinity difference between boxes.
+- **Typical Parameters:**
+  * $\eta_1 = 3.0$: Surface thermal forcing.
+  * $\eta_2 = 1.2$: Surface haline forcing.
+- **Phenomenology:** Exhibits bistability, admitting two stable climate regimes (nodes) separated by an unstable saddle.
+
+---
+
+# IV. Mathematical Foundations and Qualitative Theory
+
+---
 
 ### 9. Reference Linear System
+
+#### Mathematical Formulation and Parameters
 $$\frac{dx}{dt} = a x + b y$$
 $$\frac{dy}{dt} = c x + d y$$
+
+- **Typical Parameters:**
+  * $a = 0.0, b = 1.0, c = -2.0, d = -0.5$.
 - **Spectral Classification:** Based on Trace and Determinant of the Jacobian.
 
-### 10. Dynamics of Love (Strogatz)
-$$\frac{dx}{dt} = a x + b y$$
-$$\frac{dy}{dt} = c x + d y$$
-- **Phenomenology:** Linear system representing Romeo and Juliet's affection.
+---
+
+### 10. Polking's Non-Linear Dynamics (Multiple Equilibria)
+
+#### Mathematical Formulation and Parameters
+$$\frac{dx}{dt} = x^2 - y^2$$
+$$\frac{dy}{dt} = x(2 - y)$$
+
+- **Phenomenology:** Features the coexistence of 4 equilibria in the plane, generating a rich map of competing separatrices.
