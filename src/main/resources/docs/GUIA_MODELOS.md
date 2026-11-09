@@ -1,10 +1,31 @@
 # Guia Didático de Modelos Dinâmicos Bidimensionais
-## Phase Plane Analyzer — Versão 1.2.1
+#### Phase Plane Analyzer — Versão 1.3
 
 Este guia reúne o catálogo canônico de sistemas de equações diferenciais ordinárias bidimensionais ($2 \times 2$) implementados no **Phase Plane Analyzer**. Cada modelo conta com a respectiva formulação matemática, roteiro didático de experimentação no plano de fase e referências conceituais clássicas.
 
+### Criando Seus Próprios Modelos (Sintaxe Matemática)
+
+Ao utilizar a aba **Meus Modelos** na Galeria, você pode definir seus próprios sistemas de Equações Diferenciais Ordinárias (EDOs). O pplaneX utiliza um avaliador matemático rigoroso, portanto, é fundamental seguir as regras de sintaxe abaixo:
+
+* **Multiplicação Explícita (Muito Importante!):** Diferente da escrita matemática no papel, o computador exige o asterisco `*` para qualquer multiplicação.
+  * [Incorreto]: `2x` ou `x(1-y)`
+  * [Correto]: `2*x` ou `x*(1-y)`
+* **Operadores Básicos:** 
+  * `+` (soma), `-` (subtração)
+  * `*` (multiplicação), `/` (divisão)
+  * `^` (potência, ex: `x^2`)
+* **Funções Suportadas:**
+  * **Trigonométricas:** `sin()`, `cos()`, `tan()`
+  * **Exponenciais e Logarítmicas:** `exp()` (base *e*), `log()` ou `ln()` (logaritmo natural), `log10()` (base 10)
+  * **Outras:** `sqrt()` (raiz quadrada), `abs()` (valor absoluto)
+
+**Exemplo prático de digitação:**
+Para inserir o sistema $x' = -y + x(1 - x^2 - y^2)$, você deve digitar no campo dx/dt:
+`-y + x*(1 - x^2 - y^2)`
+
 ---
 
+---
 # I. Biomatemática & Dinâmica Populacional
 
 ---

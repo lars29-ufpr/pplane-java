@@ -1,7 +1,27 @@
 # Guía Educativa de Modelos Dinámicos (Phase Plane)
-## pplaneX — Versión 1.2.1
+### pplaneX — Versión 1.3
 
 Esta guía reúne el catálogo canónico de sistemas de ecuaciones diferenciales ordinarias bidimensionales ($2 \times 2$) implementados en **pplaneX**. Cada modelo cuenta con la respectiva formulación matemática, guía didáctica de experimentación en el plano de fase y referencias conceptuales clásicas.
+
+### Creando Sus Propios Modelos (Sintaxis Matemática)
+
+Al utilizar la pestaña **Mis Modelos** en la Galería, puede definir sus propios sistemas de Ecuaciones Diferenciales Ordinarias (EDO). pplaneX utiliza un analizador matemático estricto, por lo que es fundamental seguir las siguientes reglas de sintaxis:
+
+* **Multiplicación Explícita (¡Muy Importante!):** A diferencia de la escritura matemática en papel, la computadora requiere el asterisco `*` para cualquier multiplicación.
+  * [x] Incorrecto: `2x` o `x(1-y)`
+  * [v] Correcto: `2*x` o `x*(1-y)`
+* **Operadores Básicos:** 
+  * `+` (suma), `-` (resta)
+  * `*` (multiplicación), `/` (división)
+  * `^` (potencia, ej: `x^2`)
+* **Funciones Soportadas:**
+  * **Trigonométricas:** `sin()`, `cos()`, `tan()`
+  * **Exponenciales y Logarítmicas:** `exp()` (base *e*), `log()` o `ln()` (logaritmo natural), `log10()` (base 10)
+  * **Otras:** `sqrt()` (raíz cuadrada), `abs()` (valor absoluto)
+
+**Ejemplo práctico de escritura:**
+Para introducir el sistema $x' = -y + x(1 - x^2 - y^2)$, debe escribir en el campo dx/dt:
+`-y + x*(1 - x^2 - y^2)`
 
 ---
 

@@ -7,7 +7,7 @@
 
    <groupId>com.phaseplane</groupId>
     <artifactId>pplaneX</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -17,6 +17,12 @@
     </properties>
 
     <dependencies>
+<!-- Avaliador de expressões matemáticas (exp4j) -->
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.8</version>
+        </dependency>
 <!-- Avaliador de expressões matemáticas das EDOs -->
         <dependency>
             <groupId>net.objecthunter</groupId>

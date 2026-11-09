@@ -1,7 +1,27 @@
 # Didaktischer Leitfaden zu dynamischen Modellen (Phasenraum)
-## pplaneX — Version 1.2.1
+### pplaneX — Version 1.3
 
 Dieser Leitfaden sammelt den kanonischen Katalog zweidimensionaler ($2 \times 2$) gewöhnlicher Differentialgleichungssysteme, die in **pplaneX** implementiert sind. Jedes Modell enthält seine mathematische Formulierung, einen praktischen Erkundungsleitfaden im Phasenraum und klassische konzeptionelle Referenzen.
+
+### Erstellen Eigener Modelle (Mathematische Syntax)
+
+Wenn Sie den Reiter **Meine Modelle** in der Galerie verwenden, können Sie Ihre eigenen Systeme gewöhnlicher Differentialgleichungen (DGL) definieren. pplaneX verwendet einen strengen mathematischen Parser, daher ist es wichtig, die folgenden Syntaxregeln zu beachten:
+
+* **Explizite Multiplikation (Sehr Wichtig!):** Im Gegensatz zur mathematischen Schreibweise auf Papier benötigt der Computer ein Sternchen `*` für jede Multiplikation.
+  * [x] Falsch: `2x` oder `x(1-y)`
+  * [v] Richtig: `2*x` oder `x*(1-y)`
+* **Grundlegende Operatoren:** 
+  * `+` (Addition), `-` (Subtraktion)
+  * `*` (Multiplikation), `/` (Division)
+  * `^` (Potenz, z.B.: `x^2`)
+* **Unterstützte Funktionen:**
+  * **Trigonometrisch:** `sin()`, `cos()`, `tan()`
+  * **Exponential und Logarithmisch:** `exp()` (Basis *e*), `log()` oder `ln()` (natürlicher Logarithmus), `log10()` (Basis 10)
+  * **Andere:** `sqrt()` (Quadratwurzel), `abs()` (Absolutwert)
+
+**Praktisches Eingabebeispiel:**
+Um das System $x' = -y + x(1 - x^2 - y^2)$ einzugeben, müssen Sie in das Feld dx/dt Folgendes tippen:
+`-y + x*(1 - x^2 - y^2)`
 
 ---
 

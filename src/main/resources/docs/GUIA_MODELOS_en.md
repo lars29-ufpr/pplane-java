@@ -1,7 +1,27 @@
 # Educational Guide to Dynamical Models (Phase Plane)
-## pplaneX — Version 1.2.1
+### pplaneX — Version 1.3
 
 This guide gathers the canonical catalog of two-dimensional ($2 \times 2$) ordinary differential equation systems implemented in **pplaneX**. Each model includes its mathematical formulation, a practical exploration guide in the phase plane, and classic conceptual references.
+
+### Creating Your Own Models (Mathematical Syntax)
+
+When using the **My Models** tab in the Gallery, you can define your own systems of Ordinary Differential Equations (ODEs). pplaneX uses a strict mathematical parser, so it is essential to follow the syntax rules below:
+
+* **Explicit Multiplication (Very Important!):** Unlike mathematical writing on paper, the computer requires the asterisk `*` for any multiplication.
+  * [x] Incorrect: `2x` or `x(1-y)`
+  * [v] Correct: `2*x` or `x*(1-y)`
+* **Basic Operators:** 
+  * `+` (addition), `-` (subtraction)
+  * `*` (multiplication), `/` (division)
+  * `^` (power, e.g., `x^2`)
+* **Supported Functions:**
+  * **Trigonometric:** `sin()`, `cos()`, `tan()`
+  * **Exponential and Logarithmic:** `exp()` (base *e*), `log()` or `ln()` (natural logarithm), `log10()` (base 10)
+  * **Other:** `sqrt()` (square root), `abs()` (absolute value)
+
+**Practical typing example:**
+To enter the system $x' = -y + x(1 - x^2 - y^2)$, you should type in the dx/dt field:
+`-y + x*(1 - x^2 - y^2)`
 
 ---
 

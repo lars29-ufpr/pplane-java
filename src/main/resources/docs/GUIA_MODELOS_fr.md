@@ -1,7 +1,27 @@
 # Guide des Modèles Mathématiques (Phase Plane)
-## pplaneX — Version 1.2.1
+### pplaneX — Version 1.3
 
 Ce guide rassemble le catalogue canonique des systèmes d'équations différentielles ordinaires bidimensionnelles ($2 \times 2$) implémentés dans **pplaneX**. Chaque modèle comprend sa formulation mathématique, un guide didactique d'expérimentation dans le plan de phase et des références conceptuelles classiques.
+
+### Créer Vos Propres Modèles (Syntaxe Mathématique)
+
+En utilisant l'onglet **Mes Modèles** dans la Galerie, vous pouvez définir vos propres systèmes d'Équations Différentielles Ordinaires (EDO). pplaneX utilise un analyseur mathématique strict, il est donc essentiel de suivre les règles de syntaxe ci-dessous :
+
+* **Multiplication Explicite (Très Important !) :** Contrairement à l'écriture mathématique sur papier, l'ordinateur nécessite l'astérisque `*` pour toute multiplication.
+  * [x] Incorrect : `2x` ou `x(1-y)`
+  * [v] Correct : `2*x` ou `x*(1-y)`
+* **Opérateurs de Base :** 
+  * `+` (addition), `-` (soustraction)
+  * `*` (multiplication), `/` (division)
+  * `^` (puissance, ex : `x^2`)
+* **Fonctions Prises en Charge :**
+  * **Trigonométriques :** `sin()`, `cos()`, `tan()`
+  * **Exponentielles et Logarithmiques :** `exp()` (base *e*), `log()` ou `ln()` (logarithme népérien), `log10()` (base 10)
+  * **Autres :** `sqrt()` (racine carrée), `abs()` (valeur absolue)
+
+**Exemple pratique de saisie :**
+Pour entrer le système $x' = -y + x(1 - x^2 - y^2)$, vous devez taper dans le champ dx/dt :
+`-y + x*(1 - x^2 - y^2)`
 
 ---
 

@@ -81,7 +81,7 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         });
     }
 
-    private void initLayout(DialogPane dialogPane) {
+   private void initLayout(DialogPane dialogPane) {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(16));
         root.setStyle("-fx-background-color: #0d1117;");
@@ -137,11 +137,18 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         topBox.getChildren().addAll(lblTitle, filterBox);
         root.setTop(topBox);
 
-        // --- CENTRO: SplitPane com Lista Escura e Painel de Detalhes ---
+        // --- NOVO CENTRO: TABS ---
+        TabPane tabPane = new TabPane();
+        tabPane.setStyle("-fx-background-color: transparent;");
+
+        // ABA 1: Galeria Nativa (O SplitPane que já existia)
+        Tab tabGallery = new Tab("Modelos Nativos");
+        tabGallery.setClosable(false);
+        tabGallery.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9;");
+        
         SplitPane splitPane = new SplitPane();
         splitPane.setStyle("-fx-background-color: transparent; -fx-box-border: transparent;");
 
-        // Lista de Modelos (Esquerda)
         listView.setStyle("-fx-background-color: #161b22; -fx-control-inner-background: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6;");
         listView.setCellFactory(param -> new ListCell<>() {
             @Override
@@ -164,15 +171,115 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         VBox leftBox = new VBox(listView);
         VBox.setVgrow(listView, Priority.ALWAYS);
 
-        // Painel de Detalhes (Direita)
         VBox rightBox = buildDetailPanel();
         rightBox.setPadding(new Insets(16));
         rightBox.setStyle("-fx-background-color: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-background-radius: 6;");
 
         splitPane.getItems().addAll(leftBox, rightBox);
         splitPane.setDividerPositions(0.36);
+        tabGallery.setContent(splitPane);
 
-        root.setCenter(splitPane);
+        // ABA 2: Meus Modelos (Onde os alunos vão digitar as EDOs)
+        Tab tabMyModels = new Tab("Meus Modelos");
+        tabMyModels.setClosable(false);
+        tabMyModels.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9;");
+        
+        VBox myModelsPane = new VBox(15);
+        myModelsPane.setPadding(new Insets(20));
+        myModelsPane.setStyle("-fx-background-color: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6;");
+        
+        Label lblMyModelsDesc = new Label("Crie e salve seus próprios Sistemas de EDOs. Use sintaxe matemática padrão (ex: sin(x), exp(y), * para multiplicação).");
+        lblMyModelsDesc.setStyle("-fx-text-fill: #8b949e;");
+        
+        GridPane formGrid = new GridPane();
+        formGrid.setHgap(15);
+        formGrid.setVgap(15);
+        
+        Label lblName = new Label("Nome do Modelo:");
+        lblName.setStyle("-fx-text-fill: #c9d1d9;");
+        TextField txtName = new TextField();
+        txtName.setPromptText("ex: Modelo de Competição Variante");
+        txtName.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
+        
+        Label lblDx = new Label("dx/dt =");
+        lblDx.setStyle("-fx-text-fill: #c9d1d9;");
+        TextField txtDx = new TextField();
+        txtDx.setPromptText("ex: -y + x*(1 - x^2 - y^2)"); // AQUI ENTRA A SUA IDEIA DE PLACEHOLDER!
+        txtDx.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
+        
+        Label lblDy = new Label("dy/dt =");
+        lblDy.setStyle("-fx-text-fill: #c9d1d9;");
+        TextField txtDy = new TextField();
+        txtDy.setPromptText("ex: x + y*(1 - x^2 - y^2)");
+        txtDy.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
+        
+       // O Botão Dica (?)
+        Button btnHelp = new Button("?");
+        // Adicionamos o -fx-cursor: hand; no final do estilo!
+        btnHelp.setStyle("-fx-background-radius: 15; -fx-background-color: #1f6feb; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+        Tooltip helpTooltip = new Tooltip("Operadores: + - * / ^\nFunções: sin(), cos(), exp(), ln()\nNota: Multiplicação exige asterisco (ex: 2*x*y).");
+        btnHelp.setTooltip(helpTooltip);
+        
+        // Conecta o clique à abertura do Guia Didático
+        btnHelp.setOnAction(e -> {
+            Stage ownerStage = (Stage) btnHelp.getScene().getWindow();
+            GuideViewerDialog.show(ownerStage);
+        });
+        
+        formGrid.addRow(0, lblName, txtName);
+        formGrid.addRow(1, lblDx, txtDx, btnHelp);
+        formGrid.addRow(2, lblDy, txtDy);
+        
+Button btnSaveNew = new Button("Salvar Novo Modelo");
+        btnSaveNew.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+        
+        // A mágica acontece aqui: conectando a interface ao motor matemático!
+        btnSaveNew.setOnAction(e -> {
+            String name = txtName.getText().trim();
+            String dx = txtDx.getText().trim();
+            String dy = txtDy.getText().trim();
+            
+            if (name.isEmpty() || dx.isEmpty() || dy.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, preencha o Nome e as duas equações (dx/dt e dy/dt).");
+                alert.setHeaderText("Campos Incompletos");
+                alert.initOwner(dialogPane.getScene().getWindow());
+                alert.showAndWait();
+                return;
+            }
+            
+            // Cria o modelo usando 'x' e 'y' como variáveis padrão
+            PredefinedModel userM = new PredefinedModel(
+                    I18n.get("gallery.user_models_category"), name,
+                    "x", "y",
+                    dx, dy,
+                    -5.0, 5.0, // Limites de X padrão da janela
+                    -5.0, 5.0, // Limites de Y padrão da janela
+                    20.0,      // Tempo máximo de integração (tMax)
+                    new HashMap<>(), // Sem parâmetros extras no início
+                    "Modelo personalizado criado pelo usuário."
+            );
+            
+            saveModelToDisk(userM); // Salva o .pplane no HD do aluno
+            userModels.add(userM);
+            
+            // Atualiza a lista na tela e seleciona o novo modelo
+            String userCat = I18n.get("gallery.tab_user_models");
+            cmbCategories.setValue(userCat);
+            refreshList(userCat);
+            listView.getSelectionModel().select(userM);
+            
+            // Limpa os campos para o próximo uso
+            txtName.clear();
+            txtDx.clear();
+            txtDy.clear();
+        });
+
+        myModelsPane.getChildren().addAll(lblMyModelsDesc, formGrid, btnSaveNew);
+        tabMyModels.setContent(myModelsPane);
+
+        tabPane.getTabs().addAll(tabGallery, tabMyModels);
+        root.setCenter(tabPane);
+        
         dialogPane.setContent(root);
 
         // Rodapé de Ações do DialogPane
@@ -186,7 +293,6 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         btnCancel.setText(closeText);
         btnCancel.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9; -fx-border-color: #30363d; -fx-border-radius: 6; -fx-padding: 6 16;");
 
-        // Barra de botões do diálogo com fundo escuro
         ButtonBar buttonBar = (ButtonBar) dialogPane.lookup(".button-bar");
         if (buttonBar != null) {
             buttonBar.setStyle("-fx-background-color: #0d1117;");
