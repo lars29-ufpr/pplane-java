@@ -186,3 +186,60 @@ $$\frac{dy}{dt} = c x + d y$$
 $$\frac{dx}{dt} = x^2 - y^2$$
 $$\frac{dy}{dt} = x(2 - y)$$
 - **Phänomenologie:** Weist die Koexistenz von 4 Gleichgewichten in der Ebene auf und erzeugt eine reichhaltige Karte konkurrierender Separatrizen.
+
+---
+
+### 11. Liebesdynamik (Romeo und Julia)
+
+#### Mathematische Formulierung und Parameter
+Ein klassisches lineares System, das von Steven Strogatz mit einem Hauch von Drama und Humor zur Untersuchung der Stabilität eingeführt wurde. Das Modell beschreibt die Entwicklung der gegenseitigen Zuneigung zweier Liebender:
+
+$$\frac{dR}{dt} = a R + b J$$
+$$\frac{dJ}{dt} = c R + d J$$
+
+- **Zustandsvariablen:**
+  * $R(t)$: Romeos Gefühle (positive Werte = Liebe, negative = Abneigung).
+  * $J(t)$: Julias Gefühle.
+- **Typische Parameter (Die Ewige Jagd):**
+  * $a, d$: Parameter der Selbstakzeptanz (Ego oder Vorsicht).
+  * $b, c$: Reaktionsparameter auf die Gefühle des Partners.
+  * Mit $a = 0, b = 1, c = -1, d = 0$: Romeo liebt Julia mehr, je mehr sie flieht, und Julia verliert das Interesse, je mehr sich Romeo nähert.
+- **Dynamische Klassifikation:**
+  * Diese Konfiguration erzeugt eine Matrix mit einer Spur von null und einer positiven Determinante. Es ist ein **Reines Zentrum**, das dafür sorgt, dass die Romanze zyklisch tragisch ist und nie ein stabiles Gleichgewicht oder einen völligen Zusammenbruch erreicht.
+
+#### Praktischer Erkundungsleitfaden
+1. **Der Endlose Zyklus:** Klicken Sie bei der Standardkonfiguration (0, 1, -1, 0) auf eine beliebige Stelle in der Ebene und beobachten Sie, wie die Bahnen perfekte Ellipsen bilden. Die Verfolgungsjagd ist ewig.
+2. **Platonische Liebe und Apathie:** Öffnen Sie das *Parameter Studio* und ändern Sie beide Selbstakzeptanzen auf leicht negative Werte (z.B. $a = -0.1$ und $d = -0.1$). Beobachten Sie, wie das System zu einem anziehenden Fokus wird: Nach einem romantischen Hin und Her kollabiert das Paar unweigerlich in den Ursprung (gegenseitige und irreversible emotionale Apathie).
+3. **Ändern Sie die Geschichte:** Erfinden Sie neue Persönlichkeiten. Was passiert, wenn beide vorsichtige Liebhaber sind ($a < 0, d < 0$), aber positiv aufeinander reagieren ($b > 0, c > 0$)?
+
+#### Konzeptionelle Referenzen
+- Strogatz, S. H. (1988). *Love affairs and differential equations*. Mathematics Magazine, 61(1), 35.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
+
+---
+
+### 12. Chemischer Oszillator Brusselator
+
+#### Mathematische Formulierung und Parameter
+Ein klassisches Modell der physikalischen Chemie, das von der Brüsseler Schule (Prigogine und Lefever) entwickelt wurde, um die Kinetik einer theoretischen autokatalytischen Reaktion zu beschreiben, die anhaltende Oszillationen (zeitliche Symmetriebrechung und dissipative Strukturen) aufweist:
+
+$$\frac{dx}{dt} = A - (B + 1)x + x^2y$$
+$$\frac{dy}{dt} = Bx - x^2y$$
+
+- **Zustandsvariablen:**
+  * $x(t), y(t)$: Konzentrationen der Zwischenreaktanten der Reaktion.
+- **Typische Parameter:**
+  * $A = 1.0$: Konstante Konzentration des Eingangsreaktanten.
+  * $B = 3.0$: Geschwindigkeitskonstante im Zusammenhang mit dem autokatalytischen Schritt.
+- **Einziger Gleichgewichtspunkt und Bifurkation:**
+  * Das System lässt ein einziges stationäres Gleichgewicht zu, das bei $(x^*, y^*) = (A, B/A)$ liegt.
+  * Die Stabilität dieses Punktes ändert sich je nach Reaktanten drastisch: Er ist stabil, wenn $B < 1 + A^2$, und wird instabil (durchläuft eine **Superkritische Hopf-Bifurkation**), wenn $B > 1 + A^2$.
+
+#### Praktischer Erkundungsleitfaden
+1. **Oszillatorische Anziehung:** Beachten Sie bei der Standardkonfiguration ($A = 1, B = 3$), dass die Instabilitätsbedingung ($3 > 1 + 1^2 = 2$) erfüllt ist. Klicken Sie auf die Ebene und beobachten Sie, wie die Konzentrationen $x$ und $y$ unerbittlich von einem tropfenförmigen Grenzzyklus angezogen werden.
+2. **Zeitfenster (Lösungen vs. Zeit):** Betrachten Sie die Graphen $x(t)$ und $y(t)$. Sie werden deutlich definierte oszillatorische Spitzen bemerken, die die Natur des "chemischen Uhrwerks" des Reaktions-Diffusions-Systems charakterisieren.
+3. **Phasenübergang:** Behalten Sie im *Parameter Studio* $A = 1$ bei und reduzieren Sie $B$ langsam auf $1.5$. Der Grenzzyklus verschwindet und die Reaktion kehrt zu einem stabilen Konzentrationsfluss zurück (anziehender Fokus in Richtung $(1, 1.5)$).
+
+#### Konzeptionelle Referenzen
+- Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
+- Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. Wiley.

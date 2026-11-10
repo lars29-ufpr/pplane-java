@@ -108,6 +108,12 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         categories.add(I18n.get("gallery.cat_biomath"));
         categories.add(I18n.get("gallery.cat_climate"));
         categories.add(I18n.get("gallery.cat_finance"));
+        categories.add("Sistemas Lineares & Teoria Qualitativa");
+        categories.add("Química & Dinâmica Não Linear");
+        categories.add("Sistemas Lineares & Teoria Qualitativa");
+        categories.add("Química & Dinâmica Não Linear");
+        categories.add("Sistemas Lineares & Teoria Qualitativa");
+        categories.add("Química & Dinâmica Não Linear");
         categories.add(I18n.get("gallery.tab_user_models"));
 
         cmbCategories.setItems(FXCollections.observableArrayList(categories));

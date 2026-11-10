@@ -197,3 +197,58 @@ $$\frac{dx}{dt} = x^2 - y^2$$
 $$\frac{dy}{dt} = x(2 - y)$$
 
 - **Phenomenology:** Features the coexistence of 4 equilibria in the plane, generating a rich map of competing separatrices.
+
+### 11. Love Dynamics (Romeo & Juliet)
+
+#### Mathematical Formulation and Parameters
+A classic linear system introduced by Steven Strogatz with a touch of drama and humor to study stability. The model describes the evolution of mutual affection between two lovers:
+
+$$\frac{dR}{dt} = a R + b J$$
+$$\frac{dJ}{dt} = c R + d J$$
+
+- **State Variables:**
+  * $R(t)$: Romeo's feelings (positive values = love, negative = aversion).
+  * $J(t)$: Juliet's feelings.
+- **Typical Parameters (The Endless Chase):**
+  * $a, d$: Self-acceptance parameters (ego or caution).
+  * $b, c$: Parameters of reaction to the partner's feelings.
+  * With $a = 0, b = 1, c = -1, d = 0$: Romeo loves Juliet more the more she flees, and Juliet loses interest the more Romeo approaches.
+- **Dynamic Classification:**
+  * This setup creates a matrix with zero trace and positive determinant. It is a **Pure Center**, ensuring the romance is cyclically tragic, never reaching a stable equilibrium or total collapse.
+
+#### Practical Exploration Guide
+1. **The Endless Cycle:** With the default setup (0, 1, -1, 0), click anywhere on the plane and watch the orbits form perfect ellipses. The chase is eternal.
+2. **Platonic Love and Apathy:** Open the *Parameter Studio* and change both self-acceptances to slightly negative values (e.g., $a = -0.1$ and $d = -0.1$). Watch the system become an attracting focus: after some romantic back-and-forth, the couple inevitably collapses to the origin (mutual and irreversible emotional apathy).
+3. **Change the Story:** Invent new personalities. What happens if both are cautious lovers ($a < 0, d < 0$) but react positively to each other ($b > 0, c > 0$)?
+
+#### Conceptual References
+- Strogatz, S. H. (1988). *Love affairs and differential equations*. Mathematics Magazine, 61(1), 35.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
+
+---
+
+### 12. Brusselator Chemical Oscillator
+
+#### Mathematical Formulation and Parameters
+A classic model in physical chemistry developed by the Brussels school (Prigogine and Lefever) to describe the kinetics of a theoretical autocatalytic reaction exhibiting sustained oscillations (temporal symmetry breaking and dissipative structures):
+
+$$\frac{dx}{dt} = A - (B + 1)x + x^2y$$
+$$\frac{dy}{dt} = Bx - x^2y$$
+
+- **State Variables:**
+  * $x(t), y(t)$: Concentrations of the reaction's intermediate reactants.
+- **Typical Parameters:**
+  * $A = 1.0$: Constant concentration of the input reactant.
+  * $B = 3.0$: Rate constant associated with the autocatalytic step.
+- **Unique Equilibrium Point and Bifurcation:**
+  * The system admits a single stationary equilibrium located at $(x^*, y^*) = (A, B/A)$.
+  * The stability of this point changes drastically depending on the reactants: it is stable if $B < 1 + A^2$ and becomes unstable (undergoing a **Supercritical Hopf Bifurcation**) when $B > 1 + A^2$.
+
+#### Practical Exploration Guide
+1. **Oscillatory Attraction:** With the default setup ($A = 1, B = 3$), note that the instability condition ($3 > 1 + 1^2 = 2$) is met. Click on the plane and watch the concentrations $x$ and $y$ be relentlessly attracted to a teardrop-shaped limit cycle.
+2. **Time Window (Solutions vs Time):** View the $x(t)$ and $y(t)$ graphs. You will notice well-defined oscillatory peaks, characterizing the "chemical clock" nature of the reaction-diffusion system.
+3. **Phase Transition:** In the *Parameter Studio*, keep $A = 1$ and slowly reduce $B$ to $1.5$. The limit cycle will disappear and the reaction will return to a stable concentration flow (attracting focus toward $(1, 1.5)$).
+
+#### Conceptual References
+- Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
+- Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. Wiley.

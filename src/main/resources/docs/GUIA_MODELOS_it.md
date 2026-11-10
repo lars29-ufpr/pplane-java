@@ -186,3 +186,60 @@ $$\frac{dy}{dt} = c x + d y$$
 $$\frac{dx}{dt} = x^2 - y^2$$
 $$\frac{dy}{dt} = x(2 - y)$$
 - **Fenomenologia:** Presenta la coesistenza di 4 equilibri nel piano, generando una ricca mappa di separatrici in competizione.
+
+---
+
+### 11. Dinamica dell'Amore (Romeo e Giulietta)
+
+#### Formulazione Matematica e Parametri
+Un classico sistema lineare introdotto da Steven Strogatz con un tocco di dramma e umorismo per lo studio della stabilità. Il modello descrive l'evoluzione dell'affetto reciproco tra due amanti:
+
+$$\frac{dR}{dt} = a R + b J$$
+$$\frac{dJ}{dt} = c R + d J$$
+
+- **Variabili di Stato:**
+  * $R(t)$: Sentimenti di Romeo (valori positivi = amore, negativi = avversione).
+  * $J(t)$: Sentimenti di Giulietta.
+- **Parametri Tipici (L'Eterna Caccia):**
+  * $a, d$: Parametri di auto-accettazione (ego o cautela).
+  * $b, c$: Parametri di reazione ai sentimenti del partner.
+  * Con $a = 0, b = 1, c = -1, d = 0$: Romeo ama Giulietta di più quanto più lei fugge, e Giulietta perde interesse quanto più Romeo si avvicina.
+- **Classificazione Dinamica:**
+  * Questa configurazione crea una matrice con traccia nulla e determinante positivo. Si tratta di un **Centro Puro**, garantendo che il romanticismo sia ciclicamente tragico, senza mai raggiungere un equilibrio stabile o il collasso totale.
+
+#### Guida Pratica all'Esplorazione
+1. **Il Ciclo Senza Fine:** Con la configurazione predefinita (0, 1, -1, 0), fai clic in qualsiasi punto del piano e guarda le orbite formare ellissi perfette. L'inseguimento è eterno.
+2. **Amore Platonico e Apatia:** Apri il *Parameter Studio* e cambia entrambe le auto-accettazioni a valori leggermente negativi (es. $a = -0.1$ e $d = -0.1$). Osserva il sistema diventare un fuoco attrattore: dopo alcuni va e vieni romantici, la coppia collassa inevitabilmente verso l'origine (apatia emotiva reciproca e irreversibile).
+3. **Cambia la Storia:** Inventa nuove personalità. Cosa succede se entrambi sono amanti cauti ($a < 0, d < 0$) ma reagiscono positivamente l'uno all'altro ($b > 0, c > 0$)?
+
+#### Riferimenti Concettuali
+- Strogatz, S. H. (1988). *Love affairs and differential equations*. Mathematics Magazine, 61(1), 35.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
+
+---
+
+### 12. Oscillatore Chimico Brusselator
+
+#### Formulazione Matematica e Parametri
+Un modello classico in chimica fisica sviluppato dalla scuola di Bruxelles (Prigogine e Lefever) per descrivere la cinetica di una reazione autocatalitica teorica che presenta oscillazioni sostenute (rottura della simmetria temporale e strutture dissipative):
+
+$$\frac{dx}{dt} = A - (B + 1)x + x^2y$$
+$$\frac{dy}{dt} = Bx - x^2y$$
+
+- **Variabili di Stato:**
+  * $x(t), y(t)$: Concentrazioni dei reagenti intermedi della reazione.
+- **Parametri Tipici:**
+  * $A = 1.0$: Concentrazione costante del reagente di ingresso.
+  * $B = 3.0$: Costante di velocità associata al passaggio autocatalitico.
+- **Punto di Equilibrio Unico e Biforcazione:**
+  * Il sistema ammette un unico equilibrio stazionario situato in $(x^*, y^*) = (A, B/A)$.
+  * La stabilità di questo punto cambia drasticamente a seconda dei reagenti: è stabile se $B < 1 + A^2$ e diventa instabile (subendo una **Biforcazione di Hopf Supercritica**) quando $B > 1 + A^2$.
+
+#### Guida Pratica all'Esplorazione
+1. **Attrazione Oscillatoria:** Con la configurazione predefinita ($A = 1, B = 3$), nota che la condizione di instabilità ($3 > 1 + 1^2 = 2$) è soddisfatta. Fai clic sul piano e osserva le concentrazioni $x$ e $y$ essere inesorabilmente attratte verso un ciclo limite a forma di goccia.
+2. **Finestra Temporale (Soluzioni vs Tempo):** Visualizza i grafici $x(t)$ e $y(t)$. Noterai picchi oscillatori ben definiti, che caratterizzano la natura di "orologio chimico" del sistema di reazione-diffusione.
+3. **Transizione di Fase:** Nel *Parameter Studio*, mantieni $A = 1$ e riduci lentamente $B$ a $1.5$. Il ciclo limite scomparirà e la reazione tornerà ad avere un flusso di concentrazione stabile (fuoco attrattore verso $(1, 1.5)$).
+
+#### Riferimenti Concettuali
+- Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
+- Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. Wiley.

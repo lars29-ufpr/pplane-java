@@ -317,3 +317,60 @@ $$\frac{dy}{dt} = x(2 - y)$$
   * $(0, 2)$ : Équilibre avec convergence asymptotique verticale.
 - **Phénoménologie :**
   * Présente la coexistence de 4 équilibres dans le plan, générant une carte riche en séparatrices où des trajectoires voisines prennent des destinations diamétralement opposées.
+
+---
+
+### 11. Dynamique de l'Amour (Roméo et Juliette)
+
+#### Formulation Mathématique et Paramètres
+Un système linéaire classique introduit par Steven Strogatz avec une touche de drame et d'humour pour l'étude de la stabilité. Le modèle décrit l'évolution de l'affection mutuelle entre deux amants :
+
+$$\frac{dR}{dt} = a R + b J$$
+$$\frac{dJ}{dt} = c R + d J$$
+
+- **Variables d'État :**
+  * $R(t)$ : Sentiments de Roméo (valeurs positives = amour, négatives = aversion).
+  * $J(t)$ : Sentiments de Juliette.
+- **Paramètres Typiques (La Chasse Éternelle) :**
+  * $a, d$ : Paramètres d'acceptation de soi (ego ou prudence).
+  * $b, c$ : Paramètres de réaction aux sentiments du partenaire.
+  * Avec $a = 0, b = 1, c = -1, d = 0$ : Roméo aime Juliette davantage plus elle fuit, et Juliette perd tout intérêt plus Roméo s'approche.
+- **Classification Dynamique :**
+  * Cette configuration crée une matrice avec une trace nulle et un déterminant positif. Il s'agit d'un **Centre Pur**, garantissant que la romance soit cycliquement tragique, sans jamais atteindre un équilibre stable ni un effondrement total.
+
+#### Guide Pratique d'Exploration
+1. **Le Cycle Sans Fin :** Avec la configuration par défaut (0, 1, -1, 0), cliquez n'importe où sur le plan et regardez les orbites former des ellipses parfaites. La poursuite est éternelle.
+2. **Amour Platonique et Apathie :** Ouvrez le *Parameter Studio* et modifiez les deux paramètres d'acceptation de soi vers des valeurs légèrement négatives (ex. $a = -0.1$ et $d = -0.1$). Observez le système devenir un foyer attracteur : après quelques allers-retours romantiques, le couple s'effondre inévitablement vers l'origine (apathie émotionnelle mutuelle et irréversible).
+3. **Changez l'Histoire :** Inventez de nouvelles personnalités. Que se passe-t-il si les deux sont des amants prudents ($a < 0, d < 0$) mais réagissent positivement l'un à l'autre ($b > 0, c > 0$) ?
+
+#### Références Conceptuelles
+- Strogatz, S. H. (1988). *Love affairs and differential equations*. Mathematics Magazine, 61(1), 35.
+- Strogatz, S. H. (2018). *Nonlinear Dynamics and Chaos* (2nd ed.). CRC Press.
+
+---
+
+### 12. Oscillateur Chimique Brusselator
+
+#### Formulation Mathématique et Paramètres
+Un modèle classique en chimie physique développé par l'école de Bruxelles (Prigogine et Lefever) pour décrire la cinétique d'une réaction autocatalytique théorique présentant des oscillations soutenues (rupture de symétrie temporelle et structures dissipatives) :
+
+$$\frac{dx}{dt} = A - (B + 1)x + x^2y$$
+$$\frac{dy}{dt} = Bx - x^2y$$
+
+- **Variables d'État :**
+  * $x(t), y(t)$ : Concentrations des réactifs intermédiaires de la réaction.
+- **Paramètres Typiques :**
+  * $A = 1.0$ : Concentration constante du réactif d'entrée.
+  * $B = 3.0$ : Constante de vitesse associée à l'étape autocatalytique.
+- **Point d'Équilibre Unique et Bifurcation :**
+  * Le système admet un seul équilibre stationnaire situé à $(x^*, y^*) = (A, B/A)$.
+  * La stabilité de ce point change radicalement en fonction des réactifs : il est stable si $B < 1 + A^2$ et devient instable (subissant une **Bifurcation de Hopf Supercritique**) lorsque $B > 1 + A^2$.
+
+#### Guide Pratique d'Exploration
+1. **Attraction Oscillatoire :** Avec la configuration par défaut ($A = 1, B = 3$), notez que la condition d'instabilité ($3 > 1 + 1^2 = 2$) est remplie. Cliquez sur le plan et regardez les concentrations $x$ et $y$ être inexorablement attirées vers un cycle limite en forme de goutte.
+2. **Fenêtre Temporelle (Solutions vs Temps) :** Visualisez les graphiques $x(t)$ et $y(t)$. Vous remarquerez des pics oscillatoires bien définis, caractérisant la nature d'"horloge chimique" du système de réaction-diffusion.
+3. **Transition de Phase :** Dans le *Parameter Studio*, maintenez $A = 1$ et réduisez lentement $B$ à $1.5$. Le cycle limite disparaîtra et la réaction retrouvera un flux de concentration stable (foyer attracteur vers $(1, 1.5)$).
+
+#### Références Conceptuelles
+- Prigogine, I., & Lefever, R. (1968). *Symmetry breaking instabilities in dissipative systems. II*. The Journal of Chemical Physics, 48(4), 1695-1700.
+- Nicolis, G., & Prigogine, I. (1977). *Self-Organization in Nonequilibrium Systems: From Dissipative Structures to Order through Fluctuations*. Wiley.
