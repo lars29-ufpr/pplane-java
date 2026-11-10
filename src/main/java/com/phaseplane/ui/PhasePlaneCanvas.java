@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class PhasePlaneCanvas extends Pane {
-
+private boolean planoFoiArrastado = false;
     // Paleta de cores escura (Dark Theme)
 private Color exportBgColor = null;
     private boolean transparentExport = false;
@@ -82,14 +82,16 @@ private boolean showNullclines = true;
         canvas.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && onPointClicked != null) {
                 double worldX = screenToWorldX(event.getX());
-                double worldY = screenToWorldY(event.getY());
-                onPointClicked.accept(worldX, worldY);
+double worldY = screenToWorldY(event.getY());
+if (planoFoiArrastado) return; // <-- ADICIONE ESTA TRAVA AQUI
+onPointClicked.accept(worldX, worldY);             
             }
         });
 
         // Pressionar botão para iniciar Pan (botão direito ou botão do meio)
         canvas.setOnMousePressed(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+planoFoiArrastado = false;           
+ if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 lastDragScreenX = event.getX();
                 lastDragScreenY = event.getY();
             }
@@ -98,6 +100,7 @@ private boolean showNullclines = true;
         // Arrastar para navegar (Pan)
         canvas.setOnMouseDragged(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
+planoFoiArrastado = true;
                 if (bounds == null || getWidth() <= 0 || getHeight() <= 0) return;
 
                 double dxPixels = event.getX() - lastDragScreenX;
@@ -130,6 +133,7 @@ private boolean showNullclines = true;
         canvas.setOnMouseReleased(event -> {
             if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
                 notifyPanZoomFinished();
+planoFoiArrastado = true;
             }
         });
 
