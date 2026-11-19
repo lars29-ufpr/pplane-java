@@ -108,12 +108,9 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         categories.add(I18n.get("gallery.cat_biomath"));
         categories.add(I18n.get("gallery.cat_climate"));
         categories.add(I18n.get("gallery.cat_finance"));
-        categories.add("Sistemas Lineares & Teoria Qualitativa");
-        categories.add("Química & Dinâmica Não Linear");
-        categories.add("Sistemas Lineares & Teoria Qualitativa");
-        categories.add("Química & Dinâmica Não Linear");
-        categories.add("Sistemas Lineares & Teoria Qualitativa");
-        categories.add("Química & Dinâmica Não Linear");
+        categories.add(I18n.get("gallery.cat_nonlinear"));
+        categories.add(I18n.get("gallery.cat_linear"));
+        categories.add(I18n.get("gallery.cat_chemistry"));
         categories.add(I18n.get("gallery.tab_user_models"));
 
         cmbCategories.setItems(FXCollections.observableArrayList(categories));
@@ -148,7 +145,7 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         tabPane.setStyle("-fx-background-color: transparent;");
 
         // ABA 1: Galeria Nativa (O SplitPane que já existia)
-        Tab tabGallery = new Tab("Modelos Nativos");
+        Tab tabGallery = new Tab(I18n.get("gallery.tab_native_models"));
         tabGallery.setClosable(false);
         tabGallery.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9;");
         
@@ -186,7 +183,7 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         tabGallery.setContent(splitPane);
 
         // ABA 2: Meus Modelos (Onde os alunos vão digitar as EDOs)
-        Tab tabMyModels = new Tab("Meus Modelos");
+        Tab tabMyModels = new Tab(I18n.get("gallery.tab_user_models"));
         tabMyModels.setClosable(false);
         tabMyModels.setStyle("-fx-background-color: #21262d; -fx-text-fill: #c9d1d9;");
         
@@ -194,36 +191,36 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         myModelsPane.setPadding(new Insets(20));
         myModelsPane.setStyle("-fx-background-color: #161b22; -fx-border-color: #30363d; -fx-border-radius: 6;");
         
-        Label lblMyModelsDesc = new Label("Crie e salve seus próprios Sistemas de EDOs. Use sintaxe matemática padrão (ex: sin(x), exp(y), * para multiplicação).");
+        Label lblMyModelsDesc = new Label(I18n.get("gallery.mymodels.desc"));
         lblMyModelsDesc.setStyle("-fx-text-fill: #8b949e;");
         
         GridPane formGrid = new GridPane();
         formGrid.setHgap(15);
         formGrid.setVgap(15);
         
-        Label lblName = new Label("Nome do Modelo:");
+        Label lblName = new Label(I18n.get("gallery.mymodels.lbl_name"));
         lblName.setStyle("-fx-text-fill: #c9d1d9;");
         TextField txtName = new TextField();
-        txtName.setPromptText("ex: Modelo de Competição Variante");
+        txtName.setPromptText(I18n.get("gallery.mymodels.prompt_name"));
         txtName.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
         
         Label lblDx = new Label("dx/dt =");
         lblDx.setStyle("-fx-text-fill: #c9d1d9;");
         TextField txtDx = new TextField();
-        txtDx.setPromptText("ex: -y + x*(1 - x^2 - y^2)"); // AQUI ENTRA A SUA IDEIA DE PLACEHOLDER!
+        txtDx.setPromptText(I18n.get("gallery.mymodels.prompt_dx"));
         txtDx.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
         
         Label lblDy = new Label("dy/dt =");
         lblDy.setStyle("-fx-text-fill: #c9d1d9;");
         TextField txtDy = new TextField();
-        txtDy.setPromptText("ex: x + y*(1 - x^2 - y^2)");
+        txtDy.setPromptText(I18n.get("gallery.mymodels.prompt_dy"));
         txtDy.setStyle("-fx-control-inner-background: #0d1117; -fx-text-fill: #c9d1d9;");
         
        // O Botão Dica (?)
         Button btnHelp = new Button("?");
         // Adicionamos o -fx-cursor: hand; no final do estilo!
         btnHelp.setStyle("-fx-background-radius: 15; -fx-background-color: #1f6feb; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
-        Tooltip helpTooltip = new Tooltip("Operadores: + - * / ^\nFunções: sin(), cos(), exp(), ln()\nNota: Multiplicação exige asterisco (ex: 2*x*y).");
+        Tooltip helpTooltip = new Tooltip(I18n.get("gallery.mymodels.help_tooltip"));
         btnHelp.setTooltip(helpTooltip);
         
         // Conecta o clique à abertura do Guia Didático
@@ -236,7 +233,7 @@ public class ModelGalleryDialog extends Dialog<PredefinedModel> {
         formGrid.addRow(1, lblDx, txtDx, btnHelp);
         formGrid.addRow(2, lblDy, txtDy);
         
-Button btnSaveNew = new Button("Salvar Novo Modelo");
+Button btnSaveNew = new Button(I18n.get("gallery.mymodels.btn_save"));
         btnSaveNew.setStyle("-fx-background-color: #238636; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
         
         // A mágica acontece aqui: conectando a interface ao motor matemático!
@@ -246,8 +243,8 @@ Button btnSaveNew = new Button("Salvar Novo Modelo");
             String dy = txtDy.getText().trim();
             
             if (name.isEmpty() || dx.isEmpty() || dy.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Por favor, preencha o Nome e as duas equações (dx/dt e dy/dt).");
-                alert.setHeaderText("Campos Incompletos");
+                Alert alert = new Alert(Alert.AlertType.WARNING, I18n.get("gallery.mymodels.alert_incomplete_body"));
+                alert.setHeaderText(I18n.get("gallery.mymodels.alert_incomplete_header"));
                 alert.initOwner(dialogPane.getScene().getWindow());
                 alert.showAndWait();
                 return;
@@ -262,7 +259,7 @@ Button btnSaveNew = new Button("Salvar Novo Modelo");
                     -5.0, 5.0, // Limites de Y padrão da janela
                     20.0,      // Tempo máximo de integração (tMax)
                     new HashMap<>(), // Sem parâmetros extras no início
-                    "Modelo personalizado criado pelo usuário."
+                    I18n.get("gallery.user_model_desc")
             );
             
             saveModelToDisk(userM); // Salva o .pplane no HD do aluno

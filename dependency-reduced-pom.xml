@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.phaseplane</groupId>
   <artifactId>pplaneX</artifactId>
-  <version>1.3</version>
+  <version>1.3.2</version>
   <build>
-    <finalName>pplaneX</finalName>
+    <finalName>pplaneX-${jar.classifier.suffix}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -54,9 +54,41 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>linux</id>
+      <properties>
+        <jar.classifier.suffix>linux</jar.classifier.suffix>
+        <jfx.classifier>linux</jfx.classifier>
+      </properties>
+    </profile>
+    <profile>
+      <id>win</id>
+      <properties>
+        <jar.classifier.suffix>win</jar.classifier.suffix>
+        <jfx.classifier>win</jfx.classifier>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac-intel</id>
+      <properties>
+        <jar.classifier.suffix>mac</jar.classifier.suffix>
+        <jfx.classifier>mac</jfx.classifier>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac-arm64</id>
+      <properties>
+        <jar.classifier.suffix>mac-aarch64</jar.classifier.suffix>
+        <jfx.classifier>mac-aarch64</jfx.classifier>
+      </properties>
+    </profile>
+  </profiles>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <javafx.version>21.0.2</javafx.version>
+    <javafx.version>23.0.1</javafx.version>
+    <jfx.classifier>linux</jfx.classifier>
+    <jar.classifier.suffix>linux</jar.classifier.suffix>
   </properties>
 </project>
